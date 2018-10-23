@@ -1,0 +1,109 @@
+.complaintsCard {
+  margin-bottom: 5px;
+  margin-left: 15px;
+}
+
+.cardBorder {
+  border: 0px;
+  margin-bottom: 5px;
+}
+
+.custom-font-weight {
+  font-weight: 500;
+}
+
+.titleComplaints {
+  /* margin-left: 15px; */
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+
+.custom-image-setting-icon {
+  width: 25px;
+  height: 25px;
+}
+
+.custom-float-right {
+  float: right;
+}
+
+.custom-cursor {
+  cursor: pointer;
+}
+
+.custom-display {
+  display: none;
+}
+
+.custom-badge-setting {
+  height: 10px;
+  float: right;
+  margin-bottom: 3px;
+}
+
+.custom-hover:hover {
+  background-color: lightyellow;
+}
+
+.custom-main-filter {
+  background-color: #f2f3f8 !important;
+  border: 0 !important;
+  border-bottom: 1px solid #a9a9a9 !important;
+  border-radius: 0 !important;
+  padding-left: 0 !important;
+  height: 23px !important;
+  margin-left: 0px !important;
+}
+
+.custom-small-header {
+  margin-left: 0px;
+  font-size: 10px;
+}
+.custom-messege-button {
+  padding-right: 0px;
+  background: transparent;
+  border: transparent;
+  padding-top: 15px;
+}
+
+.custom-label-setting {
+  font-weight: 500;
+  margin-top: 100px;
+}
+
+.custom-paragraph {
+  margin-top: -25px;
+}
+
+.m-subheader__title small {
+  margin-left: 7px;
+}
+
+.custom-input-setting {
+  font-size: 15px !important;
+  font-weight: 200 !important;
+}
+.custom-main-filter-focus:focus {
+  outline: none !important;
+}
+
+.active-row-class {
+  background-color: white !important;
+}
+
+.custom-image-setting {
+  width: 45px;
+  height: 45px;
+}
+
+.details {
+  margin-bottom: 15px;
+}
+
+.btnGroup {
+  margin-top: 55px;
+}
+
+.titles {
+  margin-left: 15px;
+}

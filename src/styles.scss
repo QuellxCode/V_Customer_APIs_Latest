@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+.ui-sidebar-bottom{
+    padding-top:10px;
+    height: 60px;
+}
+
+.ui-sidebar-right{
+    width: 35%;
+    overflow: auto;
+}
+
+@media (max-width:595px){
+    .ui-sidebar-right {
+        width: 70% !important;
+    }
+}

@@ -1,0 +1,447 @@
+
+     <div class="row">
+		<div class="col-xl-12">
+			<!--Begin::Main Portlet-->
+			<div class="m-portlet" style="box-shadow: none;">
+				<!--begin: Portlet Head-->
+				<!-- <div class="m-portlet__head">
+					<div class="m-portlet__head-caption">
+						<div class="m-portlet__head-title">
+							<h3 class="m-portlet__head-text">
+								Lead Wizard
+								<small>
+									lead form wizard
+								</small>
+							</h3>
+						</div>
+					</div>
+					<div class="m-portlet__head-tools">
+						<ul class="m-portlet__nav">
+							<li class="m-portlet__nav-item">
+								<a href="#" data-toggle="m-tooltip" class="m-portlet__nav-link m-portlet__nav-link--icon" data-direction="left" data-width="auto" title="Get help with filling up this form">
+									<i class="flaticon-info m--icon-font-size-lg3"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div> -->
+				<!--end: Portlet Head-->  			<!--begin: Form Wizard-->
+				<div class="m-wizard m-wizard--5 m-wizard--success" id="m_wizard">
+					<!--begin: Message container -->
+					<div class="m-portlet__padding-x">
+						<!-- Here you can put a message or alert -->
+					</div>
+					<!--end: Message container -->  				<!--begin: Form Wizard Head -->
+					<div class="m-wizard__head m-portlet__padding-x">
+						<div class="row">
+							<div class="col-xl-12">
+								<!--begin: Form Wizard Nav -->
+								<div class="m-wizard__nav">
+									<div class="m-wizard__steps">
+										<div class="m-wizard__step m-wizard__step--current" data-wizard-target="#m_wizard_form_step_1">
+											<div class="m-wizard__step-info">
+												<a href="#" class="m-wizard__step-number">
+													<span class="m-wizard__step-seq">
+														1.
+													</span>
+													<span class="m-wizard__step-label">
+														Lead Information
+													</span>
+													<span class="m-wizard__step-icon">
+														<i class="la la-check"></i>
+													</span>
+												</a>
+											</div>
+										</div>
+										<div class="m-wizard__step" data-wizard-target="#m_wizard_form_step_2">
+											<div class="m-wizard__step-info">
+												<a href="#" class="m-wizard__step-number">
+													<span class="m-wizard__step-seq">
+														2.
+													</span>
+													<span class="m-wizard__step-label">
+														Appointment
+													</span>
+													<span class="m-wizard__step-icon">
+														<i class="la la-check"></i>
+													</span>
+												</a>
+											</div>
+										</div>
+										<div class="m-wizard__step" data-wizard-target="#m_wizard_form_step_3">
+											<div class="m-wizard__step-info">
+												<a href="#" class="m-wizard__step-number">
+													<span class="m-wizard__step-seq">
+														3.
+													</span>
+													<span class="m-wizard__step-label">
+														Payment
+													</span>
+													<span class="m-wizard__step-icon">
+														<i class="la la-check"></i>
+													</span>
+												</a>
+											</div>
+										</div>
+										<div class="m-wizard__step" data-wizard-target="#m_wizard_form_step_4">
+											<div class="m-wizard__step-info">
+												<a href="#" class="m-wizard__step-number">
+													<span class="m-wizard__step-seq">
+														4.
+													</span>
+													<span class="m-wizard__step-label">
+														Confirmation
+													</span>
+													<span class="m-wizard__step-icon">
+														<i class="la la-check"></i>
+													</span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--end: Form Wizard Nav -->
+							</div>
+						</div>
+					</div>
+					<!--end: Form Wizard Head -->  				<!--begin: Form Wizard Form-->
+					<div class="m-wizard__form">
+						<!-- 						1) Use m-form--label-align-left class to alight the form input lables to the right 						2) Use m-form--state class to highlight input control borders on form validation 					-->
+						<form class="m-form m-form--label-align-left- m-form--state-" id="m_form">
+							<!--begin: Form Body -->
+							<div class="m-portlet__body">
+								<!--begin: Form Wizard Step 1-->
+								<div class="m-wizard__form-step m-wizard__form-step--current" id="m_wizard_form_step_1">
+									<div class="row">
+										<div class="col-xl-10 offset-xl-1">
+
+												<div class="form-group m-form__group row">
+														<label class="col-xl-3 col-lg-3 col-form-label">
+															* Categories:
+														</label>
+														<div class="col-xl-9 col-lg-9">
+															<select name="country" class="form-control m-input" >
+																<option value="peronsal">
+																	Personal
+																</option>
+																<option value="auto">
+																	Auto
+																</option>
+																<option value="health">
+																		Health
+																</option>
+															
+															</select>
+														</div>
+													</div>
+
+
+												
+														
+
+
+															<div class="form-group m-form__group row" *ngIf="Categorgy=='health'">
+																	<label class="col-xl-3 col-lg-3 col-form-label">
+																		*Sub-Categories:
+																	</label>
+																	<div class="col-xl-9 col-lg-9">
+																			<select  class="form-control m-input m-input--square">
+																					<option  value="Personal Trainer">
+																							Personal Trainer
+																						</option>
+																						<option  value="Yoga Instruction" >
+																								Yoga Instruction
+																						</option>
+																						<option  value="Yoga Instruction">
+																								Martial Arts
+																						</option>
+																						
+																			</select>
+																	</div>
+																</div>
+
+																<div class="form-group m-form__group row" *ngIf="Categorgy=='auto'">
+																		<label class="col-xl-3 col-lg-3 col-form-label">
+																			*Sub-Categories:
+																		</label>
+																		<div class="col-xl-9 col-lg-9">
+																				<select  class="form-control m-input m-input--square">
+																						<option  value="Car Dealing">
+																								Car Dealing
+																							</option>
+																							<option  value="Car Wash" >
+																								Car Wash
+																							</option>
+																							
+																				</select>
+																		</div>
+																	</div>
+																	<div class="form-group m-form__group row" >
+																			<label class="col-xl-3 col-lg-3 col-form-label">
+																				*Services:
+																			</label>
+																			<div class="col-xl-9 col-lg-9">
+																					<select  class="form-control m-input m-input--square" data-live-search="true">
+																							<option  value="Makeup" >
+																									Makeup
+																								</option>
+																								<option  value="Nail Technician" >
+																									Nail Technician
+																								</option>
+																								
+																								<option  value="Hair Stylists">
+																									Hair Stylists
+																								</option>
+																
+																								<option  value="Eyelash Extensions" >
+																										Eyelash Extensions
+																								</option>
+																
+																								<option  value="Barber">
+																										Barber
+																								</option>
+																								<option  value="Barber">
+																										Massage Therapist
+																								</option>
+									
+																								<option  value="Barber">
+																										Waxing
+																								</option>
+									
+																					</select>
+																			</div>
+																		</div>
+
+																	<div class="form-group m-form__group row" >
+																			<label class="col-xl-3 col-lg-3 col-form-label">
+																				Comments:
+																			</label>
+																			<div class="col-xl-9 col-lg-9">
+																					<textarea class="form-control" id="textArea" rows="3"></textarea>
+																			</div>
+																		</div>
+
+										</div>
+									</div>
+								</div>
+								<!--end: Form Wizard Step 1-->  							<!--begin: Form Wizard Step 2-->
+								<div class="m-wizard__form-step" id="m_wizard_form_step_2">
+									<div class="row">
+										<div class="col-xl-10 offset-xl-1">
+											<div class="m-form__section m-form__section--first">
+												<div class="form-group m-form__group row">
+													<div class="col-lg-12">
+															<label for="Subject">Service</label>
+															<input type="text" class="form-control" value="Hair Trimming" disabled>
+													</div>
+												</div>
+
+
+												<div class="form-group m-form__group row">
+														<div class="col-lg-12">
+																<label for="clientName">Client Name</label>
+																<input type="clientName" value="The Company" class="form-control" id="Subject" disabled>
+														</div>
+												</div>
+
+
+												<div class="form-group m-form__group row">
+													<div class="col-lg-6 m-form__group-sub">
+														<label class="form-control-label">
+															* Date Time Range Start:
+														</label>
+														<input class="form-control m-input"  type="datetime-local" value="2018-08-19T13:45:00">
+																</div>
+													<div class="col-lg-6 m-form__group-sub">
+														<label class="form-control-label">
+															* Date Time Range End:
+														</label>
+														<input class="form-control m-input"  type="datetime-local" value="2018-08-20T14:50:20">
+													</div>
+												</div> 
+
+												
+												<!-- <div class="form-group m-form__group">
+														<div class="m-input-icon m-input-icon--right">
+															<input class="form-control m-input" placeholder=".Niaz" type="text">
+															<span class="m-input-icon__icon m-input-icon__icon--right" style="margin-top: -20px; position:relative;float:right;">
+																<span>
+																	<i class="fa fa-trash"></i>
+																</span>
+															</span>
+														</div>
+													</div> -->
+											</div>
+
+
+										
+										</div>
+									</div>
+								</div>
+								<!--end: Form Wizard Step 2-->  							<!--begin: Form Wizard Step 3-->
+								<div class="m-wizard__form-step" id="m_wizard_form_step_3">
+									<div class="row">
+										<div class="col-xl-10 offset-xl-1">
+											<div class="m-form__section m-form__section--first">
+												<div class="m-form__heading">
+													<h3 class="m-form__heading-title">
+														Payment Information
+													</h3>
+												</div>
+												<div class="form-group m-form__group row">
+														<label class="col-xl-3 col-lg-3 col-form-label">
+															* Payment Method:
+														</label>
+														<div class="col-xl-9 col-lg-9">
+															<select name="country" class="form-control m-input" >
+																<option value="fiat" selected>
+																	Fiat
+																</option>
+																<option value="crypto">
+																	Crypto
+																</option>
+																
+															
+															</select>
+														</div>
+													</div>
+
+
+												
+														<div class="form-group m-form__group row" >
+																<label class="col-xl-3 col-lg-3 col-form-label">
+																	*Fiat Currency Type:
+																</label>
+																<div class="col-xl-9 col-lg-9">
+																		<select  class="form-control m-input m-input--square">
+																				<option  value="Visa" >
+																						Visa
+																					</option>
+																					<option  value="Paypal" >
+																						Paypal
+																					</option>
+																					
+																					<option  value="Master">
+																						Master
+																					</option>
+																		</select>
+																</div>
+															</div>
+
+
+															<div class="form-group m-form__group row" *ngIf="false">
+																	<label class="col-xl-3 col-lg-3 col-form-label">
+																			*Crypto Currency Type:
+																	</label>
+																	<div class="col-xl-9 col-lg-9">
+																			<select  class="form-control m-input m-input--square" >
+																					<option  value="Bitcoin">
+																							Bitcoin
+																						</option>
+																						<option  value="Ethreum" >
+																							Ethreum
+																						</option>	
+																			</select>
+																	</div>
+																</div>
+
+																
+																<div class="form-group m-form__group row">
+																		<label class="col-xl-3 col-lg-3 col-form-label">
+																				*Card Name:
+																		</label>
+																		<div class="col-xl-9 col-lg-9">
+																				<input class="form-control m-input"placeholder="e.g. Stevens Hawks" type="text">
+																		</div>
+																</div>
+
+
+																<div class="form-group m-form__group row">
+																		<label class="col-xl-3 col-lg-3 col-form-label">
+																				*Card Number:
+																		</label>
+																		<div class="col-xl-9 col-lg-9">
+																				<input class="form-control m-input"placeholder="xxxx-xxxx-xxxx" type="text">
+																		</div>
+																	</div>
+
+
+							
+											</div>
+									
+										</div>
+									</div>
+								</div>
+								<!--end: Form Wizard Step 3-->  							<!--begin: Form Wizard Step 4-->
+								<div class="m-wizard__form-step" id="m_wizard_form_step_4">
+									<div class="row">
+										<div class="col-xl-10 offset-xl-1">
+									
+										<div class="form-group m-form__group m-form__group--sm row">
+												<div class="col-xl-12">
+													<div class="m-checkbox-inline">
+														<label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+															<input type="checkbox" name="accept" value="1">
+															Click here to indicate that you have read and agree to the terms presented in the Terms and Conditions agreement
+															<span></span>
+														</label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--end: Form Wizard Step 4-->
+							</div>
+							<!--end: Form Body -->    						<!--begin: Form Actions -->
+							<div class="m-portlet__foot m-portlet__foot--fit m--margin-top-40">
+								<div class="m-form__actions m-form__actions">
+									<div class="row">
+										<div class="col-lg-1"></div>
+										<div class="col-lg-4 m--align-left">
+											<a href="#" class="btn btn-secondary m-btn m-btn--custom m-btn--icon" data-wizard-action="prev">
+												<span>
+													<i class="la la-arrow-left"></i>
+													&nbsp;&nbsp;
+													<span>
+														Back
+													</span>
+												</span>
+											</a>
+										</div>
+										<div class="col-lg-6 m--align-right">
+											<a href="#" class="btn btn-primary m-btn m-btn--custom m-btn--icon" data-wizard-action="submit">
+												<span>
+													<i class="la la-check"></i>
+													&nbsp;&nbsp;
+													<span>
+														Submit
+													</span>
+												</span>
+											</a>
+											<a href="#" class="btn btn-warning m-btn m-btn--custom m-btn--icon" data-wizard-action="next">
+												<span>
+													<span>
+														Save & Continue
+													</span>
+													&nbsp;&nbsp;
+													<i class="la la-arrow-right"></i>
+												</span>
+											</a>
+										</div>
+										<div class="col-lg-1"></div>
+									</div>
+								</div>
+							</div>
+							<!--end: Form Actions -->
+						</form>
+					</div>
+					<!--end: Form Wizard Form-->
+				</div>
+				<!--end: Form Wizard-->
+			</div>
+			<!--End::Main Portlet-->
+		</div>
+	
+	</div>
+

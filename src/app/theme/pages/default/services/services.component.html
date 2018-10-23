@@ -1,0 +1,935 @@
+<style>
+	.custom-fs-1 {
+  font-size: 1.2rem !important;
+}
+
+</style>
+<!-- Begin Sub Header -->
+<div class="m-subheader" appunwraptag="" [ngClass]="{'d-none': isHeaderShow}">
+		<!--  -->
+	<div class="d-flex align-items-center">
+		<div class="mr-auto">
+			<h3 class="m-subheader__title">
+				Services
+				
+				<small class="custom-small-header-setting">
+					<a (click)="adjustRadiusMap()" id="adjustRadius" style="cursor:pointer;">
+					 
+						 <i class="fa fa-map-marker text-muted stats-icons custom-margin-left-zero" tool-tip-toggle="tooltip-demo" data-original-title="Select search radius"></i>
+					
+					</a>
+				</small>
+
+
+				<!-- <small class="fa fa-search text-muted stats-icons custom-margin-left-zero" (click)="mainFilterHide == true? mainFilterHide=false : mainFilterHide=true">
+					<a style="cursor:pointer;">
+					</a>
+				</small> -->
+
+			</h3>
+
+			<!-- <input type="text" class="custom-main-filter custom-main-filter-focus" *ngIf="mainFilterHide">  -->
+			<div class="input-group mb-3" style="max-width: 50%;
+			margin-left: 15%;
+			position: absolute;
+			margin-top: -35px;">
+					<div class="input-group-prepend">
+						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
+						<div class="dropdown-menu">
+						<a class="dropdown-item" href="#">Personal</a>
+							<a class="dropdown-item" href="" style="    padding-left: 32px;
+							margin-top: -15px;">Hair</a>
+							<a class="dropdown-item" href="" style="    padding-left: 32px;
+							margin-top: -15px;">Health</a>
+						<hr style="    margin: 0;
+						border-top: 1px solid;
+						width: 83%;
+						margin-left: 15px;">
+						<a class="dropdown-item" href="#">Autos</a>
+							<a class="dropdown-item" href="" style="    padding-left: 32px;
+							margin-top: -15px;">Maintenance & Repair</a>
+					
+						</div>
+						<!-- <div class="dropdown" style="margin-left: 5px;">
+							<a class="btn btn-primary dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 0px;">
+								Sub-Category
+							</a>
+							
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item" href="#">Hair</a>
+								<a class="dropdown-item" href="#">Maintenance and Repair</a>
+							</div>
+						</div> -->
+					</div>
+					<input type="text" class="form-control" aria-label="Text input with dropdown button">
+					<div class="input-group-append">
+						<button class="btn btn-primary"><i class="fa fa-search"></i></button>
+					</div>
+			</div>
+								
+		</div>
+
+
+		<div style="padding-right:0px;">
+			<!--Start: List/Grid View-->
+
+			<!--   <span (click)="isDisplayDetail=false;">
+			   <button class="btn btn-link pull-right" (click)="changeView()">
+				<i class="fa" [ngClass]="{'fa-list' :   isListViewHide, 'fa-th' :isGridViewHide }"></i> {{viewName}} </button>
+			   </span> -->
+				
+
+			<!--End: List/Grid View-->
+
+				<button class="btn btn-link  pull-right" (click)="mapViewChanging()" [hidden]="isDisplayDetail">
+						<i class="fa fa-map-marker" style="padding-right: 2px;
+						margin-top: -1px;"></i>Map View</button>
+				
+		</div>
+	</div>
+</div>
+
+<!-- *ngIf="isDisplayDetail" -->
+<div class="m-subheader breadcrumb-header m--padding-top-5" *ngIf="isBreadCrum">
+	<ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+		<li class="m-nav__item m-nav__item--home">
+			<a class="m-nav__link m-nav__link--icon" routerLink="/index" ng-reflect-href="#">
+				<i class="m-nav__link-icon la la-home"></i>
+			</a>
+		</li>
+		<li class="m-nav__separator">
+			-
+		</li>
+
+		<li class="m-nav__item">
+			<a class="m-nav__link" routerLink="/services">
+				<span class="m-nav__link-text" style=" font-size: 11px;">
+					Services
+				</span>
+			</a>
+		</li>
+		<li class="m-nav__separator">
+				-
+			</li>
+	
+			<li class="m-nav__item" *ngIf="mapView">
+				<a class="m-nav__link" routerLink="/services">
+					<span class="m-nav__link-text" style=" font-size: 11px;">
+						Map View
+					</span>
+				</a>
+			</li>
+
+		<!--	<li class="m-nav__item"  [hidden]="isListViewHide">
+				<a class="m-nav__link" routerLink="/services">
+					<span class="m-nav__link-text" style=" font-size: 11px;">
+						List View
+					</span>
+				</a>
+			</li>
+
+			<li class="m-nav__item" [hidden]="isGridViewHide">
+				<a class="m-nav__link" routerLink="/services">
+					<span class="m-nav__link-text" style=" font-size: 11px;">
+						Grid View
+					</span>
+				</a>
+			</li> -->
+	</ul>
+</div>
+
+<hr class="customhr" *ngIf="isBreadCrum" />
+<!-- END: Subheader -->
+
+
+<!--Begin:List Grid View Section :: Comment 1 location-->
+
+
+
+<!-- End: List Grid View Section :: Comment 1 location -->
+
+
+<!-- Begin: Map Modal Start :: Comment 2 Location-->
+
+<!-- Map Modal End :: Comment 2 Location -->
+
+
+<!-- More Detail Content start -->
+<div class="m-content" style="margin-top: 30px;">
+	<!--Begin::Section-->
+	<div class="row detailSection" *ngIf="moreDetailShow">
+		<div class="col-md-12">
+			<div class="m-portlet" style=" margin-left: -30px; margin-right: -30px;	margin-top: -50px;">
+			<!--Start: Comment Location 3-->
+
+			<!--End: Comment Location 3-->
+			</div>
+
+		</div>
+
+
+	</div>
+</div>
+<!-- More Detail Content End -->
+
+
+<!-- Map Detail Content Start -->
+<div class="m-content">
+	<!--Begin::Section-->
+	<div class="row detailSection" *ngIf="mapView">
+		<div class="col-md-12">
+			<div class="m-portlet" style="margin-left: -30px; margin-right: -30px; margin-top: -80px; margin-bottom: -32px;">
+				<div class="m-portlet__body">
+					<div class="row">
+
+					<!--Start: Comment Location 4-->
+
+
+					<!--End: Comment Location 4-->
+
+						<div class="col-sm-12" style="padding-right: 0px">
+								<div class="row">
+									<!-- All Service show Here -->
+									<div class="col-sm-3" style="padding: 0px; overflow-y: scroll; height: 47rem;">
+										
+												 <form style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
+														<div class="input-group mb-3">
+																<input type="text" class="form-control" placeholder="Search Service" style="border-radius: 15px;" >
+																<div class="input-group-append custom-pointer">
+																  <!-- <span class="input-group-text">
+																	<i class="fa fa-search">
+
+																  </i></span> -->
+																  <!-- <button type="submit" class="custom-pointer custom-border-map-button" style="border: none;
+																  background: transparent;">
+																		<i class="fa fa-search"></i>
+																  </button> -->
+																</div>
+															  </div>
+												 </form>
+											<div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
+											<div class="m--padding-10 m--margin-top-10" *ngFor="let company of company_and_locations; let i = index;">
+												<!-- First Card Start -->
+												<h5>
+													{{company.name}}
+													<!--Comment Location 7-->
+													<!--Comment Location 7-->
+												</h5>
+												<!--<p class="custom-margin-bottom-zero">-->
+													<!--{{company.id}}-->
+												<!--</p>-->
+												<!--<p class="custom-margin-bottom-zero">-->
+													<!--{{company.email}}-->
+												<!--</p>-->
+													<br/>
+													<div class="m--padding-15" *ngFor="let location of company.locations; let indexLocation = index;"
+														 [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'">
+														<h6>{{location.name | uppercase}}</h6>
+														<p class="custom-margin-bottom-zero">
+															{{location.address}}
+														</p>
+
+														<button class="btn btn-sm btn-link btnLinkColor custom-fs-1"
+																(click)="sideInfoPop('service', company, indexLocation, i)" title="Click to view Company Services">
+															<i class="fa fa-cogs custom-fs-1" ></i>
+															Services
+														</button>
+
+													</div>
+
+												 <hr>
+												<!-- First Card End -->
+											<!--Start: Comment Location 5-->
+
+
+											<!--ENd: Comment Location 5-->
+											</div>
+									</div>
+									<!-- All Services End Here -->
+									
+									<!-- Map Start Here -->
+									<div class="col-sm-9" style="padding-right: 0px">
+										<agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10" >
+											<agm-marker [latitude]="latitude" [longitude]="longitude" [iconUrl]="icon">
+												<agm-info-window>
+													You are here
+													<!--<br>-->
+													<!--<strong>Subcategory</strong>: Seafood-->
+													<!--<br>-->
+													<!--<strong>Name</strong>: Mississaga Sea Restaraunt-->
+													<!--<br>-->
+													<!--<strong>Contact</strong>: 019182010-->
+												</agm-info-window>
+											</agm-marker>
+											<agm-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude" >
+												<agm-info-window [disableAutoPan]="true">
+													<!--<a routerLink="/">Go there</a>-->
+													<strong> Location Name  </strong>
+												</agm-info-window>
+											</agm-marker>
+											<agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="radiusInMeters" [fillColor]="'lightgreen'"
+														[circleDraggable]="true" [editable]="true">
+											</agm-circle>
+
+										</agm-map>
+									</div>
+									<!-- Map End Here -->
+
+									<!-- side Services info popup start -->
+									<div style="position: absolute;	margin-left: 27%; background-color: white;
+												width: 35%;
+												height: 98%;
+												margin-top: 5px;" *ngIf="showServices">
+											<div class="container" style="padding: 10px">
+													<h4>
+															{{current_company_location.locations[selectedIndex].name}}
+															<span class="custom-float-right custom-pointer" (click)="showServices=false;">
+																<i class="fa fa-times"></i>
+															</span>
+
+														</h4>
+														<p class="custom-margin-bottom-zero">
+															<span class="checked"> 4.0 </span>
+															<span class="fa fa-star checked"></span>
+															<span class="fa fa-star checked"></span>
+															<span class="fa fa-star checked"></span>
+															<span class="fa fa-star checked"></span>
+															<span class="fa fa-star"></span>
+															(7)
+															
+															One Room With Bath
+														</p>
+														<p class="custom-margin-bottom-zero">
+															<strong>
+																Address: 
+															</strong>{{current_company_location.locations[selectedIndex].address}}
+														</p>
+														<p class="custom-margin-bottom-zero">
+															<strong>
+																Phone:
+															</strong>+1 416-488-5254
+														</p>
+														<p class="custom-margin-bottom-zero">
+															<strong>
+																Hours:
+															</strong>
+															<span style="color:red">Close</span>
+															<span> 6:00 </span>
+															<span> - </span>
+															<span>Open</span>
+															<span> 23:00 </span> 
+														</p>
+
+													 <br>
+													 
+													<h5 style="font-weight: 600;
+													font-size: 15px;">
+														Services
+													</h5>
+
+													<div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderServices"></div>
+													<div style="overflow-x:auto " *ngIf=" services.length > 0;">
+													<p class="custom-margin-bottom-zero"  *ngFor="let service of services;">
+														<span class="custom-width">
+															<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
+															height: 12px;">
+																<input type="checkbox" value="true" (change)="showBookButtonMap($event)">
+																<span></span>
+															</label>
+														</span>
+														<span class="custom-hover-change-color custom-pointer">
+															<span data-toggle="modal" data-target="#infoModal" (click)="selectService(i)">
+																{{service.service_name}}
+															</span>
+															
+														</span>
+														<span class="custom-float-right m--font-success">
+															{{service.price}}
+														</span>
+													</p>
+												</div>
+												<ng-template #noServicesFound [ngIf]="services.length == 0 && !preloaderServices">
+													<p>No services found for this location.</p>
+												</ng-template>
+
+													<hr style="margin: 5px;">
+
+													<div class="row">
+															<div class="col-md-12" style="margin-top: 10px;
+															text-align: right;">
+															<a (click)="visibleSidebar2 = true; postServicesCart()" class="btn btn-sm btn-primary custom-margin-right-book-button" 
+															[ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Book</a>
+															</div>
+													</div>
+											</div>
+									</div>
+									<!-- side-info popup end -->
+
+									<!--Start: Comment Location 6-->
+								
+									<!--End: Comment Location 6-->
+									
+									<!--Start: Comment Location 9-->
+									
+									
+									<!--End: Comment Location 9-->
+
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Map Detail content End -->
+
+<!-- Right side bar Modal  Start-->
+<p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000" >
+	<div>
+		
+		<ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" id="m_quick_sidebar_tabs" role="tablist">
+			<li class="nav-item m-tabs__item">
+				<a class="nav-link m-tabs__link active show custom-font-size" data-toggle="tab" href="" 
+				 aria-selected="true" [ngClass]="{ 'active' : activeItemTab}" (click)="activeTab('items')" >
+					Items-List
+				</a>
+			</li>
+
+			<li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
+				<a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('schedule')"  [ngClass]="{ 'active' : activeScheduleTab}" >
+					Schedule
+				</a>
+			</li>
+
+			<li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
+				<a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('payment')"  [ngClass]="{ 'active' : activePaymentTab}" >
+					Payment
+				</a>
+			</li>
+			
+			<li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
+				<a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href="" ng-reflect-href="#m_tabs_5_3" aria-selected="false" (click)="activeTab('more')" [ngClass]="{ 'active' : activeMoreTab}">
+					Confirmation
+				</a>
+			</li> 
+		</ul> 
+
+
+		<div class="tab-content">
+
+			<!-- Items Tab Start Here -->
+			<div class="tab-pane active show" id="m_tabs_5_1" role="tabpanel"  [ngClass]="{ 'active' : activeItemTab, 
+			'show':  activeItemTab }">
+
+				<p><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
+				
+			   <div class="custom-card-shadow">
+				<h4 style="color:#716aca">Handy Autos
+					<br class="add-line-break">
+	
+					 <span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
+	
+					 <label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
+						<input type="checkbox" (click)="showProceedButton1($event)">
+						<span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal"></span>
+						<span class="custom-check-box-setting " [hidden]="hideTermsModal"></span>
+					</label>
+	
+				</h4>
+	
+				   <table class="table table-hover">
+						<thead>
+						  <tr>
+						    <th scope="col" class="text-center"></th>
+							<th scope="col"  class="col-md-6">Items</th>
+							<th scope="col" >Price</th>
+							
+						  </tr>
+						</thead>
+						<tbody>
+						  <tr *ngFor="let item of itemsArray; let i= index">
+							<ng-container *ngIf="deleted">
+							<td class="text-center custom-pointer">
+								<a (click)="onDelete(i)">
+									<i class="fa fa-trash" style="color: #f5516c;"></i>
+								</a>
+							</td>
+							<th scope="row" >{{item.name}}</th>
+							<td >${{item.price}}</td>
+							
+						   </ng-container>
+						  </tr>
+						</tbody>
+					</table>
+
+					  <hr class="custom-hr-style">
+
+					  <p class="custom-first-paragraph"> 
+						<input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon1check">
+
+					<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = false" *ngIf="coupon1check">Apply</button> 
+					
+					<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = true" *ngIf="!coupon1check" style="margin-top: 20px;">Coupon</button>
+						 <span class="text-muted" style="margin-right: 32px;"> Sub Total</span>
+						 <span class="text-muted" style="margin-right: 8px;"> : $72.00</span>
+					  </p>
+	
+						<p class="custom-p2-setting" style="margin-bottom: 20px;">
+						
+								<span class="text-muted" style="margin-right: 3px;">Discount(40%)</span>
+								<span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $40</span>
+				  
+					  </p>
+
+					  <p style="    text-align: right;
+					  font-weight: 500;
+					  margin-top: -15px;">
+
+					  <span class="text-muted" style="margin-right: 34px;"> Tax(10%) </span>
+					  <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $10</span>
+						
+							
+					  
+					   </p>
+
+
+					  <p style="text-align: right; font-weight: bold;">
+						<span style=" margin-right: 4.4rem;" > Total</span>
+						<span class="custom-theme-default" style="margin-right:12px;"> : $47.7</span>
+					  </p>
+
+					  <div class="col text-right">
+							<button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
+								(click)="activeTab('schedule')">Proceed</button>
+						</div>
+			   </div>
+
+				
+	<!--Start: Comment Location 10-->
+	<!--End: Comment Location 10-->
+					
+			</div>
+			<!-- Items Tab End Here -->
+
+			<!-- Payment Tab Start Here -->
+			<div class="tab-pane" [ngClass]="{ 'active' : activePaymentTab, 
+			'show':  activePaymentTab }"
+				id="m_tabs_5_2" role="tabpanel">
+				<div class="row">
+					<div class="col-md-6">
+						<button class="btn btn-link pull-left custom-padding-left-top-zero" (click)="addNewPaymentCardHide = false" *ngIf="addNewPaymentCardHide">
+							<i class="fa fa-angle-left m--padding-right-5" style=" padding-bottom: 3px;"></i>BACK
+						</button>
+
+					</div>
+					<div class="col-md-6">
+						<button class="btn btn-link pull-right" style="padding-top:0px;" (click)="addNewPaymentCardHide = true">
+							<i class="fa fa-plus"></i> Add new Card
+						</button>
+					</div>
+				</div>
+
+
+				<!-- Payment Cards -->
+				<div class="m-demo__preview" *ngIf="!addNewPaymentCardHide">
+					<div class="m-stack m-stack--hor m-stack--general m-stack--demo" style="height: 400px">
+						<div class="m-stack__item">
+							<div class="m-stack__demo-item custom-card-design custom-h-class" (click)="paymentCheckTickHide = true">
+								<div class="row">
+									<div class="col-md-8">
+										<img src="./assets/demo/demo3/media/img/americanexpress.png">
+										<span class="m--padding-left-15">American Express</span>
+									</div>
+									<div class="col-md-4 custom-color m--padding-top-15">
+										<i class="fa fa-check" *ngIf="paymentCheckTickHide"></i>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12" style="text-align: right;">
+										<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
+										<span class="custom-card-owner-setting">
+											Niaz Khan Card
+										</span>
+
+									</div>
+								</div>
+
+							</div>
+
+
+
+						</div>
+						<div class="m-stack__item">
+							<div class="m-stack__demo-item custom-card-design custom-h-class">
+								<div class="row">
+									<div class="col-md-8">
+										<img src="./assets/demo/demo3/media/img/mastercard.png">
+										<span class="m--padding-left-15">Master-Card</span>
+									</div>
+									<div class="col-md-4" style="text-align: right;">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12" style="text-align: right;">
+										<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
+										<span class="custom-card-owner-setting">
+											Niaz Khan Card
+										</span>
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="m-stack__item">
+							<div class="m-stack__demo-item custom-card-design custom-h-class">
+								<div class="row">
+									<div class="col-md-8">
+										<img src="./assets/demo/demo3/media/img/paypal.png">
+										<span class="m--padding-left-15">Paypal</span>
+									</div>
+									<div class="col-md-4" style="text-align: right;">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12" style="text-align: right;">
+										<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men2.jpg">
+										<span class="custom-card-owner-setting">
+											Sharjeel khan Card
+										</span>
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="m-stack__item">
+							<div class="m-stack__demo-item custom-card-design custom-h-class">
+								<div class="row">
+									<div class="col-md-8">
+										<img src="./assets/demo/demo3/media/img/visa.png">
+										<span class="m--padding-left-15">Visa</span>
+									</div>
+									<div class="col-md-4" style="text-align: right;">
+
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12" style="text-align: right;">
+										<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
+										<span class="custom-card-owner-setting">
+											Niaz Khan Card
+										</span>
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('more')">Proceed</button>
+
+				</div>
+
+				<!-- Add new Payment Methonds -->
+				<form *ngIf="addNewPaymentCardHide">
+					<div class="form-group m-form__group">
+						<label>
+							<span>
+								Card Number
+							</span>
+						</label>
+						<input class="form-control m-input m-input--square" placeholder="Enter Card Number" type="text">
+					</div>
+					<div class="form-group m-form__group">
+						<label>
+							Start Date
+						</label>
+						<input class="form-control m-input m-input--square" placeholder="Enter Start Date" type="date">
+					</div>
+					<div class="form-group m-form__group">
+						<label>
+							Expire Date
+						</label>
+						<input class="form-control m-input m-input--square" placeholder="Enter Expire Date" type="date">
+					</div>
+					<div class="form-group m-form__group">
+						<label>
+							CVV
+						</label>
+						<input class="form-control m-input m-input--square" placeholder="Enter Expire Date" type="date">
+					</div>
+					<button class="btn btn-primary custom-float-right ">Submit</button>
+				</form>
+
+			</div>
+			<!-- Payment Tab End Here -->
+
+			<!-- Conformation Tab Start Here -->
+			<div class="tab-pane" id="m_tabs_5_3" role="tabpanel" [ngClass]="{ 'active' : activeMoreTab, 
+			'show':  activeMoreTab }">
+
+				<div class="col" *ngIf="!orderNowCheck">
+						<h4>Confirmation</h4>
+
+						<div class="custom-card-shadow">
+							<h4 style="color:#716aca">Handy Autos
+								<br class="add-line-break">
+							</h4>
+				
+							<table class="table table-hover">
+									<thead>
+									  <tr>
+										
+										<th scope="col"  class="col-md-6">Items</th>
+										<th scope="col" >Price</th>
+										
+									  </tr>
+									</thead>
+									<tbody>
+									  <tr *ngFor="let item of itemsArray; let i= index">
+										<th scope="row" >{{item.name}}</th>
+										<td >${{item.price}}</td>
+									  </tr>
+									</tbody>
+							</table>
+
+							<hr class="custom-hr-style">
+
+							<p class="text-right" style="font-weight:bold;">
+						 		<span> Total Price : </span>
+						 		<span class="custom-theme-default" style="margin-right: 8px;"> $72.00</span>	
+							</p>
+
+
+						</div>
+
+
+						<p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
+		
+						<button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true">Order Now</button>
+						<button class="btn btn-danger custom-float-right" (click)="visibleSidebar2 = false" style="    margin-right: 5px;">Cancel</button>
+	
+				</div>
+
+				<div class="col text-center" *ngIf="orderNowCheck">
+						<h4>Congratulations</h4>
+						<div class="text-center">
+							<img src="./assets/demo/demo3/media/img/confetti.png" class="rounded" alt="..." style="width:15%;">
+						  </div>
+						<p>Your Order Has Been Successfully Placed</p>
+		
+						<button class="btn btn-primary" (click)="thanksUpdate()" >Return</button>
+				</div>
+
+			</div>
+			<!-- Conformation Tab end Here -->
+
+			<!-- schedule Tab Start Here -->
+			<div class="tab-pane" id="m_tabs_5_4 " role="tabpanel"  [ngClass]="{ 'active' : activeScheduleTab, 
+			'show':  activeScheduleTab }">
+				
+				<form>
+					<div class="form-group">
+						<label for="sel1" style="font-weight: bold;">Select Employee</label>
+						<select class="form-control" id="sel1">
+							<option>No Preferences </option>
+							<option>John Smith </option>
+							<option>David Luiz</option>
+						</select>
+					</div>
+
+					<!-- <div class="row">
+							<div class="col">
+								<h5>
+									Company Timings
+								</h5>
+								<table class="table table-hover table-sm ">
+										<thead>
+										  <tr>
+											<th scope="col">Days</th>
+											<th scope="col">Start Time</th>
+											<th scope="col">Close Time</th>
+										  </tr>
+										</thead>
+										<tbody> 
+										  <tr class="custom-pointer custom-hover-change-color">
+											<td>Monday</td>
+											<td>9 am</td>
+											<td>6 pm</td>
+										  </tr>
+										  <tr class="custom-pointer custom-hover-change-color">
+											<td>Monday</td>
+											<td>9 am</td>
+											<td>6 pm</td>
+											</tr>
+										   <tr class="custom-pointer custom-hover-change-color">
+											<td>Tuesday</td>
+											<td>9 am</td>
+											<td>6 pm</td>
+										   </tr>
+											<tr class="custom-pointer custom-hover-change-color">
+												<td>Wednesday</td>
+												<td>9 am</td>
+												<td>6 pm</td>
+											</tr>
+											<tr class="custom-pointer custom-hover-change-color">
+												<td>Thursday</td>
+												<td>9 am</td>
+												<td>6 pm</td>
+											</tr>
+											<tr class="custom-pointer custom-hover-change-color">
+												<td>Friday</td>
+												<td>9 am</td>
+												<td>4 pm</td>
+											</tr>
+											<tr class="custom-pointer custom-hover-change-color">
+													<td>Saturaday</td>
+													<td class="m--font-danger">close</td>
+													
+												</tr>
+												<tr class="custom-pointer custom-hover-change-color">
+														<td>Sunday</td>
+														<td class="m--font-danger">close</td>
+														
+													</tr>
+										</tbody>
+									  </table>
+							</div>
+					</div> -->
+
+					<div class="form-group m-form__group">
+                        <label>
+                           <strong>Select Date</strong>    
+                        </label>
+                        <br>
+                        <div>
+                            <div class="input-group date">
+                                <input class="form-control m-input " id="m_datepicker_2_validate" placeholder="Select Date" readonly="" type="text">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="la la-calendar-check-o glyphicon-th"></i>
+                                    </span> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group">
+                        <label>
+                           <strong> Select Time Slot </strong>
+                        </label>
+                        <br>
+                        <div>
+                            <div class="input-group date">
+                                <input class="form-control m-input timepicker" id="m_timepicker_2_validate" placeholder="Select Time " readonly="" type="text">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="la la-calendar-check-o glyphicon-th"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</form>
+
+				
+
+				<div class="col text-right">
+						<button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
+							(click)="activeTab('payment')">Proceed</button>
+				</div>
+
+			</div>
+			<!-- schedule Tab Start Here -->
+
+		</div>
+	</div>
+</p-sidebar>
+<!-- Right side bar Modal  End-->
+
+
+<!-- Terms and Condition Modal Start -->
+<div aria-labelledby="exampleModalLabel" class="modal fade custom-terms-main-div" id="m_modal_terms" role="dialog" tabindex="-1"
+ aria-hidden="true">
+	<div class="modal-dialog" role="document" style="margin-left: 25%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">
+					Terms and Condition
+				</h5>
+				<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+					<span aria-hidden="true">
+						×
+					</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="m-scrollable m-scroller ps cutom-terms-modal-body" data-height="200" data-scrollable="true" data-scrollbar-shown="true">
+					<p>
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+						text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+						It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+						with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+					</p>
+					<p>
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+						text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+						It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+						with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+					</p>
+					<p>
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+						text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+						It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+						with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+					</p>
+					<div class="ps__rail-x custom-rail-x">
+						<div class="ps__thumb-x custom-thumb-x" tabindex="0"></div>
+					</div>
+					<div class="ps__rail-y custom-rail-y">
+						<div class="ps__thumb-y custom-thumb-y" tabindex="0"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<!-- <button class="btn btn-secondary" data-dismiss="modal" type="button">
+					Close
+				</button> -->
+				<button class="btn btn-primary"  data-dismiss="modal" type="button">
+					OK
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Terms and Condition Modal End -->
+  
+  <!-- Info Modal Start Here -->
+  <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+	<div class="modal-dialog" role="document" >
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Service Information</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  <h4>{{currentService.name}}</h4>
+		  <h6>{{currentService.details}} <span class="custom-float-right m--font-success">{{priceInfoTitle}}</span></h6>
+		  <p>{{currentService.price}}</p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+		  <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+		</div>
+	  </div>
+	</div>
+  </div>
+	<!-- Info Modal End Here-->
+	

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://bl.ocks.org/anonymoussc/3ab4d42c9ef6a79fffd4 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=1000">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@mbostock">
+<meta property="og:url" content="https://bl.ocks.org/anonymoussc/3ab4d42c9ef6a79fffd4">
+<meta property="og:title" content="AngularJS ngIf with CSS Animation and fallback for JavaScript animation">
+<meta property="og:description" content="anonymoussc’s Block 3ab4d42c9ef6a79fffd4">
+<title>AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org</title>
+<link rel="icon" href="https://bl.ocks.org/favicon.png">
+<link rel="canonical" href="https://bl.ocks.org/anonymoussc/3ab4d42c9ef6a79fffd4">
+<style>
+
+@import url("/style.css");
+
+</style>
+
+
+</head><body cz-shortcut-listen="true"><header>
+  <div class="column">
+    <div class="navigation">
+      <a href="https://bl.ocks.org/">Popular</a>
+      / <a href="https://bl.ocks.org/-/about">About</a>
+    </div>
+    <a class="user" href="https://bl.ocks.org/anonymoussc"><img class="avatar" src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/9535227" width="30" height="30">anonymoussc</a>’s
+    Block <a class="gist gist-id self" title="View Gist on GitHub." href="https://gist.github.com/anonymoussc/3ab4d42c9ef6a79fffd4">3ab4d42c9ef6a79fffd4</a>    <div class="date">Updated August 29, 2015</div>
+  </div>
+</header>
+
+<div class="column">
+  <h1>AngularJS ngIf with CSS Animation and fallback for JavaScript animation</h1>
+  <div class="index">
+    <iframe sandbox="allow-popups allow-scripts allow-forms allow-same-origin" src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/saved_resource.html" marginwidth="0" marginheight="0" style="height:500px;" scrolling="no" __idm_frm__="1412"></iframe>
+  </div>
+  <div class="index-pop">
+    <a target="_blank" title="Open Block 3ab4d42c9ef6a79fffd4 a new window." href="https://bl.ocks.org/anonymoussc/raw/3ab4d42c9ef6a79fffd4">Open<svg height="16" width="12"><path d="M11 10h1v3c0 0.55-0.45 1-1 1H1c-0.55 0-1-0.45-1-1V3c0-0.55 0.45-1 1-1h3v1H1v10h10V10zM6 2l2.25 2.25-3.25 3.25 1.5 1.5 3.25-3.25 2.25 2.25V2H6z"></path></svg></a>
+  </div>
+  <div class="gist-readme" data-key="README.md"><p>##AngularJS ngIf with CSS Animation and fallback for JavaScript animation</p></div>
+  <div class="gist-sources">
+    <div class="gist-source" data-key="index.html">
+      <h2>index.html<a name="index.html" class="anchor" href="https://bl.ocks.org/anonymoussc/3ab4d42c9ef6a79fffd4#index.html">#</a></h2>
+      <pre><code class="html hljs xml"><span class="meta">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;<span class="name">html</span> <span class="attr">ng-app</span>=<span class="string">"myApp"</span>&gt;</span>
+
+<span class="tag">&lt;<span class="name">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">title</span>&gt;</span>AngularJS ngIf with CSS Animation and fallback for JavaScript animation<span class="tag">&lt;/<span class="name">title</span>&gt;</span>
+<span class="tag">&lt;/<span class="name">head</span>&gt;</span>
+
+<span class="tag">&lt;<span class="name">body</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css">
+        <span class="comment">/* ngIf animation */</span>
+        <span class="selector-class">.ifJsAnimation</span><span class="selector-class">.ng-enter</span>,
+        <span class="selector-class">.ifJsAnimation</span><span class="selector-class">.ng-leave</span> {
+            <span class="attribute">-webkit-transition </span>: opacity ease-in-out <span class="number">1s</span>;
+            <span class="attribute">-moz-transition    </span>: opacity ease-in-out <span class="number">1s</span>;
+            <span class="attribute">-ms-transition     </span>: opacity ease-in-out <span class="number">1s</span>;
+            <span class="attribute">-o-transition      </span>: opacity ease-in-out <span class="number">1s</span>;
+            <span class="attribute">transition         </span>: opacity ease-in-out <span class="number">1s</span>;
+        }
+
+        <span class="selector-class">.ifJsAnimation</span><span class="selector-class">.ng-enter</span>,
+        <span class="selector-class">.ifJsAnimation</span><span class="selector-class">.ng-leave</span><span class="selector-class">.ng-leave-active</span> {
+            <span class="attribute">opacity </span>: <span class="number">0</span>;
+        }
+
+        <span class="selector-class">.ifJsAnimation</span><span class="selector-class">.ng-leave</span>,
+        <span class="selector-class">.ifJsAnimation</span><span class="selector-class">.ng-enter</span><span class="selector-class">.ng-enter-active</span> {
+            <span class="attribute">opacity </span>: <span class="number">1</span>;
+        }
+    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">div</span>&gt;</span>
+        <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"toggleNgIf = !toggleNgIf"</span>&gt;</span>Display/Remove the div below<span class="tag">&lt;/<span class="name">button</span>&gt;</span>
+        <span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-if</span>=<span class="string">"toggleNgIf"</span> <span class="attr">class</span>=<span class="string">"ifJsAnimation"</span>&gt;</span>
+            This is a div element with ng-if="toggleNgIf"
+        <span class="tag">&lt;/<span class="name">div</span>&gt;</span>
+    <span class="tag">&lt;/<span class="name">div</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-animate.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"script.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="name">body</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="name">html</span>&gt;</span>
+</code></pre>
+    </div>
+    <div class="gist-source" data-key="script.js">
+      <h2>script.js<a name="script.js" class="anchor" href="https://bl.ocks.org/anonymoussc/3ab4d42c9ef6a79fffd4#script.js">#</a></h2>
+      <pre><code class="javascript hljs"><span class="comment">/**
+ * @name ifJsAnimation
+ * @desc The ngIf sample animation function
+ */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">ifJsAnimation</span>(<span class="params"></span>) </span>{
+    <span class="function"><span class="keyword">function</span> <span class="title">animateOpacity</span>(<span class="params">element, done, opacity</span>) </span>{
+        jQuery(element).animate({
+            <span class="attr">opacity</span> : opacity
+        }, <span class="number">1000</span>, done);
+    }
+
+    <span class="comment">/**
+     * @name enterAnimation
+     * @desc The enter animation function called when an element enters DOM
+     * @param element - The element that is entering DOM
+     * @param done - Callback function, it must be called to finish the animation
+     */</span>
+    <span class="keyword">var</span> enterAnimation = <span class="function"><span class="keyword">function</span> (<span class="params">element, done</span>) </span>{
+
+        <span class="keyword">if</span> (!Modernizr.csstransitions) {
+            <span class="comment">//Animate the opacity</span>
+            jQuery(element).css({<span class="attr">opacity</span> : <span class="number">0</span>});
+            animateOpacity(element, done, <span class="number">1</span>);
+
+            <span class="comment">// Here is the optional return function that treats completed or cancelled animations</span>
+            <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">isCancelled</span>) </span>{
+                <span class="keyword">if</span> (isCancelled) {
+                    element.stop();
+                }
+            };
+        } <span class="keyword">else</span> {
+            done();
+        }
+    }
+
+    <span class="comment">/**
+     * @name leaveAnimation
+     * @desc The leave animation function called when an element leaves DOM
+     * @param element - The element that is leaving DOM
+     * @param done - Callback function, it must be called to finish the animation
+     */</span>
+    <span class="keyword">var</span> leaveAnimation = <span class="function"><span class="keyword">function</span> (<span class="params">element, done</span>) </span>{
+        <span class="keyword">if</span> (!Modernizr.csstransitions) {
+            animateOpacity(element, done, <span class="number">0</span>);
+
+            <span class="comment">// Here is the optional return function that treats completed or cancelled animations</span>
+            <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">isCancelled</span>) </span>{
+                <span class="keyword">if</span> (isCancelled) {
+                    element.stop();
+                }
+            };
+        }
+        <span class="keyword">else</span> {
+            done();
+        }
+    }
+
+    <span class="keyword">return</span> {
+        <span class="attr">enter</span> : enterAnimation,
+        <span class="attr">leave</span> : leaveAnimation
+    };
+
+}
+
+<span class="keyword">var</span> app = angular.module(<span class="string">'myApp'</span>, [<span class="string">'ngAnimate'</span>])
+    .animation(<span class="string">".ifJsAnimation"</span>, ifJsAnimation);</code></pre>
+    </div>
+    <div class="gist-source" data-key="style.css">
+      <h2>style.css<a name="style.css" class="anchor" href="https://bl.ocks.org/anonymoussc/3ab4d42c9ef6a79fffd4#style.css">#</a></h2>
+      <pre><code class="css hljs"><span class="comment">/* Styles go here */</span>
+</code></pre>
+    </div>
+  </div>
+  <div class="gist-license">
+    <h2>LICENSE<a name="license" class="anchor" href="https://bl.ocks.org/anonymoussc/3ab4d42c9ef6a79fffd4#license">#</a></h2>
+    This block appears to have <a target="_blank" href="http://choosealicense.com/no-license/">no license</a>. Please contact <a target="_blank" href="https://github.com/anonymoussc">the author</a> to request a license.
+  </div>
+</div>
+
+<script src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/d3-array.min.js.download" integrity="sha384-c+16cUIc0b/tqEZ9mRvDfI/r1Dg1Yq3JpWgZFW4mjN2QU7XXFWVB90PDFlV8SIAm" crossorigin="anonymous"></script>
+<script src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/d3-collection.min.js.download" integrity="sha384-H/Didu3qLpyrVmUqlvWapaxyhCzc+anaMa9uw+CHWHu+GNfClr91w8QgiLFIp7/V" crossorigin="anonymous"></script>
+<script src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/d3-dispatch.min.js.download" integrity="sha384-dGRK/lIqGrmmAoVA9K4pwKI4YL4BxIpaGa1dwU6lcRdpp5OJR6FoMZqxqzvCzFBS" crossorigin="anonymous"></script>
+<script src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/d3-request.min.js.download" integrity="sha384-xsZEl8WRzIEBs+gkv/88ttcv7hmGnFJX8t8k6V+fZcrG2y5o1SXsCRLzl2S9HkFU" crossorigin="anonymous"></script>
+<script src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/d3-selection.min.js.download" integrity="sha384-AOxWgfcHKw/K6u7UX8IJ4vy418+zXnA6wB6P4/sobPFG0mM34UlLPHELGvI+aEX5" crossorigin="anonymous"></script>
+<script src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/showdown.min.js.download" integrity="sha384-Mcx6WhltjdlkIwTWetAJIBNgD0lLtUcl//A7Ksp/vmVZVD2rzQ949wtmoehrDJd/" crossorigin="anonymous"></script>
+<script src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/highlight.min.js.download" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+<script>
+
+hljs.configure({classPrefix: ""});
+showdown.setFlavor("github");
+
+var gist = {"public":true,"protocol":"https","sha":"2f6af41828d7b451caccb73e4d969bb9ba89d323","files":{"README.md":{"language":"Markdown","type":"text/plain","filename":"README.md","size":74,"sha":"45d83e58758c8721ddc7897e998fba6a9a7df75e"},"index.html":{"language":"HTML","type":"text/html","filename":"index.html","size":1470,"sha":"ae614f9b3a905518282d403b97826e1644b9a42f"},"script.js":{"language":"JavaScript","type":"application/javascript","filename":"script.js","size":1923,"sha":"c81b29d5c8e0d838540a805c3f57070c0f4f0bdf"},"style.css":{"language":"CSS","type":"text/css","filename":"style.css","size":21,"sha":"87b608921401caafa93e47bc215269ab6db92cff"}},"created_at":"2015-08-07T09:55:55Z","updated_at":"2015-08-29T14:26:49Z","description":"AngularJS ngIf with CSS Animation and fallback for JavaScript animation","owner":{"login":"anonymoussc"},"id":"3ab4d42c9ef6a79fffd4"};
+
+var files = d3.values(gist.files);
+
+d3.select(".gist-readme")
+  .data(files, function(d) { return d ? d.filename : this.getAttribute("data-key"); })
+    .each(function(d) {
+      var readme = d3.select(this);
+      d3.text("/anonymoussc/raw/3ab4d42c9ef6a79fffd4/2f6af41828d7b451caccb73e4d969bb9ba89d323/" + d.filename, function(error, content) {
+        if (error) content = "Sorry, an error occurred.";
+        readme.html(new showdown.Converter().makeHtml(content));
+        readme.selectAll("code").each(function() { hljs.highlightBlock(this); });
+      });
+    });
+
+d3.selectAll(".gist-source")
+  .data(files, function(d) { return d ? d.filename : this.getAttribute("data-key"); })
+  .select("code")
+    .attr("class", function(d) { return d.language && (d.language === "JSON" ? "javascript" : d.language.toLowerCase()); })
+    .each(function(d) {
+      var code = d3.select(this);
+      d3.text("/anonymoussc/raw/3ab4d42c9ef6a79fffd4/2f6af41828d7b451caccb73e4d969bb9ba89d323/" + (d.filename === "index.html" ? "" : d.filename), function(error, content) {
+        if (error) content = "Sorry, an error occurred.";
+        code.text(content);
+        hljs.highlightBlock(code.node());
+      });
+    });
+
+</script>
+
+<script>
+
+GoogleAnalyticsObject = "ga", ga = function() { ga.q.push(arguments); }, ga.q = [], ga.l = +new Date;
+ga("create", "UA-48272912-1", "auto");
+ga("send", "pageview");
+
+</script>
+<script async="" src="./AngularJS ngIf with CSS Animation and fallback for JavaScript animation - bl.ocks.org_files/analytics.js.download"></script>
+</body></html>

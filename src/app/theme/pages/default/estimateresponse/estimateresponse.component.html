@@ -1,0 +1,2479 @@
+<!-- Start SubHeader -->
+<div class="m-subheader" appunwraptag="" [ngClass]="{'d-none':isDisplayDetail}">
+	<div class="d-flex align-items-center">
+		<div class="mr-auto">
+			<h3 class="m-subheader__title">
+				Estimated Response
+				<small class="fa fa-search text-muted stats-icons custom-margin-left-zero" (click)="mainFilterHide == true? mainFilterHide=false : mainFilterHide=true">
+					<a class="custom-cursor">
+					</a>
+				</small>
+			</h3>
+			<input type="text" class="custom-main-filter custom-main-filter-focus" *ngIf="mainFilterHide">
+		</div>
+
+		<div class="custom-padding-right-zero">
+			<button class="btn btn-link pull-right" (click)="formHidden=!formHidden; console.log(formHidden);">
+				
+					<a href="" class="m-nav__link" >
+							<i class="m-nav__link-icon fa fa-plus"></i>
+							<span class="m-nav__link-text">
+								Request Services
+							</span>
+						</a>
+					
+			</button>
+			<!-- <button class="btn btn-link pull-right" (click)="changeView()" [hidden]="!formHidden">
+				<i class="fa" [ngClass]="{'fa-list' : isListViewHide , 'fa-th' :isGridViewHide  }"></i> {{viewName}} </button> -->
+		</div>
+
+	<!--	<div>
+			<div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover"
+			 aria-expanded="true">
+				<a href="#" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--outline-2x m-btn--air m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
+					<i class="la la-plus m--hide"></i>
+					<i class="la la-ellipsis-h"></i>
+				</a>
+				<div class="m-dropdown__wrapper">
+					<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+					<div class="m-dropdown__inner">
+						<div class="m-dropdown__body">
+							<div class="m-dropdown__content">
+								<ul class="m-nav">
+									<li class="m-nav__section m-nav__section--first m--hide">
+										<span class="m-nav__section-text">
+											Quick Actions
+										</span>
+									</li>
+
+									<li class="m-nav__item">
+										<a href="" class="m-nav__link" (click)="formHidden=!formHidden">
+											<i class="m-nav__link-icon fa fa-plus"></i>
+											<span class="m-nav__link-text">
+												Request Services
+											</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>-->
+	</div>
+</div>
+
+ <div class="m-subheader breadcrumb-header m--padding-top-5"> <!--*ngIf="!isDisplayDetail" -->
+	<ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+		<li class="m-nav__item m-nav__item--home">
+			<a class="m-nav__link m-nav__link--icon" routerLink="/index" ng-reflect-href="#">
+				<i class="m-nav__link-icon la la-home"></i>
+			</a>
+		</li>
+		<li class="m-nav__separator">
+			-
+		</li>
+
+		<li class="m-nav__item">
+			<a class="m-nav__link" routerLink="/services">
+				<span class="m-nav__link-text" style=" font-size: 11px;">
+					Estimated Response
+				</span>
+			</a>
+		</li>
+	</ul>
+
+</div>
+
+<hr class="customhr" *ngIf="!isDisplayDetail" />
+<!-- END: Subheader -->
+
+<!-- start Content -->
+<div class="m-content" [hidden]="!formHidden">
+
+	<div class="row" [hidden]="isDisplayDetail">
+
+		<div class="col-xl-3 col-lg-4">
+			<div class="m-portlet m-portlet--full-height">
+				<div class="m-portlet__body">
+
+					<select class="form-control m-input">
+						<option>
+							All
+						</option>
+						<option>
+							Hair
+						</option>
+
+						<option>
+							Health
+						</option>
+						<option>
+							Shopping
+						</option>
+						<option>
+							Electronics
+						</option>
+						<option>
+							Cleaning
+						</option>
+					</select>
+
+					<br>
+
+					<label>
+						Sort By
+					</label>
+					<select class="form-control m-input">
+						<option>
+							Recommendations
+						</option>
+						<option>
+							Price Low To High
+						</option>
+
+						<option>
+							Price High To Low
+						</option>
+						<option>
+							Rating
+						</option>
+						<option>
+							Comments
+						</option>
+
+					</select>
+
+					<br>
+
+					<label>
+						Search by Business Name:
+					</label>
+					<input class="form-control" type="text">
+
+					<br>
+
+					<label>
+						Select The Date:
+					</label>
+					<input class="form-control" type="date">
+
+					<br>
+
+					<label>
+						Select The Time:
+					</label>
+					<select class="form-control m-input">
+						<option>Any Time</option>
+						<option>08-09AM</option>
+						<option>09-10AM</option>
+						<option>10-11AM</option>
+						<option>11-12PM</option>
+						<option>12-01PM</option>
+						<option>01-02PM</option>
+						<option>02-03PM</option>
+					</select>
+
+					<br>
+
+					<label>
+						Serach by Location
+					</label>
+					<input class="form-control" type="text">
+
+					<br>
+
+					<label>
+						Budget
+					</label>
+					<div class="m-radio-list">
+						<label class="m-radio">
+							<input name="example_1" type="radio"> Any
+							<span></span>
+						</label>
+						<label class="m-radio">
+							<input name="example_1" type="radio"> $0 - $30
+							<span></span>
+						</label>
+
+						<label class="m-radio">
+							<input name="example_1" type="radio"> $30 - $60
+							<span></span>
+						</label>
+
+
+						<label class="m-radio">
+							<input name="example_1" type="radio"> $60 - $120
+							<span></span>
+						</label>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+	<!--	<div class="col-xl-9 col-lg-8" [hidden]="isListViewHide">
+			<div class="m-portlet m-portlet--full-height">
+
+				<div class="m-portlet__body">
+					<!-- admin Code here -->
+				<!--	<div class="row">
+						<div class="col-md-12">
+							<div class="m-widget3">
+								<div class="m-widget3__item">
+									<div class="m-widget3__header">
+										<div class="m-widget3__user-img">
+											<img alt="" class="m-widget3__img personimage" src="./assets/demo/demo3/media/img/car.png" style="width: 2.8rem;">
+										</div>
+										<div class="m-widget3__info">
+											<span class="m-widget3__username">
+												Handy Autos
+											</span>
+
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-th"></i> Car
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-clock-o"></i> 6:00 - 23:00
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-money"></i> $60 - $200
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada
+											</span>
+
+										</div>
+										<span class="m-badge  m-badge--success m-badge--wide">Completed</span>
+									</div>
+									<div class="m-widget3__body">
+										<div class="row services-categories">
+											<div class="col-md-12 category-list">
+												<h6 class="service-heading">Maintenance &amp; Repair</h6>
+												<div class="row service-item">
+													<div class="col-md-6 col-sm-6">
+														Oil &amp; Oil Filter Change
+													</div>
+													<div class="col-md-3 col-sm-6 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$120.00
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+
+
+												<div class="row service-item">
+													<div class="col-md-6">
+														Spark Plugs Changing
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$60.00
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+
+												<div class="row service-item">
+													<div class="col-md-6">
+														Gearbox
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$500.00
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+												</div>
+												<div class="row service-item">
+													<div class="col-md-6">
+														Suspension
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$200.00
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="m-widget3__item">
+									<div class="m-widget3__header">
+										<div class="m-widget3__user-img">
+											<img alt="" class="m-widget3__img personimage" src="./assets/demo/demo3/media/img/hair.png">
+										</div>
+										<div class="m-widget3__info">
+											<span class="m-widget3__username">
+												Mont Hair
+											</span>
+
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-th"></i> Saloon
+											</span>
+											<br>
+
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-clock-o"></i> 6:00 - 23:00
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-money"></i> $100 - $200
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada
+											</span>
+
+										</div>
+										<span class="m-badge m-badge--danger m-badge--wide">Rejected</span>
+									</div>
+									<div class="m-widget3__body">
+										<div class="row services-categories">
+											<div class="col-md-12 category-list">
+												<h6 class="service-heading">Hair</h6>
+												<div class="row service-item">
+													<div class="col-md-6">
+														Hair Cutting
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$60.50
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+												<div class="row service-item">
+													<div class="col-md-6">
+														Fancy Cutting
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$100.00
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+												<div class="row service-item">
+													<div class="col-md-6">
+														Head Shaving
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$50
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="m-widget3__item">
+									<div class="m-widget3__header">
+										<div class="m-widget3__user-img">
+											<img alt="" class="m-widget3__img personimage" src="./assets/demo/demo3/media/img/doctor.jpg">
+										</div>
+										<div class="m-widget3__info">
+											<span class="m-widget3__username">
+												Jane Clinic
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-th"></i>Health
+											</span>
+											<br>
+
+
+
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-clock-o"></i> 6:00 - 23:00
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-money"></i> $60 - $200
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada
+											</span>
+
+										</div>
+										<span class="m-badge  m-badge--warning m-badge--wide" style="width: 100px;">In-Progress</span>
+									</div>
+									<div class="m-widget3__body">
+										<div class="row services-categories">
+											<div class="col-md-12 category-list">
+												<h6 class="service-heading">Checkup Services</h6>
+												<div class="row service-item">
+													<div class="col-md-6">
+														Fever
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$60.50
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+												<div class="row service-item">
+													<div class="col-md-6">
+														Dental
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$100.00
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+												<div class="row service-item">
+													<div class="col-md-6">
+														Overall Body
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$200
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="m-widget3__item">
+									<div class="m-widget3__header">
+										<div class="m-widget3__user-img">
+											<img alt="" class="m-widget3__img personimage" src="./assets/demo/demo3/media/img/broom.jpg">
+										</div>
+										<div class="m-widget3__info">
+											<span class="m-widget3__username">
+												Chris Shining
+											</span>
+
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-th"></i>Cleaning
+											</span>
+
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-clock-o"></i> 8:00 - 18:00
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-money"></i> $120 - $160
+											</span>
+											<br>
+											<span class="m-widget3__time personappartmentno">
+												<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada
+											</span>
+
+										</div>
+										<span class="m-badge  m-badge--accent m-badge--wide">Pending</span>
+									</div>
+									<div class="m-widget3__body">
+										<div class="row services-categories">
+											<div class="col-md-12 category-list">
+												<h6 class="service-heading">Room Cleaning</h6>
+												<div class="row service-item">
+													<div class="col-md-6">
+														One Room With Bath
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$120.00
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+
+
+												<div class="row service-item">
+													<div class="col-md-6">
+														Multiple Rooms With Baths
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$260
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+
+												<div class="row service-item">
+													<div class="col-md-6">
+														One Room Office with Bath
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$500.00
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+
+												</div>
+
+
+												<div class="row service-item">
+													<div class="col-md-6">
+														Multi Room Office with Baths
+													</div>
+													<div class="col-md-3 offset-md-3">
+														<span class="m--font-success custom-float-right">
+															$800.00
+														</span>
+													</div>
+													<div class="col-md-12">
+														<hr>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>-->
+					<!-- admin code end here -->
+	<!--			</div>
+			</div>
+		</div> -->
+
+		<div class="col-xl-9 col-lg-8"> <!-- [hidden]="isGridViewHide"-->
+			<div class="row">
+
+				<div class="col-md-12">
+					<div class="body organ1 serviceCard">
+						<div class="row custom-margin-zero">
+							<div class="card-left col-lg-3" id="">
+								<!-- <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+									<input class="chkboxes" type="checkbox">
+									<span></span>
+								</label> -->
+
+								<div class="row onepersonrow">
+
+									<div class="col-md-12">
+										<img class="personimage" src="./assets/demo/demo3/media/img/car.png">
+										<p class="personname">Handy Autos</p>
+										<p class="persontype">Car</p>
+									</div>
+								</div>
+
+
+
+								<p class="personappartmentno">
+									<i class="fa fa-clock-o"></i> 6:00 - 23:00</p>
+								<p class="personbuildingname">
+									<i class="fa fa-money"></i> $60 - $200</p>
+								<p class="personaddress">
+									<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada</p>
+								<a href="javascript:;" class="btn btn-default chatServiceButton">
+									<i class="la la-comments"></i> Message</a>
+
+							</div>
+							<div class="card-right col-lg-9">
+								<h6 class="text-muted pull-left">
+									<span class="m-badge  m-badge--success m-badge--wide">Completed</span>
+								</h6>
+								<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
+								<div class="clearfix"></div>
+								<div class="row services-categories">
+									<div class="col-md-12 category-list">
+										<h6 class="service-heading">Maintenance &amp; Repair</h6>
+										<div class="row service-item">
+											<div class="col-md-1">
+													<span class="custom-width">
+															<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
+															height: 12px;">
+																<input type="checkbox" value="true" (change)="showBookButtonMap($event)">
+																<span></span>
+															</label>
+														</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Oil &amp; Oil Filter Change
+											</div>
+											<div class="col-md-3">
+
+											</div>
+											<div class="col-md-3">
+
+												<span class="m--font-success custom-float-right">
+													$120.00
+												</span>
+
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+
+
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width" (click)="visibleSidebar4 = true">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" (change)="showBookButtonMap($event)">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Spark Plugs Changing
+											</div>
+											<div class="col-md-3">
+
+											</div>
+											<div class="col-md-3">
+
+												<span class="m--font-success custom-float-right">
+													$60.00
+												</span>
+
+
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187" (change)="showBookButtonMap($event)">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Gearbox
+											</div>
+											<div class="col-md-3">
+
+											</div>
+											<div class="col-md-3">
+
+												<span class="m--font-success custom-float-right">
+													$500.00
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+
+
+										<div class="row service-item">
+											<div class="col-md-1">
+													<span class="custom-width">
+															<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
+															height: 12px;">
+																<input type="checkbox" value="true" (change)="showBookButtonMap($event)">
+																<span></span>
+															</label>
+														</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Suspension
+											</div>
+											<div class="col-md-3 offset-md-3">
+												<span class="m--font-success custom-float-right">
+													$200.00
+												</span>
+											</div>
+											<div class="col-md-12" style="margin-top: 10px;	text-align: right;">
+												<a (click)="visibleSidebar2 = true" class="btn btn-sm btn-primary custom-margin-right-book-button" 
+												[ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Book</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-12">
+					<div class="body organ1 serviceCard">
+						<div class="row custom-margin-zero">
+							<div class="card-left col-lg-3" id="">
+								<label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+									<input class="chkboxes" type="checkbox">
+									<span></span>
+								</label>
+
+								<div class="row onepersonrow">
+
+									<div class="col-md-12">
+										<img class="personimage" src="./assets/demo/demo3/media/img/hair.png">
+										<p class="personname">Mont Hair</p>
+										<p class="persontype">Hair Saloon</p>
+									</div>
+								</div>
+
+
+
+								<p class="personappartmentno">
+									<i class="fa fa-clock-o"></i> 6:00 - 23:00</p>
+								<p class="personbuildingname">
+									<i class="fa fa-money"></i> $100 - $200</p>
+								<p class="personaddress">
+									<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada</p>
+								<a href="javascript:;" class="btn btn-default chatServiceButton">
+									<i class="la la-comments"></i> Message</a>
+
+							</div>
+							<div class="card-right col-lg-9">
+								<h6 class="text-muted pull-left">
+									<span class="m-badge m-badge--warning m-badge--wide">In-Progress</span>
+								</h6>
+								<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
+								<div class="clearfix"></div>
+								<div class="row services-categories">
+									<div class="col-md-12 category-list">
+										<h6 class="service-heading">Hair</h6>
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Hair Cutting
+											</div>
+											<div class="col-md-3">
+
+											</div>
+											<div class="col-md-3">
+												<span class="m--font-success custom-float-right">
+													$60.50
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Fancy Cutting
+											</div>
+
+											<div class="col-md-3">
+
+											</div>
+
+											<div class="col-md-3">
+												<span class="m--font-success custom-float-right">
+													$100.00
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Head Shaving
+											</div>
+
+											<div class="col-md-3">
+
+											</div>
+
+											<div class="col-md-3">
+												<span class="m--font-success custom-float-right">
+													$50
+												</span>
+											</div>
+
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-12">
+					<div class="body organ1 serviceCard">
+						<div class="row custom-margin-zero">
+							<div class="card-left col-lg-3" id="">
+								<label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+									<input class="chkboxes" type="checkbox">
+									<span></span>
+								</label>
+
+								<div class="row onepersonrow">
+									<div class="col-md-12">
+										<img class="personimage" src="./assets/demo/demo3/media/img/broom.jpg">
+										<p class="personname">Chris Shining</p>
+										<p class="persontype">Cleaning</p>
+									</div>
+								</div>
+
+
+
+								<p class="personappartmentno">
+									<i class="fa fa-clock-o"></i> 9:00 - 18:00</p>
+								<p class="personbuildingname">
+									<i class="fa fa-money"></i> $120 - $160</p>
+								<p class="personaddress">
+									<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada</p>
+								<a class="btn btn-default chatServiceButton" href="javascript:;">
+									<i class="la la-comments"></i> Message</a>
+
+							</div>
+							<div class="card-right col-lg-9">
+								<h6 class="text-muted pull-left">
+									<span class="m-badge m-badge--accent m-badge--wide">Pending</span>
+								</h6>
+								<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
+								<div class="clearfix"></div>
+								<div class="row services-categories">
+									<div class="col-md-12 category-list">
+										<h6 class="service-heading">Room Cleaning</h6>
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												One Room With Bath
+											</div>
+											<div class="col-md-3 offset-md-3">
+												<span class="m--font-success custom-float-right">
+													$120.00
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+
+
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Multiple Rooms With Baths
+											</div>
+											<div class="col-md-3 offset-md-3">
+												<span class="m--font-success custom-float-right">
+													$260
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												One Room Office with Bath
+											</div>
+											<div class="col-md-3 offset-md-3">
+												<span class="m--font-success custom-float-right">
+													$500.00
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+
+
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Multi Room Office with Baths
+											</div>
+											<div class="col-md-3 offset-md-3">
+												<span class="m--font-success custom-float-right">
+													$800.00
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-12">
+					<div class="body organ1 serviceCard">
+						<div class="row custom-margin-zero">
+							<div class="card-left col-lg-3" id="">
+								<label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+									<input class="chkboxes" type="checkbox">
+									<span></span>
+								</label>
+
+								<div class="row onepersonrow">
+
+									<div class="col-md-12">
+										<img class="personimage" src="./assets/demo/demo3/media/img/doctor.jpg">
+										<p class="personname">Jane Clinic</p>
+										<p class="persontype">Health</p>
+									</div>
+								</div>
+
+
+
+								<p class="personappartmentno">
+									<i class="fa fa-clock-o"></i> 6:00 - 23:00</p>
+								<p class="personbuildingname">
+									<i class="fa fa-money"></i> $60 - $200</p>
+								<p class="personaddress">
+									<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada</p>
+								<a class="btn btn-default chatServiceButton" href="javascript:;">
+									<i class="la la-comments"></i> Message</a>
+
+							</div>
+							<div class="card-right col-lg-9">
+								<h6 class="text-muted pull-left">
+									<span class="m-badge  m-badge--danger m-badge--wide">Rejected</span>
+								</h6>
+								<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
+								<div class="clearfix"></div>
+								<div class="row services-categories">
+									<div class="col-md-12 category-list">
+										<h6 class="service-heading">Checkup Services</h6>
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Fever
+											</div>
+											<div class="col-md-3 offset-md-3">
+												<span class="m--font-success custom-float-right">
+													$60.50
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Dental
+											</div>
+											<div class="col-md-3 offset-md-3">
+												<span class="m--font-success custom-float-right">
+													$100.00
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+										<div class="row service-item">
+											<div class="col-md-1">
+												<span class="custom-width">
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="checkbox" value="187">
+														<span></span>
+													</label>
+												</span>
+											</div>
+											<div class="col-md-5 custom_padding_left">
+												Overall Body
+											</div>
+											<div class="col-md-3 offset-md-3">
+												<span class="m--font-success custom-float-right">
+													$200
+												</span>
+											</div>
+											<div class="col-md-12">
+												<hr>
+											</div>
+
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+<!-- End Content -->
+
+<!-- More Detail Content start -->
+<div class="m-content">
+	<!--Begin::Section-->
+
+
+	<div class="row gridView" style="padding: 0px 10px;" [style.display]="(isGridView && !isDisplayDetail) ? 'flex' : 'none'">
+
+
+		<div class="col-md-6" *ngFor="let item of serData">
+			<div class="body organ1 serviceCard">
+				<div class="row custom-margin-zero">
+					<div class="card-left col-lg-3" id="">
+						<label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+							<input class="chkboxes" type="checkbox">
+							<span></span>
+						</label>
+
+						<div class="row onepersonrow">
+
+							<div class="col-md-12">
+								<img class="personimage" src="./assets/demo/demo3/media/img/doctor.jpg">
+								<p class="personname">{{item.name}}</p>
+								<p class="persontype">{{item.latitude}}</p>
+							</div>
+						</div>
+
+
+
+						<p class="personappartmentno">
+							<i class="fa fa-clock-o"></i> 6:00 - 23:00</p>
+						<p class="personbuildingname">
+							<i class="fa fa-money"></i> $60 - $200</p>
+						<p class="personaddress">
+							<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada</p>
+						<a class="btn btn-default chatServiceButton" href="javascript:;">
+							<i class="la la-comments"></i> Message</a>
+
+					</div>
+					<div class="card-right col-lg-9">
+						<h6 class="text-muted pull-left">
+							<i class="fa fa-cog"></i> {{item.details}}</h6>
+						<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
+						<div class="clearfix"></div>
+						<div class="row services-categories">
+							<div class="col-md-12 category-list">
+								<h6 class="service-heading">{{item.longitude}}</h6>
+								<div class="row service-item">
+									<div class="col-md-6">
+										{{item.location}}
+									</div>
+									<div class="col-md-3">
+										<span class="m--font-success">
+											${{item.publish}}.50
+										</span>
+									</div>
+									<div class="col-md-3">
+										<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">{{item.created_at}} </a>
+									</div>
+									<div class="col-md-12">
+										<hr>
+									</div>
+
+								</div>
+								<div class="row service-item">
+									<div class="col-md-6">
+										{{item.name}}
+									</div>
+									<div class="col-md-3">
+										<span class="m--font-success">
+											${{item.price}}.00
+										</span>
+									</div>
+									<div class="col-md-3">
+										<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">{{item.category_id}} </a>
+									</div>
+									<div class="col-md-12">
+										<hr>
+									</div>
+
+								</div>
+								<div class="row service-item">
+									<div class="col-md-6">
+										{{item.staff}}
+									</div>
+									<div class="col-md-3">
+										<span class="m--font-success">
+											${{item.status}}
+										</span>
+									</div>
+									<div class="col-md-3">
+										<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">{{item.duration}} </a>
+									</div>
+									<div class="col-md-12">
+										<hr>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div @fade class="row detailSection" *ngIf="isDisplayDetail">
+		<div class="col-md-12">
+			<div class="m-portlet">
+				<div class="m-portlet__body" style="margin-top: -20px;">
+					<div class="row">
+
+						<div class="col-sm-12">
+							<div class="row">
+								<div class="col-sm-4">
+									<a class="btn btn-link custom-padding-zero" (click)="isDisplayDetail=false;">
+										<i class="fa fa-chevron-circle-left"></i> BACK</a>
+								</div>
+								<div class="col-sm-4">
+									<h5>Mont Hair Saloon</h5>
+								</div>
+
+								<div class="col-sm-4">
+									<div class="custom-float-right">
+										<span class="fa fa-star checked"></span>
+										<span class="fa fa-star checked"></span>
+										<span class="fa fa-star checked"></span>
+										<span class="fa fa-star"></span>
+										<span class="fa fa-star"></span>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+						<div class="col-sm-12">
+
+
+							<div class="row detailsSectionDiv">
+								<div class="col-md-4">
+									<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+										<ol class="carousel-indicators">
+											<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+											<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+											<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+											<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+										</ol>
+										<div class="carousel-inner" role="listbox">
+											<div class="carousel-item active">
+												<img class="d-block img-fluid" src="http://commmercegate.com/wp-content/uploads/2017/04/National-Hair-Salon-Chains-44-with-National-Hair-Salon-Chains-1024x768.jpg"
+												 alt="First slide">
+											</div>
+											<div class="carousel-item">
+												<img class="d-block img-fluid" src="http://primer.com.ph/blog/wp-content/uploads/sites/14/2017/08/1-11.jpg" alt="Second slide">
+											</div>
+											<div class="carousel-item">
+												<img class="d-block img-fluid" src="https://hellomagazin.info/wp-content/uploads/2017/12/ginger-brown-hair-color-medium-styles-ideas-blonde-henna-1024x768.jpg"
+												 alt="Third slide">
+											</div>
+											<div class="carousel-item">
+												<img class="d-block img-fluid" src="https://www.drweil.com/wp-content/uploads/2017/01/health-wellness_body-mind-spirit_cancer_can-hair-dye-cause-cancer_1440x1080_460389871-1024x768.jpeg"
+												 alt="Third slide">
+											</div>
+										</div>
+										<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+											<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+											<span class="sr-only">Previous</span>
+										</a>
+										<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+											<span class="carousel-control-next-icon" aria-hidden="true"></span>
+											<span class="sr-only">Next</span>
+										</a>
+									</div>
+								</div>
+
+								<div class="col-md-4">
+									<h6>About Us</h6>
+									<p style="text-align:justify;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+										dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
+										specimen book.</p>
+									<p class="custom-p-setting">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+										dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
+										specimen book.</p>
+
+								</div>
+
+								<div class="col-md-4">
+									<h6>Our Location</h6>
+									<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d92498.95348880148!2d-79.67291636729688!3d43.573377843540406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b413479f4223d%3A0x1d127700539ada46!2sSky+Zone+Trampoline+Park!5e0!3m2!1sen!2s!4v1526534566346"
+									 frameborder="0" class="custom-iframe-setting" allowfullscreen></iframe>
+								</div>
+
+
+								<div class="col-md-4">
+									<h6>Hair</h6>
+									<div class="row services-categories">
+										<div class="col-md-12 category-list">
+											<div class="row service-item">
+												<div class="col-md-6">
+													Hair Cutting
+												</div>
+												<div class="col-md-3">
+													<span class="m--font-success">
+														$60.50
+													</span>
+												</div>
+												<div class="col-md-3">
+													<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">Book </a>
+												</div>
+												<div class="col-md-12">
+													<hr>
+												</div>
+
+											</div>
+											<div class="row service-item">
+												<div class="col-md-6">
+													Fancy Cutting
+												</div>
+												<div class="col-md-3">
+													<span class="m--font-success">
+														$100.00
+													</span>
+												</div>
+												<div class="col-md-3">
+													<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">Book </a>
+												</div>
+												<div class="col-md-12">
+													<hr>
+												</div>
+
+											</div>
+											<div class="row service-item">
+												<div class="col-md-6">
+													Head Shaving
+												</div>
+												<div class="col-md-3">
+													<span class="m--font-success">
+														$50
+													</span>
+												</div>
+												<div class="col-md-3">
+													<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">Book </a>
+												</div>
+												<div class="col-md-12">
+													<hr>
+												</div>
+
+											</div>
+											<div class="row service-item">
+												<div class="col-md-6">
+													Full Head Highlight
+												</div>
+												<div class="col-md-3">
+													<span class="m--font-success">
+														$500
+													</span>
+												</div>
+												<div class="col-md-3">
+													<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">Book </a>
+												</div>
+												<div class="col-md-12">
+													<hr>
+												</div>
+
+											</div>
+
+											<div class="row service-item">
+												<div class="col-md-6">
+													Keratin Treatment
+												</div>
+												<div class="col-md-3">
+													<span class="m--font-success">
+														$820
+													</span>
+												</div>
+												<div class="col-md-3">
+													<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">Book </a>
+												</div>
+												<div class="col-md-12">
+													<hr>
+												</div>
+
+											</div>
+
+											<div class="row service-item">
+												<div class="col-md-6">
+													Permanent Straightening
+												</div>
+												<div class="col-md-3">
+													<span class="m--font-success">
+														$400
+													</span>
+												</div>
+												<div class="col-md-3">
+													<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">Book </a>
+												</div>
+												<div class="col-md-12">
+													<hr>
+												</div>
+
+											</div>
+											<div class="row service-item">
+												<div class="col-md-6">
+													Permanent Straightening
+												</div>
+												<div class="col-md-3">
+													<span class="m--font-success">
+														$400
+													</span>
+												</div>
+												<div class="col-md-3">
+													<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">Book </a>
+												</div>
+												<div class="col-md-12">
+													<hr>
+												</div>
+
+											</div>
+											<div class="row service-item">
+												<div class="col-md-6">
+													Permanent Straightening
+												</div>
+												<div class="col-md-3">
+													<span class="m--font-success">
+														$400
+													</span>
+												</div>
+												<div class="col-md-3">
+													<a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">Book </a>
+												</div>
+												<div class="col-md-12">
+													<hr>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-4">
+									<h6>Stats</h6>
+									<div class="row">
+										<div class="col-md-4">
+											<div class="m-widget26" style="width:140px;">
+
+												<div class="m-widget26__chart custom-canvas-above">
+													<canvas id="m_chart_quick_stats_form2"></canvas>
+												</div>
+												<div class="m-widget26__number">
+													690
+													<small>
+														All Orders
+													</small>
+												</div>
+											</div>
+
+										</div>
+
+
+										<div class="col-md-4">
+											<div class="m-widget26">
+
+												<div class="m-widget26__chart custom-canvas-above">
+													<canvas id="m_chart_quick_stats_form3"></canvas>
+												</div>
+												<div class="m-widget26__number">
+													500
+													<small>
+														Rejected Orders
+													</small>
+												</div>
+											</div>
+
+										</div>
+
+										<div class="col-md-4">
+											<div class="m-widget26">
+
+												<div class="m-widget26__chart custom-canvas-above">
+													<canvas id="m_chart_quick_stats_form4"></canvas>
+												</div>
+												<div class="m-widget26__number">
+													3000
+													<small>
+														Total Services Provided
+													</small>
+												</div>
+											</div>
+
+										</div>
+
+
+										<div class="col-md-4">
+											<div class="m-widget26">
+
+												<div class="m-widget26__chart custom-canvas-above">
+													<canvas id="m_chart_quick_stats_form5"></canvas>
+												</div>
+												<div class="m-widget26__number">
+													2900
+													<small>
+														Satisfactory Clients
+													</small>
+												</div>
+											</div>
+
+										</div>
+
+										<div class="col-md-4">
+											<div class="m-widget26">
+
+												<div class="m-widget26__chart custom-canvas-above">
+													<canvas id="m_chart_quick_stats_form6"></canvas>
+												</div>
+												<div class="m-widget26__number">
+													100
+													<small>
+														Unsatisfactory Clients
+													</small>
+												</div>
+											</div>
+
+										</div>
+
+										<div class="col-md-4">
+											<div class="m-widget26">
+
+												<div class="m-widget26__chart custom-canvas-above">
+													<canvas id="m_chart_quick_stats_form7"></canvas>
+												</div>
+												<div class="m-widget26__number">
+													1700
+													<small>
+														Increased Orders This Year
+													</small>
+												</div>
+											</div>
+
+										</div>
+
+									</div>
+								</div>
+
+								<div class="col-md-4">
+
+									<table class="table table-responsive" style="margin-left: 55px;">
+										<thead>
+											<tr>
+												<th colspan="2" style="text-align:center;">
+													<h6>Opening Hours</h6>
+												</th>
+
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th scope="row">
+													Mon
+												</th>
+												<td>
+													10:00 AM - 07:00 PM
+												</td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Tue
+												</th>
+												<td>
+													10:00 AM - 07:00 PM
+												</td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Wed
+												</th>
+												<td>
+													10:00 AM - 07:00 PM
+												</td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Thu
+												</th>
+												<td>
+													10:00 AM - 07:00 PM
+												</td>
+											</tr>
+
+
+											<tr>
+												<th scope="row">
+													Fri
+												</th>
+												<td>
+													10:00 AM - 07:00 PM
+												</td>
+											</tr>
+											<tr class="bg-secondary">
+												<th scope="row">
+													Sat
+												</th>
+												<td>
+													Off
+												</td>
+											</tr>
+
+											<tr class="bg-secondary">
+												<th scope="row">
+													Sun
+												</th>
+												<td>
+													Off
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+
+
+								<div class="col-md-12  reviewsSection">
+									<div class="row">
+										<div class="col-sm-6">
+											<h6>Reviews (3)</h6>
+										</div>
+
+										<div class="col-sm-5">
+											<button class="btn btn-default pull-right m--margin-bottom-15">Write A Review</button>
+										</div>
+									</div>
+									<div class="row TheReview">
+										<div class="col-md-2 ReviewerImage">
+											<img alt="" class="m--img-rounded m--marginless m--img-centered" src="./assets/app/media/img/users/user4.jpg">
+											<p>Jane Khan</p>
+										</div>
+
+
+										<div class="col-md-6 ReviewText">
+											<p>Gel manicure lasted pretty long - already 1 month plus. However, would appreciate if they provided free gel removal
+												if they want returning customers.</p>
+										</div>
+
+										<div class="col-md-2 ReviewStars">
+											<div class="custom-float-right">
+												<span class="fa fa-star checked"></span>
+												<span _ class="fa fa-star checked"></span>
+												<span class="fa fa-star checked"></span>
+												<span class="fa fa-star checked"></span>
+												<span class="fa fa-star"></span>
+											</div>
+										</div>
+
+										<div class="col-md-2 ReviewStars">
+											<p>11/04/18</p>
+										</div>
+
+									</div>
+
+									<div class="row TheReview">
+										<div class="col-md-2 ReviewerImage">
+											<img alt="" class="m--img-rounded m--marginless m--img-centered" src="./assets/app/media/img/users/user2.jpg">
+											<p>Kane - The Boxer</p>
+										</div>
+
+
+										<div class="col-md-6 ReviewText">
+											<p>Overall is good, the staff there also very nice &amp; also very beautiful ^.^
+											</p>
+										</div>
+
+										<div class="col-md-2 ReviewStars">
+											<div class="custom-float-right">
+												<span class="fa fa-star checked"></span>
+												<span _ class="fa fa-star checked"></span>
+												<span class="fa fa-star checked"></span>
+												<span class="fa fa-star "></span>
+												<span class="fa fa-star"></span>
+											</div>
+										</div>
+
+										<div class="col-md-2 ReviewStars">
+											<p>11/04/18</p>
+										</div>
+
+									</div>
+
+
+									<div class="row TheReview">
+										<div class="col-md-2 ReviewerImage">
+											<img alt="" class="m--img-rounded m--marginless m--img-centered" src="./assets/app/media/img/users/user4.jpg">
+											<p>Jane Khan</p>
+										</div>
+
+
+										<div class="col-md-6 ReviewText">
+											<p>Gel manicure lasted pretty long - already 1 month plus. However, would appreciate if they provided free gel removal
+												if they want returning customers.</p>
+										</div>
+
+										<div class="col-md-2 ReviewStars">
+											<div class="custom-float-right">
+												<span class="fa fa-star checked"></span>
+												<span _ class="fa fa-star checked"></span>
+												<span class="fa fa-star checked"></span>
+												<span class="fa fa-star checked"></span>
+												<span class="fa fa-star"></span>
+											</div>
+										</div>
+
+										<div class="col-md-2 ReviewStars">
+											<p>11/04/18</p>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+
+
+
+							<div class="row">
+								<div class="col-md-8">
+
+									<div class="col-md-4">
+
+
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+</div>
+<!-- More Detail Content End -->
+
+<!-- Request Service Content start -->
+<div class="m-content m-content-nopadding" style="margin-top: -40px;" [hidden]="formHidden">
+	<div class="m-portlet m-portlet--bordered-semi m-portlet--full-height">
+		<div class="m-portlet__head">
+			<div class="m-portlet__head-caption">
+				<div class="m-portlet__head-title">
+					<a class="btn btn-link custom-request-a-setting backbtn-adjust-margin" (click)="formHidden=true">
+						<i class="fa fa-chevron-left"></i> BACK</a>
+					<h3 class="m-portlet__head-text" style=" float:left;">
+						Request a Service
+					</h3>
+				</div>
+			</div>
+			<div class="m-portlet__head-tools">
+			</div>
+		</div>
+		<div class="m-portlet__body">
+			<form class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+							<div class="form-group m-form__group">
+									<label>
+										Request Category
+									</label>
+									<select class="form-control m-input m-input--air">
+										<option>Facial Care</option>
+										<option>Hair Removal</option>
+										<option>Nail Care</option>
+									</select>
+								</div>
+
+								<div class="form-group m-form__group">
+										<label>
+											Request Sub-Category
+										</label>
+										<select class="form-control m-input m-input--air">
+											<option>Hair Cut</option>
+											<option>Facial</option>
+											<option>Skin Care</option>
+										</select>
+									</div>
+
+						<div class="form-group m-form__group">
+							<label>
+								Request Name
+							</label>
+							<input class="form-control m-input m-input--air" placeholder="Enter Request Name" type="text">
+						</div>
+
+						<div class="form-group m-form__group">
+								<label>
+									Request Description
+								</label>
+								<textarea class="form-control m-input m-input--air" placeholder="Enter Request Description" type="text"></textarea>
+							</div>
+	
+
+					
+						<div class="form-group m-form__group">
+							<label>
+								Price
+							</label>
+							<input class="form-control m-input m-input--air" placeholder="Enter Price" type="text">
+						</div>
+						<!-- <div class="form-group m-form__group">
+							<label>
+								Request Details
+							</label>
+							<textarea class="form-control m-input" placeholder="Enter Request Details Here"></textarea>
+						</div> -->
+					</div>
+					<div class="col-md-6">
+
+						<div class="form-group m-form__group">
+							<label>
+								Contact Number
+							</label>
+							<input class="form-control m-input m-input--air" placeholder="Enter Contact Number Here" type="tel">
+						</div>
+
+						<!-- <div class="form-group m-form__group">
+							<label>
+								Select Date &amp; Time Slot1
+							</label>
+							<input class="form-control m-input m-input--air" id="m_datetimepicker_1" placeholder="Select date &amp; time" type="text">
+						</div>
+
+						<div class="form-group m-form__group">
+							<label>
+								Select Date &amp; Time Slot2
+							</label>
+							<input class="form-control m-input m-input--air " id="m_datetimepicker_2" placeholder="Select date &amp; time" type="text">
+						</div> -->
+
+						<div class="m-form__group form-group row m--padding-left-15">
+							<label>
+								Publish This Is Request Online?
+							</label>
+
+							<span class="m-switch m-switch--icon m-switch--primary m-switch--sm custom-switch-setting">
+								<label class="ng-tns-c2-2">
+									<input class="ng-tns-c2-2" checked="checked" name="" type="checkbox">
+									<span class="ng-tns-c2-2"></span>
+								</label>
+							</span>
+							
+						</div>
+						<br>
+							<div class="row">
+								<div class="col-md-12">
+									<label class="ng-tns-c2-2">Upload Document File</label>
+									<input class="form-control-file" type="file">
+								</div>
+							</div>
+
+
+						<button class="btn btn-primary btn-sm custom-float-right" type="submit">
+							Submit
+						</button>
+						<button class="btn btn-secondary btn-sm custom-float-right" type="button" (click)="formHidden=true">
+							Cancel
+						</button>
+
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Request Service Content End -->
+<!-- Right side bar Modal  Start-->
+<p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000" >
+		<div>
+			
+			<ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" id="m_quick_sidebar_tabs" role="tablist">
+				<li class="nav-item m-tabs__item">
+					<a class="nav-link m-tabs__link active show custom-font-size" data-toggle="tab" href="" 
+					 aria-selected="true" [ngClass]="{ 'active' : activeItemTab}" (click)="activeTab('items')" >
+						Items-List
+					</a>
+				</li>
+	
+				<li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
+					<a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('schedule')"  [ngClass]="{ 'active' : activeScheduleTab}" >
+						Schedule
+					</a>
+				</li>
+	
+				<li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
+					<a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('payment')"  [ngClass]="{ 'active' : activePaymentTab}" >
+						Payment
+					</a>
+				</li>
+				
+				<li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
+					<a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href="" ng-reflect-href="#m_tabs_5_3" aria-selected="false" (click)="activeTab('more')" [ngClass]="{ 'active' : activeMoreTab}">
+						Confirmation
+					</a>
+				</li> 
+			</ul> 
+	
+	
+			<div class="tab-content">
+	
+				<!-- Items Tab Start Here -->
+				<div class="tab-pane active show" id="m_tabs_5_1" role="tabpanel"  [ngClass]="{ 'active' : activeItemTab, 
+				'show':  activeItemTab }">
+	
+					<p><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
+					
+				   <div class="custom-card-shadow">
+					<h4 style="color:#716aca">Handy Autos
+						<br class="add-line-break">
+		
+						 <span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
+		
+						 <label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
+							<input type="checkbox" (click)="showProceedButton1($event)">
+							<span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal"></span>
+							<span class="custom-check-box-setting " [hidden]="hideTermsModal"></span>
+						</label>
+		
+					</h4>
+		
+					   <table class="table table-hover">
+							<thead>
+							  <tr>
+								<th scope="col" class="text-center"></th>
+								<th scope="col"  class="col-md-6">Items</th>
+								<th scope="col" >Price</th>
+								
+							  </tr>
+							</thead>
+							<tbody>
+							  <tr *ngFor="let item of itemsArray; let i= index">
+								<ng-container *ngIf="deleted">
+								<td class="text-center custom-pointer">
+									<a (click)="onDelete(i)">
+										<i class="fa fa-trash" style="color: #f5516c;"></i>
+									</a>
+								</td>
+								<th scope="row" >{{item.name}}</th>
+								<td >${{item.price}}</td>
+								
+							   </ng-container>
+							  </tr>
+							</tbody>
+						</table>
+	
+						  <hr class="custom-hr-style">
+	
+						  <p class="custom-first-paragraph"> 
+							<input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon1check">
+	
+						<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = false" *ngIf="coupon1check">Apply</button> 
+						
+						<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = true" *ngIf="!coupon1check" style="margin-top: 20px;">Coupon</button>
+							 <span class="text-muted" style="margin-right: 32px;"> Sub Total</span>
+							 <span class="text-muted" style="margin-right: 8px;"> : $72.00</span>
+						  </p>
+		
+							<p class="custom-p2-setting" style="margin-bottom: 20px;">
+							
+									<span class="text-muted" style="margin-right: 3px;">Discount(40%)</span>
+									<span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $40</span>
+					  
+						  </p>
+	
+						  <p style="    text-align: right;
+						  font-weight: 500;
+						  margin-top: -15px;">
+	
+						  <span class="text-muted" style="margin-right: 34px;"> Tax(10%) </span>
+						  <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $10</span>
+							
+								
+						  
+						   </p>
+	
+	
+						  <p style="text-align: right; font-weight: bold;">
+							<span style=" margin-right: 4.4rem;" > Total</span>
+							<span class="custom-theme-default" style="margin-right:12px;"> : $47.7</span>
+						  </p>
+	
+						  <div class="col text-right">
+								<button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
+									(click)="activeTab('schedule')">Proceed</button>
+							</div>
+				   </div>
+	
+					
+					  <div class="custom-card-shadow" style ="margin-top: 10px;">
+						<h4 style="color:#716aca;">Mont Hair
+						 
+							<br class="add-line-break">
+							   
+							<span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
+	   
+	   
+							<label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
+							   <input type="checkbox" (click)="showProceedButton($event)">
+							   <span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal1"></span>
+							   <span class="custom-check-box-setting " [hidden]="hideTermsModal1"></span>
+						   </label>
+	   
+						  </h4>
+		   
+						  <table class="table table-hover">
+							   <thead>
+								 <tr>
+									<th scope="col" class="text-center"></th>
+								   <th scope="col" class="col-md-6">Items</th>
+								   <th scope="col">Price</th>
+								 </tr>
+							   </thead>
+							   <tbody>
+								 <tr *ngFor="let item of itemsArray2; let i= index">
+								   <ng-container *ngIf="deleted">
+									<td class="text-center custom-pointer">
+										<a (click)="onDelete(i)">
+											<i class="fa fa-trash" style="color: #f5516c;"></i>
+										</a>
+									</td>
+								   <th scope="row" >{{item.name}}</th>
+								   <td>${{item.price}}</td>
+								  </ng-container>
+								 </tr>
+							   </tbody>
+							 </table>
+							
+						   <hr class="custom-hr-style">
+	
+				
+	
+						   <p class="custom-first-paragraph"> 
+							<input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon2check">
+	
+						<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon2check = false" *ngIf="coupon2check">Apply</button> 
+						
+						<button class="btn btn-link btn-sm custom-apply-link" style="margin-top: 20px;"(click)="coupon2check = true" *ngIf="!coupon2check">Coupon</button>
+							 <span class="text-muted" style="margin-right: 32px;"> Sub Total</span>
+							 <span class="text-muted" style="margin-right: 8px;"> : $150.0</span>
+						  </p>
+		
+							<p class="custom-p2-setting" style="margin-bottom: 20px;">
+								<span class="text-muted" style="margin-right: 3px;">Discount(40%)</span>
+								<span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $40</span>
+						  </p>
+	
+						  <p style="    text-align: right;
+						  font-weight: 500;
+						  margin-top: -15px;">
+							  <span class="text-muted" style="margin-right: 34px;"> Tax(10%) </span>
+							  <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $10</span>
+						   </p>
+	
+	
+						  <p style="text-align: right; font-weight: bold;">
+							<span style=" margin-right: 4.4rem;" > Total</span>
+							<span class="custom-theme-default" style="margin-right:12px;"> : $54.7</span>
+						  </p>
+		
+	
+					  </div>
+	
+	
+					  <div style="margin-top: 10px;  padding:10px;">
+	
+						<h4 style="color:#716aca;">Total:</h4>
+						<p class="custom-first-paragraph"> 
+							<input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon3check">
+		
+							<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon3check = false" *ngIf="coupon3check">Apply</button> 
+							
+							<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon3check = true" *ngIf="!coupon3check">Coupon</button>
+		
+							 <span style="margin-right: 20px;font-weight: bold;"> Total Price </span>
+							 <span class="custom-theme-default" style="font-weight: bold;"> : $102.4</span>
+						  </p> 
+		
+						  <p class="custom-p2-setting" style="font-weight: bold;">
+					  
+							<span style="margin-right: -2px">Total Discount </span>
+							<span class="custom-theme-default" style="margin-right: 16px;"> : 64%</span>
+					  
+						  </p>
+	
+						  <!-- <div class="col text-right">
+							<button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
+								(click)="activeTab('payment')">Proceed</button>
+						</div> -->
+					  </div>
+	
+						
+				</div>
+				<!-- Items Tab End Here -->
+	
+				<!-- Payment Tab Start Here -->
+				<div class="tab-pane" [ngClass]="{ 'active' : activePaymentTab, 
+				'show':  activePaymentTab }"
+					id="m_tabs_5_2" role="tabpanel">
+					<div class="row">
+						<div class="col-md-6">
+							<button class="btn btn-link pull-left custom-padding-left-top-zero" (click)="addNewPaymentCardHide = false" *ngIf="addNewPaymentCardHide">
+								<i class="fa fa-angle-left m--padding-right-5" style=" padding-bottom: 3px;"></i>BACK
+							</button>
+	
+						</div>
+						<div class="col-md-6">
+							<button class="btn btn-link pull-right" style="padding-top:0px;" (click)="addNewPaymentCardHide = true">
+								<i class="fa fa-plus"></i> Add new Card
+							</button>
+						</div>
+					</div>
+	
+	
+					<!-- Payment Cards -->
+					<div class="m-demo__preview" *ngIf="!addNewPaymentCardHide">
+						<div class="m-stack m-stack--hor m-stack--general m-stack--demo" style="height: 400px">
+							<div class="m-stack__item">
+								<div class="m-stack__demo-item custom-card-design custom-h-class" (click)="paymentCheckTickHide = true">
+									<div class="row">
+										<div class="col-md-8">
+											<img src="./assets/demo/demo3/media/img/americanexpress.png">
+											<span class="m--padding-left-15">American Express</span>
+										</div>
+										<div class="col-md-4 custom-color m--padding-top-15">
+											<i class="fa fa-check" *ngIf="paymentCheckTickHide"></i>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12" style="text-align: right;">
+											<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
+											<span class="custom-card-owner-setting">
+												Niaz Khan Card
+											</span>
+	
+										</div>
+									</div>
+	
+								</div>
+	
+	
+	
+							</div>
+							<div class="m-stack__item">
+								<div class="m-stack__demo-item custom-card-design custom-h-class">
+									<div class="row">
+										<div class="col-md-8">
+											<img src="./assets/demo/demo3/media/img/mastercard.png">
+											<span class="m--padding-left-15">Master-Card</span>
+										</div>
+										<div class="col-md-4" style="text-align: right;">
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12" style="text-align: right;">
+											<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
+											<span class="custom-card-owner-setting">
+												Niaz Khan Card
+											</span>
+	
+										</div>
+									</div>
+	
+								</div>
+							</div>
+							<div class="m-stack__item">
+								<div class="m-stack__demo-item custom-card-design custom-h-class">
+									<div class="row">
+										<div class="col-md-8">
+											<img src="./assets/demo/demo3/media/img/paypal.png">
+											<span class="m--padding-left-15">Paypal</span>
+										</div>
+										<div class="col-md-4" style="text-align: right;">
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12" style="text-align: right;">
+											<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men2.jpg">
+											<span class="custom-card-owner-setting">
+												Sharjeel khan Card
+											</span>
+	
+										</div>
+									</div>
+	
+								</div>
+							</div>
+							<div class="m-stack__item">
+								<div class="m-stack__demo-item custom-card-design custom-h-class">
+									<div class="row">
+										<div class="col-md-8">
+											<img src="./assets/demo/demo3/media/img/visa.png">
+											<span class="m--padding-left-15">Visa</span>
+										</div>
+										<div class="col-md-4" style="text-align: right;">
+	
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12" style="text-align: right;">
+											<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
+											<span class="custom-card-owner-setting">
+												Niaz Khan Card
+											</span>
+	
+										</div>
+									</div>
+	
+								</div>
+							</div>
+						</div>
+						<button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('more')">Proceed</button>
+	
+					</div>
+	
+					<!-- Add new Payment Methonds -->
+					<form *ngIf="addNewPaymentCardHide">
+						<div class="form-group m-form__group">
+							<label>
+								<span>
+									Card Number
+								</span>
+							</label>
+							<input class="form-control m-input m-input--square" placeholder="Enter Card Number" type="text">
+						</div>
+						<div class="form-group m-form__group">
+							<label>
+								Start Date
+							</label>
+							<input class="form-control m-input m-input--square" placeholder="Enter Start Date" type="date">
+						</div>
+						<div class="form-group m-form__group">
+							<label>
+								Expire Date
+							</label>
+							<input class="form-control m-input m-input--square" placeholder="Enter Expire Date" type="date">
+						</div>
+						<div class="form-group m-form__group">
+							<label>
+								CVV
+							</label>
+							<input class="form-control m-input m-input--square" placeholder="Enter Expire Date" type="date">
+						</div>
+						<button class="btn btn-primary custom-float-right ">Submit</button>
+					</form>
+	
+				</div>
+				<!-- Payment Tab End Here -->
+	
+				<!-- Conformation Tab Start Here -->
+				<div class="tab-pane" id="m_tabs_5_3" role="tabpanel" [ngClass]="{ 'active' : activeMoreTab, 
+				'show':  activeMoreTab }">
+	
+					<div class="col" *ngIf="!orderNowCheck">
+							<h4>Confirmation</h4>
+	
+							<div class="custom-card-shadow">
+								<h4 style="color:#716aca">Handy Autos
+									<br class="add-line-break">
+								</h4>
+					
+								<table class="table table-hover">
+										<thead>
+										  <tr>
+											
+											<th scope="col"  class="col-md-6">Items</th>
+											<th scope="col" >Price</th>
+											
+										  </tr>
+										</thead>
+										<tbody>
+										  <tr *ngFor="let item of itemsArray; let i= index">
+											<th scope="row" >{{item.name}}</th>
+											<td >${{item.price}}</td>
+										  </tr>
+										</tbody>
+								</table>
+	
+								<hr class="custom-hr-style">
+	
+								<p class="text-right" style="font-weight:bold;">
+									 <span> Total Price : </span>
+									 <span class="custom-theme-default" style="margin-right: 8px;"> $72.00</span>	
+								</p>
+	
+	
+							</div>
+	
+	
+							<p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
+			
+							<button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true">Order Now</button>
+							<button class="btn btn-danger custom-float-right" (click)="visibleSidebar2 = false" style="    margin-right: 5px;">Cancel</button>
+		
+					</div>
+	
+					<div class="col text-center" *ngIf="orderNowCheck">
+							<h4>Congratulations</h4>
+							<div class="text-center">
+								<img src="./assets/demo/demo3/media/img/confetti.png" class="rounded" alt="..." style="width:15%;">
+							  </div>
+							<p>Your Order Has Been Successfully Placed</p>
+			
+							<button class="btn btn-primary" (click)="thanksUpdate()" >Return</button>
+					</div>
+	
+				</div>
+				<!-- Conformation Tab end Here -->
+	
+				<!-- schedule Tab Start Here -->
+				<div class="tab-pane" id="m_tabs_5_4 " role="tabpanel"  [ngClass]="{ 'active' : activeScheduleTab, 
+				'show':  activeScheduleTab }">
+					
+					<form>
+						<div class="form-group">
+							<label for="sel1" style="font-weight: bold;">Select Employee</label>
+							<select class="form-control" id="sel1">
+								<option>No Preferences </option>
+								<option>John Smith </option>
+								<option>David Luiz</option>
+							</select>
+						</div>
+	
+		
+						<div class="form-group m-form__group">
+							<label>
+							   <strong>Select Date</strong>    
+							</label>
+							<br>
+							<div>
+								<div class="input-group date">
+									<input class="form-control m-input " id="m_datepicker_2_validate" placeholder="Select Date" readonly="" type="text">
+									<div class="input-group-append">
+										<span class="input-group-text">
+											<i class="la la-calendar-check-o glyphicon-th"></i>
+										</span> 
+									</div>
+								</div>
+							</div>
+						</div>
+	
+						<div class="form-group m-form__group">
+							<label>
+							   <strong> Select Time Slot </strong>
+							</label>
+							<br>
+							<div>
+								<div class="input-group date">
+									<input class="form-control m-input timepicker" id="m_timepicker_2_validate" placeholder="Select Time " readonly="" type="text">
+									<div class="input-group-append">
+										<span class="input-group-text">
+											<i class="la la-calendar-check-o glyphicon-th"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+	
+					
+	
+					<div class="col text-right">
+							<button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
+								(click)="activeTab('payment')">Proceed</button>
+					</div>
+	
+				</div>
+				<!-- schedule Tab Start Here -->
+	
+			</div>
+		</div>
+	</p-sidebar>
+	<!-- Right side bar Modal  End-->
+	
+	
+	<!-- Terms and Condition Modal Start -->
+<div aria-labelledby="exampleModalLabel" class="modal fade custom-terms-main-div" id="m_modal_terms" role="dialog" tabindex="-1"
+aria-hidden="true">
+   <div class="modal-dialog" role="document" style="margin-left: 25%;">
+	   <div class="modal-content">
+		   <div class="modal-header">
+			   <h5 class="modal-title" id="exampleModalLabel">
+				   Terms and Condition
+			   </h5>
+			   <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+				   <span aria-hidden="true">
+					   ×
+				   </span>
+			   </button>
+		   </div>
+		   <div class="modal-body" style="height:200px;">
+			   <div class="m-scrollable m-scroller ps cutom-terms-modal-body" data-height="200" data-scrollable="true" data-scrollbar-shown="true" style="height: 170px;">
+				   <p>
+					   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+					   text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+					   It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+					   It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+					   with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+				   </p>
+				   <p>
+					   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+					   text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+					   It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+					   It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+					   with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+				   </p>
+				   <p>
+					   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+					   text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+					   It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+					   It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+					   with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+				   </p>
+				   <div class="ps__rail-x custom-rail-x">
+					   <div class="ps__thumb-x custom-thumb-x" tabindex="0"></div>
+				   </div>
+				   <div class="ps__rail-y custom-rail-y">
+					   <div class="ps__thumb-y custom-thumb-y" tabindex="0"></div>
+				   </div>
+			   </div>
+		   </div>
+		   <div class="modal-footer">
+			   <!-- <button class="btn btn-secondary" data-dismiss="modal" type="button">
+				   Close
+			   </button> -->
+			   <button class="btn btn-primary"  data-dismiss="modal" type="button">
+				   OK
+			   </button>
+		   </div>
+	   </div>
+   </div>
+</div>
+<!-- Terms and Condition Modal End -->
+ 

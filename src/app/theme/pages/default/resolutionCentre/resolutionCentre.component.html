@@ -1,0 +1,279 @@
+<!-- Begin SubHeader -->
+<div class="m-subheader m--padding-top-10" style="margin-bottom: -26px;">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">
+                Resolution Centre
+
+                <small class="fa fa-search text-muted stats-icons custom-small-header" (click)="mainFilterHide == true? mainFilterHide=false : mainFilterHide=true">
+                    <a class="custom-cursor">
+                    </a>
+                </small>
+
+                <span>
+                    <input type="text" id="customSearchBox" class="custom-main-filter custom-main-filter-focus custom-input-setting" [hidden]="!mainFilterHide">
+                </span>
+            </h3>
+        </div>
+    </div>
+</div>
+
+<div class="m-subheader breadcrumsubheader m--padding-top-15">
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a class="m-nav__link m-nav__link--icon" href="/dashboard" ng-reflect-href="#" ng-reflect-router-link="/dashboard" routerlink="/dashboard">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator" style="margin-left: -15px;">
+            -
+        </li>
+
+        <li class="m-nav__item">
+            <a class="m-nav__link" href="" ng-reflect-href="">
+                <span class="m-nav__link-text " style=" font-size: 11px;">
+                    Resolution Centre
+                </span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<hr class="customhr" style="margin-top: -6px;">
+<!-- End SubHeader -->
+
+<!-- Start Content  -->
+<div class="m-content" style="padding-top: 0px">
+
+    <!-- ___________ Start Dispute Table______________ -->
+    <div class="row">
+        <div class="col-md-5" style="padding-right: 0px;">
+            <h5 class="m-subheader__title titleComplaints titles">
+                Dispute Table
+            </h5>
+            <div class="m-section">
+                <div class="m-section__content">
+                    <table class="table table-hover" cellspacing="0" id="datatable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Company</th>
+                                <th>Service</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let dispute of arrayOfDispute; let i = index" (click)="activeRow(i+1)">
+                                <td>{{dispute.id}}</td>
+                                <td>{{dispute.company}}</td>
+                                <td>{{dispute.service}}</td>
+                                <td>{{dispute.status}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 titleComplaints" [hidden]="!disputeRightSideActive" style="margin-left: -40px;">
+            <!-- _______scroable goes here_______ -->
+            <!--Begin::Timeline 2 -->
+            <h5 class="m-subheader__title titleComplaints titles m--padding-left-45">
+                Details / Handle Dispute
+            </h5>
+            <div class="m-timeline-2" style="left:2.89rem;">
+                <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">
+
+
+                    <div class="m-timeline-2__item job-width" [hidden]="!firstRowActive">
+                        <div class="m-timeline-2__item-text  m--padding-top-5">
+                            <div class="card-content">
+                                <div class="m-widget3__item">
+                                    <div class="m-widget3__header">
+                                        <div class="m-widget3__user-img">
+                                            <img class="m-widget3__img card-customer-image custom-image-setting" src="./assets/app/media/img/car.png" alt="">
+                                            <span>
+                                                Handy Autos
+                                            </span>
+                                            <span class="custom-float-right">
+                                                <a class="btn btn-default btn-sm chatServiceButton custom-messege-button" href="javascript:;">
+                                                    <i class="la la-comments"></i> Message</a>
+                                            </span>
+
+
+                                        </div>
+                                        <div class="m-widget3__info">
+                                            <br>
+                                            <p class="card-job-title purple">Maintenance & Repair
+                                                <span class="card-job-pay m-link m--font-bolder m-widget4__number custom-float-right">
+                                                    $120.00
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="m-widget3__body">
+                                        <p class="m-widget3__text card-job-description">
+                                            Detail Goes Here.....
+                                            <br> Lorem ipsum dolor sit amet,consectetuer edipiscing elit,sed diam nonummy nibh
+                                            euismod tinciduntut laoreet doloremagna aliquam erat volutpat. Lorem ipsum dolor
+                                            sit amet,consectetuer edipiscing elit
+                                        </p>
+                                        <button type="button" class="btn btn-primary card-button btn-sm custom-float-right" data-toggle="modal" data-target="#m_modal_escalate">
+                                            Escalate</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!--Timeline 2 text-->
+                    </div>
+                    <div class="m-timeline-2__item job-width" [hidden]="!secondRowActive">
+
+                        <div class="m-timeline-2__item-text  m--padding-top-5">
+                            <div class="card-content">
+                                <div class="m-widget3__item">
+                                    <div class="m-widget3__header">
+                                        <div class="m-widget3__user-img">
+                                            <img class="m-widget3__img card-customer-image custom-image-setting" src="./assets/app/media/img/hair.png" alt="">
+                                            <span>
+                                                Mont Hair
+                                            </span>
+                                            <span class="custom-float-right">
+                                                <a class="btn btn-default btn-sm chatServiceButton custom-messege-button" href="javascript:;">
+                                                    <i class="la la-comments"></i> Message</a>
+                                            </span>
+                                        </div>
+                                        <div class="m-widget3__info">
+                                            <br>
+                                            <p class="card-job-title purple">Fancy Cutting
+                                                <span class="card-job-pay m-link m--font-bolder m-widget4__number custom-float-right">
+                                                    $100.00
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="m-widget3__body">
+                                        <p class="m-widget3__text card-job-description">
+                                            Detail Goes Here.....
+                                            <br> Lorem ipsum dolor sit amet,consectetuer edipiscing elit,sed diam nonummy nibh
+                                            euismod tinciduntut laoreet doloremagna aliquam erat volutpat. Lorem ipsum dolor
+                                            sit amet,consectetuer edipiscing elit
+                                        </p>
+                                        <button type="button" class="btn btn-primary card-button btn-sm custom-float-right" data-toggle="modal" data-target="#m_modal_escalate">
+                                            Escalate</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!--Timeline 2 text-->
+                    </div>
+                    <!--Job width-->
+
+                </div>
+            </div>
+            <!--End::Timeline 2 -->
+            <!--End: TimeLine Scrolable-->
+            <!--End: TimeLine Scrolable-->
+        </div>
+        <div class="col-md-3" [hidden]="!disputeRightSideActive">
+            <label class="m--font-danger custom-label-setting">
+                <span>*Choose Below Option Accordingly</span>
+            </label>
+            <div class="form-group m-form__group">
+                <label for="exampleSelect1">
+                    Order Status
+                </label>
+                <select name="status" id="order_status" class="form-control m-input m-input--air">
+                    <option value="inprogress">In-Progress</option>
+                    <option value="resolved">Resolved</option>
+                </select>
+            </div>
+            <div class="form-group m-form__group">
+                <div class="form-group">
+                    <label for="comment">Description:</label>
+                    <textarea class="form-control" rows="5" id="comment"></textarea>
+                </div>
+                <span class="m-form__help">
+                    We'll never share your order id with anyone else.
+                </span>
+            </div>
+            <button class="btn btn-primary m-btn m-btn--custom" type="button">
+                Submit
+            </button>
+        </div>
+
+        <div class="col-md-7" *ngIf="!disputeRightSideActive">
+
+        </div>
+    </div>
+    <!-- ___________ End Dispute Table______________ -->
+
+</div>
+
+
+<!-- Escalate Modal Start Here -->
+<div aria-labelledby="exampleModalLabel" class="modal fade custom-display" id="m_modal_escalate" role="dialog" tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Escalate
+                </h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-group">
+                    <div class="form-group m-form__group">
+                        <label>
+                            Date
+                        </label>
+                        <input class="form-control  m-input m-input--air" placeholder="" readonly="" value="7/13/2018" type="text">
+                    </div>
+                    <div class="form-group m-form__group">
+                        <label>
+                            Reason
+                        </label>
+                        <select class="form-control m-input m-input--air">
+                            <option>
+                                No-Response
+                            </option>
+                            <option>
+                                Late Delivery
+                            </option>
+                            <option>
+                                Low Qaulity
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group m-form__group">
+                        <label>
+                            Comments
+                        </label>
+                        <textarea class="form-control m-input m-input--air"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">
+                    Close
+                </button>
+                <button class="btn btn-primary" type="submit">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Escalate Modal End -->

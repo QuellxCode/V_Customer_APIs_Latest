@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- saved from url=(0098)https://bl.ocks.org/anonymoussc/raw/3ab4d42c9ef6a79fffd4/2f6af41828d7b451caccb73e4d969bb9ba89d323/ -->
+<html ng-app="myApp" class="js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths ng-scope"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}</style>
+    <title>AngularJS ngIf with CSS Animation and fallback for JavaScript animation</title>
+</head>
+
+<body marginwidth="0" marginheight="0">
+    <style>
+        /* ngIf animation */
+        .ifJsAnimation.ng-enter,
+        .ifJsAnimation.ng-leave {
+            -webkit-transition : opacity ease-in-out 1s;
+            -moz-transition    : opacity ease-in-out 1s;
+            -ms-transition     : opacity ease-in-out 1s;
+            -o-transition      : opacity ease-in-out 1s;
+            transition         : opacity ease-in-out 1s;
+        }
+
+        .ifJsAnimation.ng-enter,
+        .ifJsAnimation.ng-leave.ng-leave-active {
+            opacity : 0;
+        }
+
+        .ifJsAnimation.ng-leave,
+        .ifJsAnimation.ng-enter.ng-enter-active {
+            opacity : 1;
+        }
+    </style>
+    <div>
+        <button ng-click="toggleNgIf = !toggleNgIf">Display/Remove the div below</button>
+        <!-- ngIf: toggleNgIf -->
+    </div>
+
+    <script src="./jquery.min.js.download"></script>
+    <script src="./angular.min.js.download"></script>
+    <script src="./angular-animate.min.js.download"></script>
+    <script src="./modernizr.js.download"></script>
+    <script src="./script.js.download"></script>
+
+
+
+</body></html>

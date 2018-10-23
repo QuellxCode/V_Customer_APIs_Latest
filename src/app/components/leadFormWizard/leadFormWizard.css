@@ -1,0 +1,22 @@
+.listOfAvailableEmployees .m-widget4__item
+{
+    float:left;
+    width: 50%;
+}
+label:not(.m-radio)
+{
+    font-weight:500;
+}
+label.m-radio
+{
+font-size:12px;
+}
+
+.m-wizard__steps
+{
+    margin-top:10px !important;
+}
+.m-wizard__step
+{
+    padding:10px !important;
+}

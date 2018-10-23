@@ -1,0 +1,79 @@
+.m-portlet .m-portlet__head {
+  border-bottom: 1px solid #ebedf2;
+}
+
+.agm-map {
+  height: 400px;
+}
+
+.custom-pointer {
+  cursor: pointer;
+}
+
+.custom-display {
+  display: none;
+}
+
+.custom-align-center {
+  text-align: center;
+}
+
+.custom-float-right {
+  float: right;
+}
+
+.custom-font-weight {
+  font-weight: 500;
+}
+
+.custom-customer-underline {
+  border-bottom: 2px solid green;
+}
+
+.custom-company-underline {
+  border-bottom: 2px solid #716aca;
+}
+
+.custom-image-setting {
+  width: 35px !important;
+  height: 35px;
+}
+
+.checked-hover:hover {
+  color: orange;
+}
+
+.checked {
+  color: orange;
+}
+
+.custom-can-setting {
+  padding-left: 5px;
+  padding-right: 8px;
+}
+
+.custom-can-reschedule-setting {
+  float: right;
+  margin-right: -56px;
+}
+
+.custom-can-price-setting {
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  float: right !important;
+}
+
+.mcol {
+  height: 100%;
+}
+
+.m-content.m-content-nopadding {
+  padding: 0px !important;
+}
+m-widget4 m-widget4__item {
+  cursor: grab;
+  cursor: -webkit-grab;
+}
+.m-content {
+  padding: 0px 30px !important;
+}
