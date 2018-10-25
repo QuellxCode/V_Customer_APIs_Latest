@@ -211,7 +211,7 @@
 											<div class="m--padding-10 m--margin-top-10" *ngFor="let company of company_and_locations; let i = index;">
 												<!-- First Card Start -->
 												<h5>
-													{{company.name}}
+													{{company.company_name.name}}
 													<!--Comment Location 7-->
 													<!--Comment Location 7-->
 												</h5>
@@ -222,18 +222,26 @@
 													<!--{{company.email}}-->
 												<!--</p>-->
 													<br/>
-													<div class="m--padding-15" *ngFor="let location of company.locations; let indexLocation = index;"
+													<div class="m--padding-10 box-shadow_for_locations m--margin-bottom-10 row"
+														 *ngFor="let loc of company.location; let indexLocation = index;"
 														 [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'">
-														<h6>{{location.name | uppercase}}</h6>
-														<p class="custom-margin-bottom-zero">
-															{{location.address}}
-														</p>
+														<div class="col-md-12">
+															<h6>{{loc.name | uppercase}}</h6>
+														</div>
 
-														<button class="btn btn-sm btn-link btnLinkColor custom-fs-1"
-																(click)="sideInfoPop('service', company, indexLocation, i)" title="Click to view Company Services">
-															<i class="fa fa-cogs custom-fs-1" ></i>
-															Services
-														</button>
+														<div class="col-md-12">
+															<p class="custom-margin-bottom-zero">
+																{{loc.address}}
+															</p>
+														</div>
+
+														<div class="col-md-12">
+															<button class="btn btn-sm btn-link btnLinkColor custom-fs-1 pull-right c--margin-right--25"
+																	(click)="sideInfoPop('service', company, indexLocation, i)" title="Click to view Company Services">
+																<i class="fa fa-cogs custom-fs-1" ></i>
+																Services <i class="fa fa-chevron-right"></i>
+															</button>
+														</div>
 
 													</div>
 
@@ -249,6 +257,8 @@
 									
 									<!-- Map Start Here -->
 									<div class="col-sm-9" style="padding-right: 0px">
+										<input type="number" [(ngModel)]="radiusInMeters" />
+										<p> {{radiusInMeters}} </p>
 										<agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10" >
 											<agm-marker [latitude]="latitude" [longitude]="longitude" [iconUrl]="icon">
 												<agm-info-window>
@@ -267,7 +277,7 @@
 													<strong> Location Name  </strong>
 												</agm-info-window>
 											</agm-marker>
-											<agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="radiusInMeters" [fillColor]="'lightgreen'"
+											<agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="radiusInMeters" [fillColor]="'blue'"
 														[circleDraggable]="true" [editable]="true">
 											</agm-circle>
 
@@ -282,8 +292,8 @@
 												margin-top: 5px;" *ngIf="showServices">
 											<div class="container" style="padding: 10px">
 													<h4>
-															{{current_company_location.locations[selectedIndex].name}}
-															<span class="custom-float-right custom-pointer" (click)="showServices=false;">
+															{{current_company_location.location[selectedIndex].name}}
+															<span class="custom-float-right custom-pointer" (click)="showServices=false; selectedIndex=null;">
 																<i class="fa fa-times"></i>
 															</span>
 
@@ -302,7 +312,7 @@
 														<p class="custom-margin-bottom-zero">
 															<strong>
 																Address: 
-															</strong>{{current_company_location.locations[selectedIndex].address}}
+															</strong>{{current_company_location.location[selectedIndex].address}}
 														</p>
 														<p class="custom-margin-bottom-zero">
 															<strong>
@@ -328,36 +338,40 @@
 													</h5>
 
 													<div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderServices"></div>
+												<form (ngSubmit)="addServicesToCart(f)" #f="ngForm">
 													<div style="overflow-x:auto " *ngIf=" services.length > 0;">
-													<p class="custom-margin-bottom-zero"  *ngFor="let service of services;">
-														<span class="custom-width">
-															<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
-															height: 12px;">
-																<input type="checkbox" value="true" (change)="showBookButtonMap($event)">
-																<span></span>
-															</label>
-														</span>
-														<span class="custom-hover-change-color custom-pointer">
-															<span data-toggle="modal" data-target="#infoModal" (click)="selectService(i)">
-																{{service.service_name}}
+														<p class="custom-margin-bottom-zero"  *ngFor="let service of services; let serviceIndex = index;">
+															<span class="custom-width">
+																<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
+																height: 12px;">
+																	<input type="checkbox" [value]="service.rand_id" (change)="showBookButtonMap($event);" >
+																	<span></span>
+																</label>
 															</span>
-															
-														</span>
-														<span class="custom-float-right m--font-success">
-															{{service.price}}
-														</span>
-													</p>
-												</div>
+															<span class="custom-hover-change-color custom-pointer">
+																<span data-toggle="modal" data-target="#infoModal" (click)="selectService(i)">
+																	{{service.service_name}}
+																</span>
+
+															</span>
+															<span class="custom-float-right m--font-success">
+																{{ service.currency }} {{service.price}}
+															</span>
+														</p>
+													</div>
+												</form>
 												<ng-template #noServicesFound [ngIf]="services.length == 0 && !preloaderServices">
 													<p>No services found for this location.</p>
 												</ng-template>
 
 													<hr style="margin: 5px;">
 
+
+                                                -
 													<div class="row">
 															<div class="col-md-12" style="margin-top: 10px;
 															text-align: right;">
-															<a (click)="visibleSidebar2 = true; postServicesCart()" class="btn btn-sm btn-primary custom-margin-right-book-button" 
+															<a (click)="visibleSidebar2 = true; postServicesCart()" class="btn btn-sm btn-primary custom-margin-right-book-button"
 															[ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Book</a>
 															</div>
 													</div>

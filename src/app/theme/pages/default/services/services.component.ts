@@ -11,7 +11,7 @@ import {
     ElementRef,
     NgZone
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import { Helpers } from "../../../../helpers";
 import { ScriptLoaderService } from "../../../../_services/script-loader.service";
 import { } from "googlemaps";
@@ -286,6 +286,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     public company_and_locations = [];
 
+    selectedServices;
+
     // List of Markers for companies' locations
     markers: Array<{ latitude: number, longitude: number }> = [
         { 'latitude': 33.6844, 'longitude': 73.0479 },
@@ -420,7 +422,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                     this.longitude = position.coords.longitude;
                     this.latitude = position.coords.latitude;
                     console.log(`longitude: ${this.longitude} | latitude: ${this.latitude}`);
-                    this.getCompanies();
+                    // this.getCompanies();
+                    this.getCompaniesNew();
                     console.log('user_lat => ' + this.latitude + "| user_lng => " + this.longitude);
                 }
             });
@@ -430,7 +433,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         }
     }
 
-    // GET COMPANIES & LOCATIONS
+    // GET COMPANIES & LOCATIONS OLD CODE When the response was chaotic (changed on 24th October to getCompaniesNew())
     getCompanies() {
         let rawData = [];
         this._demoService.getCompanyAndTheirLocationsWithLatLng(this.latitude, this.longitude, this.radiusInKm).subscribe(
@@ -481,9 +484,35 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // )
     }
 
-    //  GET SPECIFIC LOCATION SERVICES'
 
-    //This fetches all the services of the selected location
+    //  NEW CODE ON 24th october to fetch companies and locations
+    getCompaniesNew() {
+
+        this._demoService.getCompanyAndTheirLocationsWithLatLng(this.latitude, this.longitude, this.radiusInKm).subscribe(
+            (response: any) => {
+                console.log("Radius is => " + this.radiusInKm); console.log("Response =", response);
+                // Check if email KEY exists
+                console.log(this.selectedParentIndex + " -> " + this.selectedIndex);
+                this.company_and_locations = response.data;
+                // For Pushing Markers in markers Array
+                this.company_and_locations.forEach(x=> { x.location.forEach( y=>{
+                    this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
+                    })
+
+                });
+                console.log(this.markers);
+                console.log(this.company_and_locations);
+                this.preloader = false;
+
+
+            },
+            (err) => { console.error(err) },
+            () => { console.log('Data Fetched.') }
+        )
+
+    }
+
+    //This fetches all the services of the selected location OLD CODE (changed on 24th october to FetchCompaniesLocationSerices())
     FetchCompanyLocationServices() {
         this.preloaderServices = true;
         console.log("This here now ! " + this.current_company_location.locations[this.selectedIndex].rand_id);
@@ -504,16 +533,24 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
 
 
-    getCompanyServices() {
-        this._demoService.getCompanyServices().subscribe(
-            (response: any) => {
-                console.log("Response =", response); this.services = response.data.services;
-                this.currentService = this.services[0]
+    //  NEW CODE ON 24th october to fetch Services against locations
+    FetchCompanyLocationServicesNew() {
+        this.preloaderServices = true;
+        console.log("This here now ! " + this.current_company_location.location[this.selectedIndex].rand_id);
+        this._demoService.getCompanyLocationServices(this.current_company_location.location[this.selectedIndex].rand_id).subscribe(
+            (res: any) => {
+                console.log(" Current_Company_Location" + this.current_company_location.data);
+                console.log("hello selected => " + this.selectedIndex);
+                console.log("This here then ! =>" + this.current_company_location.location[this.selectedIndex].rand_id);
+                console.log(this.services = res.data);
+                // this.preloaderServices = false;
             },
-
-            err => { console.error(err) },
-            () => { console.log("Services FETCHED!") }
-        )
+            (err) => { console.error(err) },
+            () => {
+                console.log('Done Fetching Services');
+                this.preloaderServices = false;
+            }
+        );
     }
 
 
@@ -529,7 +566,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             this.selectedIndex = index;
             this.selectedParentIndex = parentIndex;
             console.log(this.current_company_location = location);
-            this.FetchCompanyLocationServices();
+            // this.FetchCompanyLocationServices(); OLD METHODE
+            this.FetchCompanyLocationServicesNew();
 
             // this.showOrderHistory = false;
             // this.showInfo = false;
@@ -540,6 +578,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             this.showInfo = true;
         }
     }
+
 
 
     // getCompanies() {

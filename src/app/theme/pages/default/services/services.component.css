@@ -642,3 +642,11 @@ textarea.ng-invalid.ng-touched {
   border: 1px solid rgba(0,0,0,0.5);
   width: 55%;
 }
+
+.box-shadow_for_locations {
+  box-shadow: rgb(238, 238, 238) 1px 1px 3px 3px;
+}
+
+.c--margin-right--25 {
+  margin-right: -25px !important;
+}
