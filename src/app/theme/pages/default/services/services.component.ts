@@ -11,7 +11,7 @@ import {
     ElementRef,
     NgZone
 } from "@angular/core";
-import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
+import { FormControl, FormGroup, NgForm, Validators } from "@angular/forms";
 import { Helpers } from "../../../../helpers";
 import { ScriptLoaderService } from "../../../../_services/script-loader.service";
 import { } from "googlemaps";
@@ -495,8 +495,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                 console.log(this.selectedParentIndex + " -> " + this.selectedIndex);
                 this.company_and_locations = response.data;
                 // For Pushing Markers in markers Array
-                this.company_and_locations.forEach(x=> { x.location.forEach( y=>{
-                    this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
+                this.company_and_locations.forEach(x => {
+                    x.location.forEach(y => {
+                        this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
                     })
 
                 });

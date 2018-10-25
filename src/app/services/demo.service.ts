@@ -37,6 +37,11 @@ export class DemoService {
 
 
 
+    getCustomerOrders(){
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/order-customer/'+customer_id, httpOptions);
+    }
+
 
 
 

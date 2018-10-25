@@ -9,6 +9,7 @@ import {
 import { DragulaService } from "ng2-dragula/ng2-dragula";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ScriptLoaderService } from "../../../../_services/script-loader.service";
+import { DemoService } from "../../../../services/demo.service";
 declare var $: any;
 
 @Component({
@@ -38,10 +39,18 @@ export class OrderComponent implements OnInit {
     detailModalService: string;
     detailModalPrice: Number;
 
+    // lead section arrays
+    order_stage_1;      //lead 
+    order_stage_2;      // schedule
+    order_stage_3;      // completed
+    customerOrders;
+    servicesToShow = [];
+
     @ViewChild("search") public searchElementRef: ElementRef;
     constructor(
         private dragulaService: DragulaService,
-        private _script: ScriptLoaderService
+        private _script: ScriptLoaderService,
+        private demo : DemoService
     ) {
         //Dynamic Schedule Array
 
@@ -93,6 +102,9 @@ export class OrderComponent implements OnInit {
     public searchControl: FormControl;
 
     ngOnInit() {
+
+        // console.log(JSON.parse(localStorage.getItem('currentUser')).success.user_id);
+
         var text,
             counter = 0;
         $(document).on("click", "#add-service-request", function() {
@@ -127,6 +139,11 @@ export class OrderComponent implements OnInit {
         `
                 );
         });
+
+        // lead section
+        this.fetchCustomerOrder(); 
+        
+    
     }
     ngAfterViewInit() {
         this._script.loadScripts("app-order", [
@@ -142,9 +159,37 @@ export class OrderComponent implements OnInit {
         this.RescheduleModalService = service;
     }
 
-    setDetailModalData(name: string, price: number, service: string) {
-        this.detailModalName = name;
-        this.detailModalService = service;
-        this.detailModalPrice = price;
+    setDetailModalData(services) {
+        this.servicesToShow = services;
     }
+
+    // lead code
+
+    
+
+    fetchCustomerOrder(){
+        this.demo.getCustomerOrders().subscribe(
+            (data: any) => { 
+                console.log(data.data);
+                this.customerOrders = data.data 
+                this.order_stage_1 = this.customerOrders.filter(x=>x.order_stage.trim()=="1");
+                this.order_stage_2 = this.customerOrders.filter(x=>x.order_stage.trim()=="2");
+                this.order_stage_3 = this.customerOrders.filter(x=>x.order_stage.trim()=="3");
+
+                console.log("Pending ", this.order_stage_1, "Scheduled", this.order_stage_2,"Completed",this.order_stage_3);
+            //     let res = data.data;
+            //    let orderStage = res[0].order_stage;
+            //    console.log(orderStage);
+            //     if( orderStage == 1){
+            //         console.log("inside if0");
+            //       this.order_stage_1 = res[0].services;
+            //       console.log("service Data "+this.order_stage_1); 
+            //     }
+              },
+            err => console.error(err),
+            () => console.log('Done Fetching Lead Data ')
+
+        );
+    }
+
 }
