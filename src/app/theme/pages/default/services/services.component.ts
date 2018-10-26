@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { Response } from '@angular/http';
 import { Http } from '@angular/http';
 import { DemoService } from './../../../../services/demo.service';
@@ -11,7 +12,7 @@ import {
     ElementRef,
     NgZone
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators, NgForm } from "@angular/forms";
 import { Helpers } from "../../../../helpers";
 import { ScriptLoaderService } from "../../../../_services/script-loader.service";
 import { } from "googlemaps";
@@ -126,6 +127,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     /**/
     companies: any = [];
+    user_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+    cartServices = [];
+    
+    
     cityName = '';
     currentService = {
         name: "",
@@ -133,9 +138,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         details: "",
 
     };
-
-
-
+    total_price = 456;
+    
 
 
     /*  currentService= {
@@ -228,7 +232,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         { name: "Oil & Oil Filter Change", price: "12.00" },
         { name: "Spark Plugs Changing", price: "60.00 " }
     ];
-
+    
     itemsArray2 = [
         { name: "Fancy Cutting", price: "100.00" },
         { name: "Head Shaving", price: "50.00 " }
@@ -278,8 +282,18 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     services = [];  // This will have all the services that are reyurned against a company location
     company_locations = [];
     current_company_location;
+    current_company_name;      
     selectedIndex;
     selectedParentIndex;
+    staff_book_date;
+    staff_book_time;
+    employee_Id;
+    saveStaff;
+    proceedService;
+
+
+
+
 
     preloader: boolean = true;  // While showing Companies & Locations this loader will trigger until fetched
     preloaderServices: boolean = true; // While showing services this loader will trigger until fetched
@@ -294,16 +308,21 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     // Filtered locations based on user radius selection from front end
     filteredMarkers = [];
 
+    locationEmployees= [];
+
+
 
     /* ------------------ AWS CODE END ---------------------- */
 
     ngOnInit() {
-        // console.log(localStorage.getItem('token'));
-
+        // let user_id = JSON.parse(localStorage.getItem('currentUser')).data.user_id;
         this.getUserLocation();  // Return User Location Lat lng
-        // this.getCompanyServices();
-        // this.getCompanies();
+        this.getServicestoCart();
+        
+        // this.getStaffFromLocation();
+      
 
+     
 
 
         this.searchControl = new FormControl();
@@ -420,7 +439,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                     this.longitude = position.coords.longitude;
                     this.latitude = position.coords.latitude;
                     console.log(`longitude: ${this.longitude} | latitude: ${this.latitude}`);
-                    this.getCompanies();
+                    this.getCompaniesNew();
                     console.log('user_lat => ' + this.latitude + "| user_lng => " + this.longitude);
                 }
             });
@@ -430,38 +449,21 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         }
     }
 
-    // GET COMPANIES & LOCATIONS
-    getCompanies() {
-        let rawData = [];
+
+   
+    getCompaniesNew() {
+
         this._demoService.getCompanyAndTheirLocationsWithLatLng(this.latitude, this.longitude, this.radiusInKm).subscribe(
             (response: any) => {
                 console.log("Radius is => " + this.radiusInKm); console.log("Response =", response);
-                rawData = response.data;
-
                 // Check if email KEY exists
-                this.company_and_locations = rawData.filter(x => x["email"] != undefined);
+                console.log(this.selectedParentIndex + " -> " + this.selectedIndex);
+                this.company_and_locations = response.data;
+                // For Pushing Markers in markers Array
+                this.company_and_locations.forEach(x=> { x.location.forEach( y=>{
+                    this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
+                    })
 
-                // OLD CODE with for each
-                // rawData.forEach(x => {
-                //     if(x["email"] != undefined)
-                //     {
-                //         this.company_and_locations.push(x);
-                //     }
-                // })
-
-                this.company_and_locations.forEach(x => {
-                    x["locations"] = rawData.filter(y => {
-                        if (y["user_id"] == x["id"]) {
-                            this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
-                            //  console.log(y.lat + " " + y.lng);
-                            // console.log(y);
-                            return x;
-                        }
-                        else {
-                            return null;
-                        }
-                    }
-                    )
                 });
                 console.log(this.markers);
                 console.log(this.company_and_locations);
@@ -473,25 +475,16 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             () => { console.log('Data Fetched.') }
         )
 
-        /* OLD CODE */
-        // this._demoService.getCompanies().subscribe(
-        //     (response:any) => { this.companies = response.data;},
-        //     err => { console.error(err)},
-        //     () => { console.log("ALL Companies FETCHED!") }
-        // )
     }
 
-    //  GET SPECIFIC LOCATION SERVICES'
-
-    //This fetches all the services of the selected location
-    FetchCompanyLocationServices() {
+    FetchCompanyLocationServicesNew() {
         this.preloaderServices = true;
-        console.log("This here now ! " + this.current_company_location.locations[this.selectedIndex].rand_id);
-        // console.log(this.selectedIndex);
-        console.log(this.current_company_location);
-        this._demoService.getCompanyLocationServices(this.current_company_location.locations[this.selectedIndex].rand_id).subscribe(
+        console.log("This here now:!! " + this.current_company_location.location[this.selectedIndex].rand_id);
+        this._demoService.getCompanyLocationServices(this.current_company_location.location[this.selectedIndex].rand_id).subscribe(
             (res: any) => {
-                console.log("This here then ! =>" + this.current_company_location.locations[this.selectedIndex].rand_id);
+                console.log(" Current_Company_Location" + this.current_company_location.data);
+                console.log("hello selected => " + this.selectedIndex);
+                console.log("This here then ! =>" + this.current_company_location.location[this.selectedIndex].rand_id);
                 console.log(this.services = res.data);
                 // this.preloaderServices = false;
             },
@@ -502,20 +495,213 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             }
         );
     }
-
-
-    getCompanyServices() {
-        this._demoService.getCompanyServices().subscribe(
-            (response: any) => {
-                console.log("Response =", response); this.services = response.data.services;
-                this.currentService = this.services[0]
-            },
-
-            err => { console.error(err) },
-            () => { console.log("Services FETCHED!") }
+    
+  
+    addServicestoCart()
+    {  
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        let service_id = this.services[0].rand_id; //Add this.selectedIndex
+        let company_id = this.current_company_location.company_name.id;
+        this._demoService.postSevicestoCart(customer_id, service_id, company_id)
+        .subscribe(
+            (response:any) => {},
+             (err) => { console.error(err) },
+              () => { console.log("Status 200 Posted!") }
         )
     }
 
+    getServicestoCart(){
+        this._demoService.getSevicestoCart(this.user_id).subscribe(
+        (response:any) => { this.cartServices = response.data;},
+         err => { console.error(err)},
+        () => { console.log("Cart Fetching is working") }
+
+        )
+    }
+
+    getStaffFromLocation(){
+        let location_randId = this.current_company_location.location[this.selectedIndex].rand_id;
+           this._demoService.getStaffFromLocation(location_randId).subscribe(
+            (response:any) => {this.locationEmployees = response.data; console.log(this.locationEmployees = response.data)},
+            err => { console.error(err)},
+        () => { console.log("Get staff from location API Is running. Staff for the location is: .", this.locationEmployees) }
+ 
+        )
+    }
+
+    proceedCartServices()
+    {  
+        let company_id = this.current_company_location.company_name.id;
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+         
+       
+        this._demoService.proceedCartServices(this.total_price, company_id, customer_id)
+        .subscribe(
+            (response:any) => {this.proceedService = response.data;
+                                console.log("Proceed Cart Service: ",this.proceedService)},
+             (err) => { console.error(err) },
+              () => { console.log("Proceed Cart Services have been posted", ) }
+        )
+    }
+
+ 
+    changeDateFunc(event) {
+        this.staff_book_date = event.target.value; 
+        console.log("The date selected is ", this.staff_book_date);
+    }
+
+    changeTimeFunc(event) {
+        this.staff_book_time = event.target.value; 
+        console.log("The time selected is ", this.staff_book_time);
+    }
+
+    
+    getEmpId(event){
+        this.employee_Id = event.target.value;
+        console.log("EMPLOYEEE ID: ",this.employee_Id)
+    }
+
+    saveStaffSchedule(){
+        let company_id = this.current_company_location.company_name.id;
+       
+       
+        console.log("Employe ID: ",this.employee_Id,"Date: ",this.staff_book_date,"Time: ",this.staff_book_time, 
+        "Company ID: ",company_id)
+        this._demoService.saveStaffSchedule(company_id, this.employee_Id, this.staff_book_date, this.staff_book_time)
+        .subscribe(
+            (response:any) => {this.saveStaff = response.data},
+             (err) => { console.error(err) },
+              () => { console.log("Staff Schedule has been saved: ", this.saveStaff) }
+        )
+    }
+
+
+    placeCartOrder(){
+        let status_set_id = 1;
+        let company_id = this.current_company_location.company_name.id;
+        console.log("Company ID is", company_id);
+        this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
+            (response:any) => { },
+            (err) => { console.error(err) },
+            () => { console.log("Status 01 HAS BEEN Posted!")}
+        )
+    
+    }
+
+
+    getAllCartData(){
+        let company_id = this.current_company_location.company_name.id;
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        let price = this.total_price;
+        
+
+    }
+
+
+        // GET COMPANIES & LOCATIONS
+    // getCompanies() {
+    //     let rawData = [];
+    //     this._demoService.getCompanyAndTheirLocationsWithLatLng(this.latitude, this.longitude, this.radiusInKm).subscribe(
+    //         (response: any) => {
+    //             console.log("Radius is => " + this.radiusInKm); console.log("Response =", response);
+    //             rawData = response.data;
+
+    //             // Check if email KEY exists
+    //             this.company_and_locations = rawData.filter(x => x["email"] != undefined);
+
+    //             // OLD CODE with for each
+    //             // rawData.forEach(x => {
+    //             //     if(x["email"] != undefined)
+    //             //     {
+    //             //         this.company_and_locations.push(x);
+    //             //     }
+    //             // })
+
+    //             this.company_and_locations.forEach(x => {
+    //                 x["locations"] = rawData.filter(y => {
+    //                     if (y["user_id"] == x["id"]) {
+    //                         this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
+    //                         //  console.log(y.lat + " " + y.lng);
+    //                         // console.log(y);
+    //                         return x;
+    //                     }
+    //                     else {
+    //                         return null;
+    //                     }
+    //                 }
+    //                 )
+    //             });
+    //             console.log(this.markers);
+    //             console.log("COMPANIES ARE SHOWN HERE:",this.company_and_locations);
+    //             this.preloader = false;
+
+
+    //         },
+    //         (err) => { console.error(err) },
+    //         () => { console.log('Data Fetched.') }
+    //     )
+
+     
+    // }
+
+
+        //  GET SPECIFIC LOCATION SERVICES'
+
+    //This fetches all the services of the selected location
+    // FetchCompanyLocationServices() {
+    //     this.preloaderServices = true;
+    //     console.log("This here now ! " + this.current_company_location.locations[this.selectedIndex].rand_id);
+    //     // console.log(this.selectedIndex);
+    //     console.log(this.current_company_location);
+    //     this._demoService.getCompanyLocationServices(this.current_company_location.locations[this.selectedIndex].rand_id).subscribe(
+    //         (res: any) => {
+    //             console.log("This here then ! =>" + this.current_company_location.locations[this.selectedIndex].rand_id);
+    //             console.log("RAND ID FOR THIS LOCATION IS: =>" + this.current_company_location.locations[this.selectedIndex].rand_id);
+    //             console.log(this.services = res.data);
+    //             // this.preloaderServices = false;
+
+    //         },
+    //         (err) => { console.error(err) },
+    //         () => {
+    //             console.log('Done Fetching Services');
+    //             this.preloaderServices = false;
+    //         }
+    //     );
+    // }
+
+
+            /*
+            
+        this._demoService.postSevicestoCart(customer_id, service_id, company_id)
+        .subscribe(
+            (response:any) => {},
+             (err) => { console.error(err) },
+              () => { console.log("Status 200 Posted!") }
+        )
+    }
+            */
+
+
+
+       /* OLD CODE */
+        // this._demoService.getCompanies().subscribe(
+        //     (response:any) => { this.companies = response.data;},
+        //     err => { console.error(err)},
+        //     () => { console.log("ALL Companies FETCHED!") }
+        // )
+
+     // getCompanies() {
+    //     this._demoService.getCompanies().
+   //       subscribe(
+    //         (response:any) => { /*console.log("Response =" , response);*/ this.companies = response.data;/* this.currentService = this.services[0]*/
+    //      /* console.log("Response = " , this.companies);*/
+    //     localStorage.setItem('company_id', response.data['0'].user_id);
+    // },
+
+    //         err => { console.error(err)},
+    //         () => { console.log("ALL Companies FETCHED!") } 
+    //     )
+    // }
 
     sideInfoPop(value: string, location, index: number, parentIndex: number) {
         if (value == "service") {
@@ -529,7 +715,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             this.selectedIndex = index;
             this.selectedParentIndex = parentIndex;
             console.log(this.current_company_location = location);
-            this.FetchCompanyLocationServices();
+            this.FetchCompanyLocationServicesNew();
 
             // this.showOrderHistory = false;
             // this.showInfo = false;
@@ -542,17 +728,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
 
 
-    // getCompanies() {
-    //     this._demoService.getCompanies().subscribe(
-    //         (response:any) => { /*console.log("Response =" , response);*/ this.companies = response.data;/* this.currentService = this.services[0]*/
-    //      /* console.log("Response = " , this.companies);*/
-    //     localStorage.setItem('company_id', response.data['0'].user_id);
-    // },
-
-    //         err => { console.error(err)},
-    //         () => { console.log("ALL Companies FETCHED!") } 
-    //     )
-    // }
+   
 
 
     // getCompanyServices() {

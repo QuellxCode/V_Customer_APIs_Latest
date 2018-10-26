@@ -1,0 +1,104 @@
+<!--Start: Comment Location 1-->
+<div class="row gridView" style="padding: 0px 10px;" [style.display]="(isGridView && !isDisplayDetail) ? 'flex' : 'none'">
+
+
+    <div class="col-md-6" *ngFor="let item of serData">
+        <div class="body organ1 serviceCard">
+            <div class="row custom-margin-zero">
+                <div class="card-left col-lg-3" id="">
+                    <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
+                        <input class="chkboxes" type="checkbox">
+                        <span></span>
+                    </label>
+
+                    <div class="row onepersonrow">
+
+                        <div class="col-md-12">
+                            <img class="personimage" src="./assets/demo/demo3/media/img/doctor.jpg">
+                            <p class="personname">{{item.name}}</p>
+                            <p class="persontype">{{item.latitude}}</p>
+                        </div>
+                    </div>
+
+
+
+                    <p class="personappartmentno">
+                        <i class="fa fa-clock-o"></i> 6:00 - 23:00</p>
+                    <p class="personbuildingname">
+                        <i class="fa fa-money"></i> $60 - $200</p>
+                    <p class="personaddress">
+                        <i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada</p>
+                    <a class="btn btn-default chatServiceButton" href="javascript:;">
+                        <i class="la la-comments"></i> Message</a>
+
+                </div>
+                <div class="card-right col-lg-9">
+                    <h6 class="text-muted pull-left">
+                        <i class="fa fa-cog"></i> {{item.details}}</h6>
+                    <button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
+                    <div class="clearfix"></div>
+                    <div class="row services-categories">
+                        <div class="col-md-12 category-list">
+                            <h6 class="service-heading">{{item.longitude}}</h6>
+                            <div class="row service-item">
+                                <div class="col-md-6">
+                                    {{item.location}}
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="m--font-success">
+                                        ${{item.publish}}.50
+                                    </span>
+                                </div>
+                                <div class="col-md-3">
+                                    <a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">{{item.created_at}} </a>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+
+                            </div>
+                            <div class="row service-item">
+                                <div class="col-md-6">
+                                    {{item.name}}
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="m--font-success">
+                                        ${{item.price}}.00
+                                    </span>
+                                </div>
+                                <div class="col-md-3">
+                                    <a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">{{item.category_id}} </a>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+
+                            </div>
+                            <div class="row service-item">
+                                <div class="col-md-6">
+                                    {{item.staff}}
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="m--font-success">
+                                        ${{item.status}}
+                                    </span>
+                                </div>
+                                <div class="col-md-3">
+                                    <a class="btn btn-sm btn-primary" data-target="#addBookingModal" data-toggle="modal">{{item.duration}} </a>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--End: Comment Location 1-->

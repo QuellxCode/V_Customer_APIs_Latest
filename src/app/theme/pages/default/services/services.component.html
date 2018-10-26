@@ -72,7 +72,7 @@
 
 		<div style="padding-right:0px;">
 			<!--Start: List/Grid View-->
-
+			<button class="btn-primary" style="padding:10px; border-radius: 20px; font-size: 22px" (click)="visibleSidebar2 = true; getServicestoCart(); services"><i style="font-size: 26px" class="la la-cart-arrow-down"></i>Open Cart</button>
 			<!--   <span (click)="isDisplayDetail=false;">
 			   <button class="btn btn-link pull-right" (click)="changeView()">
 				<i class="fa" [ngClass]="{'fa-list' :   isListViewHide, 'fa-th' :isGridViewHide }"></i> {{viewName}} </button>
@@ -208,10 +208,10 @@
 															  </div>
 												 </form>
 											<div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
-											<div class="m--padding-10 m--margin-top-10" *ngFor="let company of company_and_locations; let i = index;">
+											<div class="m--padding-10 m--margin-top-10" *ngFor="let company of company_and_locations">
 												<!-- First Card Start -->
 												<h5>
-													{{company.name}}
+													{{company.company_name.name}}
 													<!--Comment Location 7-->
 													<!--Comment Location 7-->
 												</h5>
@@ -222,11 +222,11 @@
 													<!--{{company.email}}-->
 												<!--</p>-->
 													<br/>
-													<div class="m--padding-15" *ngFor="let location of company.locations; let indexLocation = index;"
+													<div class="m--padding-15" *ngFor="let loc of company.location; let indexLocation = index;"
 														 [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'">
-														<h6>{{location.name | uppercase}}</h6>
+														<h6>{{loc.name | uppercase}}</h6>
 														<p class="custom-margin-bottom-zero">
-															{{location.address}}
+															{{loc.address}}
 														</p>
 
 														<button class="btn btn-sm btn-link btnLinkColor custom-fs-1"
@@ -282,7 +282,7 @@
 												margin-top: 5px;" *ngIf="showServices">
 											<div class="container" style="padding: 10px">
 													<h4>
-															{{current_company_location.locations[selectedIndex].name}}
+															{{current_company_location.location[selectedIndex].name}}
 															<span class="custom-float-right custom-pointer" (click)="showServices=false;">
 																<i class="fa fa-times"></i>
 															</span>
@@ -302,7 +302,7 @@
 														<p class="custom-margin-bottom-zero">
 															<strong>
 																Address: 
-															</strong>{{current_company_location.locations[selectedIndex].address}}
+															</strong>{{current_company_location.location[selectedIndex].address}}
 														</p>
 														<p class="custom-margin-bottom-zero">
 															<strong>
@@ -357,9 +357,12 @@
 													<div class="row">
 															<div class="col-md-12" style="margin-top: 10px;
 															text-align: right;">
-															<a (click)="visibleSidebar2 = true; postServicesCart()" class="btn btn-sm btn-primary custom-margin-right-book-button" 
-															[ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Book</a>
+															<a (click)="addServicestoCart();" class="btn btn-sm btn-primary custom-margin-right-book-button" 
+															[ngClass]="{'active': activeBookMap}">Add to Cart</a>
+															
 															</div>
+
+															
 													</div>
 											</div>
 									</div>
@@ -424,8 +427,8 @@
 
 				<p><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
 				
-			   <div class="custom-card-shadow">
-				<h4 style="color:#716aca">Handy Autos
+			   <div class="custom-card-shadow" *ngFor="let cartService of cartServices">
+		<h4 style="color:#716aca">{{cartService.company_name}}
 					<br class="add-line-break">
 	
 					 <span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
@@ -448,15 +451,16 @@
 						  </tr>
 						</thead>
 						<tbody>
-						  <tr *ngFor="let item of itemsArray; let i= index">
+						  <tr *ngFor="let serviceinfo of cartService.service"><!-- *ngFor="let i= index"-->
 							<ng-container *ngIf="deleted">
 							<td class="text-center custom-pointer">
 								<a (click)="onDelete(i)">
 									<i class="fa fa-trash" style="color: #f5516c;"></i>
 								</a>
 							</td>
-							<th scope="row" >{{item.name}}</th>
-							<td >${{item.price}}</td>
+							<th scope="row" >{{serviceinfo.name}}</th>
+							<th>{{serviceinfo.price}}</th>
+							<!-- <td >${{cartService.price}}</td> -->
 							
 						   </ng-container>
 						  </tr>
@@ -501,7 +505,7 @@
 
 					  <div class="col text-right">
 							<button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
-								(click)="activeTab('schedule')">Proceed</button>
+								(click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices()">Proceed S1</button>
 						</div>
 			   </div>
 
@@ -628,7 +632,7 @@
 							</div>
 						</div>
 					</div>
-					<button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('more')">Proceed</button>
+					<button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('more')">Proceed S3</button>
 
 				</div>
 
@@ -708,7 +712,7 @@
 
 						<p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
 		
-						<button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true">Order Now</button>
+						<button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true;placeCartOrder()">Order Now</button>
 						<button class="btn btn-danger custom-float-right" (click)="visibleSidebar2 = false" style="    margin-right: 5px;">Cancel</button>
 	
 				</div>
@@ -733,10 +737,9 @@
 				<form>
 					<div class="form-group">
 						<label for="sel1" style="font-weight: bold;">Select Employee</label>
-						<select class="form-control" id="sel1">
+						<select class="form-control" id="sel1" (change)=getEmpId($event)>
 							<option>No Preferences </option>
-							<option>John Smith </option>
-							<option>David Luiz</option>
+							<option  *ngFor="let employee of locationEmployees; let empIndex = index;" value={{employee.staff_id}} #empId>{{employee.name}} </option>
 						</select>
 					</div>
 
@@ -805,9 +808,10 @@
                         </label>
                         <br>
                         <div>
-                            <div class="input-group date">
-                                <input class="form-control m-input " id="m_datepicker_2_validate" placeholder="Select Date" readonly="" type="text">
-                                <div class="input-group-append">
+                            <div class="Iinput-group date">
+                                <!-- <input [(ngModel)]="staff_book_date" class="form-control m-input " id="m_datepicker_2_validate" placeholder="Select Date" type="date"> -->
+								<div class="input-group-append">
+										<input  class="form-control m-input" (change)="changeDateFunc($event);"  placeholder="Select Date" type="date">
                                     <span class="input-group-text">
                                         <i class="la la-calendar-check-o glyphicon-th"></i>
                                     </span> 
@@ -815,7 +819,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group m-form__group">
                         <label>
                            <strong> Select Time Slot </strong>
@@ -823,7 +826,7 @@
                         <br>
                         <div>
                             <div class="input-group date">
-                                <input class="form-control m-input timepicker" id="m_timepicker_2_validate" placeholder="Select Time " readonly="" type="text">
+                                <input class="form-control m-input timepicker" (change)="changeTimeFunc($event);" id="m_timepicker_2_validate" placeholder="Select Time " type="time">
                                 <div class="input-group-append">
                                     <span class="input-group-text">
                                         <i class="la la-calendar-check-o glyphicon-th"></i>
@@ -835,10 +838,10 @@
 				</form>
 
 				
-
+			
 				<div class="col text-right">
 						<button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
-							(click)="activeTab('payment')">Proceed</button>
+							(click)="activeTab('payment'); saveStaffSchedule()">Proceed S2</button>
 				</div>
 
 			</div>
