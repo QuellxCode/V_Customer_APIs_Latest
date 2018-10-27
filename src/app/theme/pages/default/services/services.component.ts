@@ -281,6 +281,17 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     selectedIndex;
     selectedParentIndex;
 
+    staff_book_date;
+    staff_book_time;
+    employee_Id;
+    saveStaff;
+    proceedService;
+
+    user_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+    cartServices = [];
+    total_price = 456;
+    locationEmployees= [];
+
     preloader: boolean = true;  // While showing Companies & Locations this loader will trigger until fetched
     preloaderServices: boolean = true; // While showing services this loader will trigger until fetched
 
@@ -292,6 +303,39 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     markers: Array<{ latitude: number, longitude: number }> = [
         { 'latitude': 33.6844, 'longitude': 73.0479 },
     ];
+
+    payment: Array<{}> = [
+        {
+            "card_name":"card_number",
+            "card_expiry_month":4,
+            "card_expiry_year":2018,
+            "card_cvv":123,
+            "card_holder_name":"card_holder_name"
+        }
+    ]
+
+
+    services: Array<{}> = [
+        {
+            "services_id":"test_Id",
+            "service_name":"test_name",
+        }
+    ]
+
+
+    data: Array <{}> = [
+        {
+            "company_id":265,
+            "customer_id":269,
+            "total_price":this.total_price,
+            "services": this.services,
+            "employee_id":"00000",
+            "date":"2018-10-12",
+            "time":"07:00:44",
+            "company_schedule":"company_timings",
+            "payment" : this.payment
+        }
+    ]
 
     // Filtered locations based on user radius selection from front end
     filteredMarkers = [];
@@ -551,6 +595,126 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                 this.preloaderServices = false;
             }
         );
+    }
+
+    addServicesToCart()
+    {
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        let service_id = this.services[0].rand_id; //Add this.selectedIndex
+        let company_id = this.current_company_location.company_name.id;
+        console.log('Customer =>' + customer_id + ' Service => ' + service_id + ' Company=> ' + company_id );
+        this._demoService.postSevicestoCart(customer_id, service_id, company_id)
+            .subscribe(
+                (response:any) => {},
+                (err) => { console.error(err) },
+                () => { console.log("Status 200 Posted!") }
+            )
+    }
+
+    getServicesToCart(){
+        this._demoService.getSevicestoCart(this.user_id).subscribe(
+            (response:any) => { this.cartServices = response.data;},
+            err => { console.error(err)},
+            () => { console.log("Cart Fetching is working") }
+
+        )
+    }
+
+    getStaffFromLocation(){
+        let location_randId = this.current_company_location.location[this.selectedIndex].rand_id;
+        this._demoService.getStaffFromLocation(location_randId).subscribe(
+            (response:any) => {this.locationEmployees = response.data; console.log(this.locationEmployees = response.data)},
+            err => { console.error(err)},
+            () => { console.log("Get staff from location API Is running. Staff for the location is: .", this.locationEmployees) }
+
+        )
+    }
+
+    proceedCartServices()
+    {
+        let company_id = this.current_company_location.company_name.id;
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+
+
+        this._demoService.proceedCartServices(this.total_price, company_id, customer_id)
+            .subscribe(
+                (response:any) => {this.proceedService = response.data;
+                    console.log("Proceed Cart Service: ",this.proceedService)},
+                (err) => { console.error(err) },
+                () => { console.log("Proceed Cart Services have been posted", ) }
+            )
+    }
+
+
+    changeDateFunc(event) {
+        this.staff_book_date = event.target.value;
+        console.log("The date selected is ", this.staff_book_date);
+    }
+
+    changeTimeFunc(event) {
+        this.staff_book_time = event.target.value;
+        console.log("The time selected is ", this.staff_book_time);
+    }
+
+
+    getEmpId(event){
+        this.employee_Id = event.target.value;
+        console.log("EMPLOYEEE ID: ",this.employee_Id)
+    }
+
+    saveStaffSchedule(){
+        let company_id = this.current_company_location.company_name.id;
+
+
+        console.log("Employe ID: ",this.employee_Id,"Date: ",this.staff_book_date,"Time: ",this.staff_book_time,
+            "Company ID: ",company_id)
+        this._demoService.saveStaffSchedule(company_id, this.employee_Id, this.staff_book_date, this.staff_book_time)
+            .subscribe(
+                (response:any) => {this.saveStaff = response.data},
+                (err) => { console.error(err) },
+                () => { console.log("Staff Schedule has been saved: ", this.saveStaff) }
+            )
+    }
+
+
+    placeCartOrder(){
+        let status_set_id = 1;
+        let company_id = this.current_company_location.company_name.id;
+        console.log("Company ID is", company_id);
+        this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
+            (response:any) => { },
+            (err) => { console.error(err) },
+            () => { console.log("Status 01 HAS BEEN Posted!")}
+        )
+
+    }
+
+    //--------------------------------- Save Order Information and Place Order -----------------------------------------
+
+    PlaceOrderInformation(){
+        let company_id = this.current_company_location.company_name.id;
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        let company_timings = "Timings";
+
+
+        this._demoService.saveOrderInformation(company_id, customer_id, this.total_price, this.services, this.employee_Id,
+            this.staff_book_date, this.staff_book_time, company_timings, this.payment).subscribe(
+            (res:any) => { console.log(res.data);
+
+            },
+            () => {},
+            () => {}
+        )
+    }
+
+
+
+    getAllCartData(){
+        let company_id = this.current_company_location.company_name.id;
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        let price = this.total_price;
+
+
     }
 
 
