@@ -37,6 +37,11 @@ export class DemoService {
 
 
 
+    // getCustomerOrders(){
+    //     let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+    //     return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/order-customer/'+customer_id, httpOptions);
+    // }
+
 
 
 
@@ -116,13 +121,13 @@ export class DemoService {
     }
 
 
-    saveOrderInformation(company_id, customer_id, total_price, services, employee_id, date, time, company_timings, payment) {
+    saveOrderInformation(company_id, customer_id, total_price, servicesPlaceOrder, employee_id, date, time, company_timings, payment) {
         let array_obj = {
             "data": [{
                 "company_id": company_id,
                 "customer_id": customer_id,
                 "total_price": total_price,
-                "services": services,
+                "services": servicesPlaceOrder,
                 "employee_id": employee_id,
                 "date": date,
                 "time": time,

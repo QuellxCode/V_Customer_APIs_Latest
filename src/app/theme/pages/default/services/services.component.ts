@@ -11,7 +11,7 @@ import {
     ElementRef,
     NgZone
 } from "@angular/core";
-import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
+import { FormControl, FormGroup, NgForm, Validators } from "@angular/forms";
 import { Helpers } from "../../../../helpers";
 import { ScriptLoaderService } from "../../../../_services/script-loader.service";
 import { } from "googlemaps";
@@ -314,8 +314,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         }
     ]
 
-
-    services: Array<{}> = [
+    //  Services of Place Order
+    servicesPlaceOrder: Array<{}> = [
         {
             "services_id":"test_Id",
             "service_name":"test_name",
@@ -328,7 +328,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             "company_id":265,
             "customer_id":269,
             "total_price":this.total_price,
-            "services": this.services,
+            "services": this.servicesPlaceOrder,
             "employee_id":"00000",
             "date":"2018-10-12",
             "time":"07:00:44",
@@ -539,8 +539,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                 console.log(this.selectedParentIndex + " -> " + this.selectedIndex);
                 this.company_and_locations = response.data;
                 // For Pushing Markers in markers Array
-                this.company_and_locations.forEach(x=> { x.location.forEach( y=>{
-                    this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
+                this.company_and_locations.forEach(x => {
+                    x.location.forEach(y => {
+                        this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
                     })
 
                 });
@@ -684,7 +685,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
             (response:any) => { },
             (err) => { console.error(err) },
-            () => { console.log("Status 01 HAS BEEN Posted!")}
+            () => { 
+                console.log("Status 01 HAS BEEN Posted!"); 
+                // New Place Order Api Called Here
+                this.PlaceOrderInformation();
+            }
         )
 
     }
@@ -697,13 +702,13 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         let company_timings = "Timings";
 
 
-        this._demoService.saveOrderInformation(company_id, customer_id, this.total_price, this.services, this.employee_Id,
+        this._demoService.saveOrderInformation(company_id, customer_id, this.total_price, this.servicesPlaceOrder, this.employee_Id,
             this.staff_book_date, this.staff_book_time, company_timings, this.payment).subscribe(
             (res:any) => { console.log(res.data);
 
             },
-            () => {},
-            () => {}
+            (err) => { console.error(err); },
+            () => { console.log("Test Order Placed Successfully from new API" );}
         )
     }
 

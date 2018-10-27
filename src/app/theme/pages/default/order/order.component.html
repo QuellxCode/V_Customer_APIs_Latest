@@ -114,9 +114,35 @@
                     </div>
                 </div>
                 <div class="m-portlet__body custom-can-setting">
-                    <!-- [dragula]='"bag-task1"' -->
+                        <!-- [dragula]='"bag-task1"' -->
                     <div class="m-widget4 mcol" >
-                        <div class="m-widget4__item" *ngFor="let pendingOrders of order_stage_1; let i =index">
+
+
+                            <div class="m-widget4__item" *ngFor="let pendingOrders of order_stage_1; let i =index">
+                                    <div class="m-widget4__img m-widget4__img--logo">
+                                        <img src="./assets/app/media/img/client-logos/logo3.png" alt="" class="custom-image-setting">
+                                    </div>
+                                    <div class="m-widget4__info">
+                                        <span class="m-widget4__title">
+                                            {{pendingOrders.company_name}}
+                                        </span>
+                                        <br>
+                                        <span class="m-widget4__sub">
+                                            <!-- {{pendingOrders.services}} -->
+                                            total services
+                                        </span>
+                                    </div>
+                                    <span class="m-widget4__ext">
+                                        <span class="m-widget4__number m--font-brand custom-can-price-setting">
+                                            ${{pendingOrders.total_price}}
+                                        </span>
+                                        <span class="m-widget4__ext">
+                                            <a class="m--font-brand custom-pointer" data-target="#m_modal_detail" data-toggle="modal" (click)="setDetailModalData(pendingOrders.services)">Details</a>
+                                        </span>
+                                    </span>
+                                </div>
+
+                        <!-- <div class="m-widget4__item" *ngFor="let schedule of scheduleArray; let i =index">
                             <div class="m-widget4__img m-widget4__img--logo">
                                 <img src="./assets/app/media/img/client-logos/logo3.png" alt="" class="custom-image-setting">
                             </div>
@@ -234,10 +260,39 @@
                     </div>
                 </div>
                 <div class="m-portlet__body custom-can-setting">
-                    <!-- [dragula]='"bag-task1"' -->
+                        <!-- [dragula]='"bag-task1"' -->
                     <div class="m-widget4 mcol">
+
                         <!-- Dynamic -->
+                     
                         <div class="m-widget4__item" *ngFor="let scheduleOrders of order_stage_2; let i =index">
+                                <div class="m-widget4__img m-widget4__img--logo">
+                                    <img src="./assets/app/media/img/client-logos/logo4.png" alt="" class="custom-image-setting">
+                                </div>
+                                <div class="m-widget4__info" style="padding-right: 0px;">
+                                    <span class="m-widget4__title">
+                                        {{scheduleOrders.company_name}}
+                                    </span>
+    
+                                    <br>
+                                    <span class="m-widget4__sub">
+                                        <!-- {{scheduleOrders.services}} -->
+                                        service status
+                                    </span>
+                                </div>
+                                <span class="m-widget4__ext">
+                                    <span class="m-widget4__number m--font-brand custom-can-price-setting">
+                                        ${{scheduleOrders.total_price}}
+                                    </span>
+    
+                                    <span class="m-widget4__ext">
+                                        <a class="m--font-brand custom-pointer" data-target="#m_modal_4" data-toggle="modal" (click)="getDetail(schedule.name, schedule.price, schedule.service)">Reschedule</a>
+                                    </span>
+                                </span>
+                            </div>
+
+
+                        <!-- <div class="m-widget4__item" *ngFor="let schedule of scheduleArray; let i =index">
                             <div class="m-widget4__img m-widget4__img--logo">
                                 <img src="./assets/app/media/img/client-logos/logo4.png" alt="" class="custom-image-setting">
                             </div>
@@ -384,28 +439,32 @@
                                 <img src="./assets/app/media/img/client-logos/logo5.png" alt="" class="custom-image-setting">
                             </div>
                             <div class="m-widget4__info">
-                        <span class="m-widget4__title">
-                        {{completedOrder.company_name}}
-                        </span>
+                                <span class="m-widget4__title">
+                                    {{completedOrder.company_name}}
+                                </span>
                                 <br>
                                 <span class="m-widget4__sub">
-                           <!-- {{completedOrder.services}} -->
-                           service completed
-                        </span>
+                                    <!-- {{completedOrder.services}} -->
+                                    service completed
+                                </span>
                             </div>
                             <span class="m-widget4__ext">
-                     <span class="m-widget4__ext">
-                     <span class="m-widget4__number m--font-brand custom-can-price-setting">
-                     ${{completedOrder.total_price}}
-                     </span>
-                     <span class="m-widget4__ext" *ngIf="i%2 == 0">
-                     <a class="m--font-brand custom-pointer" data-target="#m_modal_review" data-toggle="modal">Review</a>
-                     </span>
-                     <span class="m-widget4__ext" *ngIf="i%2 != 0">
-                     <a class="m--font-brand custom-pointer" data-target="#m_modal_reviewed" data-toggle="modal">Reviewed</a>
-                     </span>
-                     </span>
-                     </span>
+                                <span class="m-widget4__ext">
+                                    <span class="m-widget4__number m--font-brand custom-can-price-setting">
+                                        ${{completedOrder.total_price}}
+                                    </span>
+
+                                    <span class="m-widget4__ext" *ngIf="i%2 == 0">
+                                        <a class="m--font-brand custom-pointer" data-target="#m_modal_review" data-toggle="modal">Review</a>
+                                    </span>
+
+                                    <span class="m-widget4__ext" *ngIf="i%2 != 0">
+                                        <a class="m--font-brand custom-pointer" data-target="#m_modal_reviewed" data-toggle="modal">Reviewed</a>
+                                    </span>
+
+                                </span>
+
+                            </span>
                         </div>
                     </div>
                 </div>
