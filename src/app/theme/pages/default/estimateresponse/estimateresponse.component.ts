@@ -40,6 +40,8 @@ import {
 import { ServerServices_Services } from "../../../../services/serverServices.services";
 
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { DemoService } from "../../../../services/demo.service";
+import { Http } from "@angular/http";
 
 // serverServices for posting the data to server
 
@@ -141,7 +143,10 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     constructor(
         private _script: ScriptLoaderService,
         private modal: NgbModal,
-        private serverServies_services: ServerServices_Services
+        private serverServies_services: ServerServices_Services,
+        private _demoService: DemoService,
+        private http: Http
+
     ) { }
     reqBeautyCategories: any[];
     ngOnInit() {
@@ -153,6 +158,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
             "Food & Cattring",
             "Pet Services"
         ];
+        this.getCat();
 
         this.serverServies_services.getServices().subscribe(data => {
             this.serData = data.data;
@@ -179,7 +185,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
                 .next()
                 .find(".m-widget4")
                 .append(
-                `
+                    `
             <div class="m-widget4__item">
                             <div class="m-widget4__img m-widget4__img--logo">
                                 <img src="./assets/app/media/img/client-logos/logo5.png" alt="">
@@ -187,8 +193,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
                             <div class="m-widget4__info">
                                 <span class="m-widget4__title">
                                     New Item ` +
-                counter +
-                `
+                    counter +
+                    `
                                 </span>
                                 <br>
                                 <span class="m-widget4__sub">
@@ -274,14 +280,14 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         //             this.requestForms.value.reqIsPublish, this.fileToUpload);
         this.serverServies_services
             .storeRequests(
-            this.requestForms.value.reqName,
-            this.requestForms.value.reqDetail,
-            this.requestForms.value.reqCategory,
-            this.requestForms.value.reqPrice,
-            this.requestForms.value.reqDuration,
-            this.requestForms.value.reqContactNumber,
-            this.requestForms.value.reqIsPublish,
-            this.fileToUpload
+                this.requestForms.value.reqName,
+                this.requestForms.value.reqDetail,
+                this.requestForms.value.reqCategory,
+                this.requestForms.value.reqPrice,
+                this.requestForms.value.reqDuration,
+                this.requestForms.value.reqContactNumber,
+                this.requestForms.value.reqIsPublish,
+                this.fileToUpload
             )
             .subscribe(response => {
                 console.log(response);
@@ -363,6 +369,33 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     testVariable = false;
     deleted = true;
     addNewPaymentCardHide = false;
+    public categories;
+    public subCategories;
+    public serviceLocations;
+    disabled = true;
+
+
+    getCat() {
+        this._demoService.getCategories().subscribe(
+            (data: any) => { this.categories = data.data; console.log('Categories = ', this.categories) },
+            err => console.error(err),
+            () => console.log('Done Fetching Categories')
+
+        );
+    }
+
+    onChange(value) {
+        this._demoService.getSubCategories(value).subscribe(
+            (data: any) => { this.subCategories = data.data; console.log(data); },
+            err => console.error(err),
+            () => {
+                console.log('Done Fetching Sub Categories');
+                this.disabled = false;
+            }
+
+        );
+    }
+
 
 
     onCheckedUpdate(event: Event) {
