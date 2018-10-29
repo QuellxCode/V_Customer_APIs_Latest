@@ -282,7 +282,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     selectedParentIndex;
 
     staff_book_date;
-    staff_book_time;
+    staff_book_time = new Date().getHours()+':' + new Date().getMinutes() + ':'+ new Date().getSeconds();
     employee_Id;
     saveStaff;
     proceedService;
@@ -613,8 +613,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
 
     getServicesToCart(){
-        this._demoService.getSevicestoCart(this.user_id).subscribe(
-            (response:any) => { this.cartServices = response.data; console.log(this.cartServices);},
+        this._demoService.getServicesToCart(this.user_id).subscribe(
+            (response:any) => { this.cartServices = response.data; console.log( "this is cart Items response =>" + JSON.stringify(this.cartServices));
+                console.log(JSON.stringify(response.data.service.company_id));
+            },
             err => { console.error(err)},
             () => { console.log("Cart Fetching is working") }
 
@@ -631,13 +633,13 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         )
     }
 
-    proceedCartServices()
+    proceedCartServices(totalPrice, index)
     {
         let company_id = this.current_company_location.company_name.id;
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        console.log(' total price is => ' +totalPrice +  ' and index => ' + index);
 
-
-        this._demoService.proceedCartServices(this.total_price, company_id, customer_id)
+        this._demoService.proceedCartServices(totalPrice, company_id, customer_id)
             .subscribe(
                 (response:any) => {this.proceedService = response.data;
                     console.log("Proceed Cart Service: ",this.proceedService)},

@@ -361,7 +361,7 @@
             <div class="tab-pane active show" id="m_tabs_5_1" role="tabpanel"  [ngClass]="{ 'active' : activeItemTab,
          'show':  activeItemTab }">
                 <p><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
-                <div class="custom-card-shadow" *ngFor="let cartService of cartServices">
+                <div class="custom-card-shadow" *ngFor="let cartService of cartServices; let i = index;">
                     <h4 style="color:#716aca">{{cartService.company_name}}
                         <br class="add-line-break">
                         <span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
@@ -401,25 +401,25 @@
                         <button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = false" *ngIf="coupon1check">Apply</button>
                         <button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = true" *ngIf="!coupon1check" style="margin-top: 20px;">Coupon</button>
                         <span class="text-muted" style="margin-right: 32px;"> Sub Total</span>
-                        <span class="text-muted" style="margin-right: 8px;"> : {{cartService.total_price}}</span>
+                        <span class="text-muted" style="margin-right: 8px;"> : {{cartService.sub_total_price}}</span>
                     </p>
                     <p class="custom-p2-setting" style="margin-bottom: 20px;">
                         <span class="text-muted" style="margin-right: 3px;">Discount(40%)</span>
-                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : {{ ((40*cartService.total_price)/100) }}</span>
+                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : {{ cartService.discount }}</span>
                     </p>
                     <p style="    text-align: right;
                font-weight: 500;
                margin-top: -15px;">
                         <span class="text-muted" style="margin-right: 34px;"> Tax(10%) </span>
-                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : {{ ((10*cartService.total_price)/100) }} </span>
+                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : {{ cartService.tax }} </span>
                     </p>
                     <p style="text-align: right; font-weight: bold;">
                         <span style=" margin-right: 4.4rem;" > Total</span>
-                        <span class="custom-theme-default" style="margin-right:12px;"> : $47.7</span>
+                        <span class="custom-theme-default" style="margin-right:12px;"> : {{ cartService.total_price }}</span>
                     </p>
                     <div class="col text-right">
                         <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
-                                (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices()">Proceed S1</button>
+                                (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices( cartService.total_price, i)">Proceed S1</button>
                     </div>
                 </div>
                 <!--Start: Comment Location 10-->
@@ -610,8 +610,8 @@
                 <form>
                     <div class="form-group">
                         <label for="sel1" style="font-weight: bold;">Select Employee</label>
-                        <select class="form-control" id="sel1" (change)=getEmpId($event)>
-                            <option>No Preferences </option>
+                        <select class="form-control" id="sel1" name="noPreferences" [ngModel]="'0'" (change)=getEmpId($event) #empRefVar>
+                            <option value="0">No Preferences </option>
                             <option  *ngFor="let employee of locationEmployees; let empIndex = index;" value={{employee.staff_id}} #empId>{{employee.name}} </option>
                         </select>
                     </div>
@@ -682,7 +682,7 @@
                             <div class="Iinput-group date">
                                 <!-- <input [(ngModel)]="staff_book_date" class="form-control m-input " id="m_datepicker_2_validate" placeholder="Select Date" type="date"> -->
                                 <div class="input-group-append">
-                                    <input  class="form-control m-input" (change)="changeDateFunc($event);"  placeholder="Select Date" type="date">
+                                    <input  class="form-control m-input" (change)="changeDateFunc($event);"  #dateRefVar  placeholder="Select Date" type="date">
                                     <span class="input-group-text">
                         <i class="la la-calendar-check-o glyphicon-th"></i>
                         </span>
@@ -697,7 +697,7 @@
                         <br>
                         <div>
                             <div class="input-group date">
-                                <input class="form-control m-input timepicker" (change)="changeTimeFunc($event);" id="m_timepicker_2_validate" placeholder="Select Time " type="time">
+                                <input class="form-control m-input timepicker" #timeRefvar placeholder="Select Time" [value]="staff_book_time" (change)="changeTimeFunc($event);" id="m_timepicker_2_validate" placeholder="Select Time " type="time">
                                 <div class="input-group-append">
                         <span class="input-group-text">
                         <i class="la la-calendar-check-o glyphicon-th"></i>
@@ -708,7 +708,7 @@
                     </div>
                 </form>
                 <div class="col text-right">
-                    <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
+                    <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="empRefVar.value=='' || dateRefVar.value=='' || timeRefvar.value=='' "
                             (click)="activeTab('payment'); saveStaffSchedule()">Proceed S2</button>
                 </div>
             </div>

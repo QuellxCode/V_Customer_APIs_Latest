@@ -76,16 +76,19 @@ export class DemoService {
         return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/cart', obj, httpOptions);
     }
 
-    getSevicestoCart(user_id) {
+    getServicesToCart(user_id) {
         console.log("THE USER ID URL IS http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/"+user_id);
         return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/' + user_id , httpOptions).map(
-            (data)=> {
+            (data:any)=> {
                 let cart_items = data.data;
                 console.log("insideMap", cart_items);
                 cart_items.forEach(
                     cart_item=> {
-                        //Creates total_price key for each cart item initially 0
+                        //Creates [ total_price, sub_total_price, tax & discount ] key for each cart item
                         cart_item['total_price'] = 0;
+                        cart_item['sub_total_price'] = 0;
+                        cart_item['tax'] = 10;
+                        cart_item['discount'] = 40;
 
                         /* iterates over each service in services array and
                              calculates prices of all the services and stores it in
@@ -93,9 +96,13 @@ export class DemoService {
                         */
                         cart_item.service.forEach(
                             item_service => {
-                               cart_item['total_price'] += parseFloat(item_service.price);
+                               cart_item['sub_total_price'] += parseFloat(item_service.price);
                             }
                         )
+
+                        cart_item['discount'] = (cart_item['sub_total_price'] * cart_item['discount'])/100;                 // Calculates Discount
+                        cart_item['tax'] = (cart_item['sub_total_price'] * cart_item['tax'])/100;                           // Calculates Tax
+                        cart_item['total_price'] = cart_item['sub_total_price'] - cart_item['discount'] - cart_item['tax']; // Calculates Total Price
                     }
                 )
                 return data;
