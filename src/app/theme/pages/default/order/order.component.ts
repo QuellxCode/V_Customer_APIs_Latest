@@ -114,7 +114,7 @@ export class OrderComponent implements OnInit {
                 .next()
                 .find(".m-widget4")
                 .append(
-                    `
+                `
             <div class="m-widget4__item">
                             <div class="m-widget4__img m-widget4__img--logo">
                                 <img src="./assets/app/media/img/client-logos/logo5.png" alt="">
@@ -122,8 +122,8 @@ export class OrderComponent implements OnInit {
                             <div class="m-widget4__info">
 								<span class="m-widget4__title">
 									New Item ` +
-                    counter +
-                    `
+                counter +
+                `
 								</span>
                                 <br>
                                 <span class="m-widget4__sub">
@@ -142,6 +142,8 @@ export class OrderComponent implements OnInit {
 
         // lead section
         this.fetchCustomerOrder(); 
+        
+    
     }
     ngAfterViewInit() {
         this._script.loadScripts("app-order", [
@@ -163,6 +165,8 @@ export class OrderComponent implements OnInit {
 
     // lead code
 
+    
+
     fetchCustomerOrder(){
         this.demo.getCustomerOrders().subscribe(
             (data: any) => { 
@@ -173,7 +177,14 @@ export class OrderComponent implements OnInit {
                 this.order_stage_3 = this.customerOrders.filter(x=>x.order_stage.trim()=="3");
 
                 console.log("Pending ", this.order_stage_1, "Scheduled", this.order_stage_2,"Completed",this.order_stage_3);
-				
+            //     let res = data.data;
+            //    let orderStage = res[0].order_stage;
+            //    console.log(orderStage);
+            //     if( orderStage == 1){
+            //         console.log("inside if0");
+            //       this.order_stage_1 = res[0].services;
+            //       console.log("service Data "+this.order_stage_1); 
+            //     }
               },
             err => console.error(err),
             () => console.log('Done Fetching Lead Data ')

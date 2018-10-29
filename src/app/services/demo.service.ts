@@ -35,7 +35,7 @@ export class DemoService {
         return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/company-service/256', httpOptions);
     }
 
-
+    // this api will use to get lead section api
 
     // getCustomerOrders(){
     //     let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
