@@ -78,7 +78,29 @@ export class DemoService {
 
     getSevicestoCart(user_id) {
         console.log("THE USER ID URL IS http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/"+user_id);
-        return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/' + user_id , httpOptions);
+        return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/' + user_id , httpOptions).map(
+            (data)=> {
+                let cart_items = data.data;
+                console.log("insideMap", cart_items);
+                cart_items.forEach(
+                    cart_item=> {
+                        //Creates total_price key for each cart item initially 0
+                        cart_item['total_price'] = 0;
+
+                        /* iterates over each service in services array and
+                             calculates prices of all the services and stores it in
+                             cart_item[total_price]'s key as its value
+                        */
+                        cart_item.service.forEach(
+                            item_service => {
+                               cart_item['total_price'] += parseFloat(item_service.price);
+                            }
+                        )
+                    }
+                )
+                return data;
+            }
+        );
     }
 
 
@@ -121,7 +143,8 @@ export class DemoService {
     }
 
 
-    saveOrderInformation(company_id, customer_id, total_price, servicesPlaceOrder, employee_id, date, time, company_timings, payment) {
+    saveOrderInformation(company_id:number, customer_id:number, total_price, servicesPlaceOrder, 
+                         employee_id, date:string, time:string, company_timings:string, payment) {
         let array_obj = {
             "data": [{
                 "company_id": company_id,
@@ -135,6 +158,7 @@ export class DemoService {
                 "payment": payment
             }]
         }
+        console.log("You Passed This =>" + JSON.stringify(array_obj));
         return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/parse', array_obj, httpOptions);
     }
 

@@ -317,8 +317,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     //  Services of Place Order
     servicesPlaceOrder: Array<{}> = [
         {
-            "services_id":"test_Id",
-            "service_name":"test_name",
+            "service_id":"test_Id",
+            "service_price":"45",
         }
     ]
 
@@ -614,7 +614,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     getServicesToCart(){
         this._demoService.getSevicestoCart(this.user_id).subscribe(
-            (response:any) => { this.cartServices = response.data;},
+            (response:any) => { this.cartServices = response.data; console.log(this.cartServices);},
             err => { console.error(err)},
             () => { console.log("Cart Fetching is working") }
 
@@ -688,7 +688,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             () => { 
                 console.log("Status 01 HAS BEEN Posted!"); 
                 // New Place Order Api Called Here
-                this.PlaceOrderInformation();
+                 this.PlaceOrderInformation();
             }
         )
 

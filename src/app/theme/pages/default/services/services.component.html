@@ -401,17 +401,17 @@
                         <button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = false" *ngIf="coupon1check">Apply</button>
                         <button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = true" *ngIf="!coupon1check" style="margin-top: 20px;">Coupon</button>
                         <span class="text-muted" style="margin-right: 32px;"> Sub Total</span>
-                        <span class="text-muted" style="margin-right: 8px;"> : $72.00</span>
+                        <span class="text-muted" style="margin-right: 8px;"> : {{cartService.total_price}}</span>
                     </p>
                     <p class="custom-p2-setting" style="margin-bottom: 20px;">
                         <span class="text-muted" style="margin-right: 3px;">Discount(40%)</span>
-                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $40</span>
+                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : {{ ((40*cartService.total_price)/100) }}</span>
                     </p>
                     <p style="    text-align: right;
                font-weight: 500;
                margin-top: -15px;">
                         <span class="text-muted" style="margin-right: 34px;"> Tax(10%) </span>
-                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $10</span>
+                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : {{ ((10*cartService.total_price)/100) }} </span>
                     </p>
                     <p style="text-align: right; font-weight: bold;">
                         <span style=" margin-right: 4.4rem;" > Total</span>
