@@ -129,7 +129,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     companies: any = [];
     user_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
     cartServices = [];
-    
+    total_price = 456;
+
     
     cityName = '';
     currentService = {
@@ -138,7 +139,6 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         details: "",
 
     };
-    total_price = 456;
     
 
 
@@ -290,6 +290,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     employee_Id;
     saveStaff;
     proceedService;
+    locationEmployees= [];
+
 
 
 
@@ -308,7 +310,6 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     // Filtered locations based on user radius selection from front end
     filteredMarkers = [];
 
-    locationEmployees= [];
 
 
 
