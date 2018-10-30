@@ -275,21 +275,22 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         }
     }
 
-    services = [];  // This will have all the services that are reyurned against a company location
+    services = [];  // This array will have all the services that are returned against a company location
     company_locations = [];
     current_company_location;
     selectedIndex;
     selectedParentIndex;
 
+    total_price = 0;
+
     staff_book_date;
     staff_book_time = new Date().getHours()+':' + new Date().getMinutes() + ':'+ new Date().getSeconds();
-    employee_Id;
+    employee_Id = 0;
     saveStaff;
     proceedService;
 
     user_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
     cartServices = [];
-    total_price = 456;
     locationEmployees= [];
 
     preloader: boolean = true;  // While showing Companies & Locations this loader will trigger until fetched
@@ -304,6 +305,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         { 'latitude': 33.6844, 'longitude': 73.0479 },
     ];
 
+    // Payment Details of Place Order
     payment: Array<{}> = [
         {
             "card_name":"card_number",
@@ -322,16 +324,20 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         }
     ]
 
+    customer_Id;
+    // Company Id of a Company for which order is being placed
+    cartPlaceOrderCompanyId;
 
+    // The Complete Data of Place Order
     data: Array <{}> = [
         {
-            "company_id":265,
-            "customer_id":269,
+            "company_id":this.cartPlaceOrderCompanyId,
+            "customer_id":this.customer_Id,
             "total_price":this.total_price,
             "services": this.servicesPlaceOrder,
-            "employee_id":"00000",
-            "date":"2018-10-12",
-            "time":"07:00:44",
+            "employee_id":this.employee_Id,
+            "date":this.staff_book_date,
+            "time":this.staff_book_time,
             "company_schedule":"company_timings",
             "payment" : this.payment
         }
@@ -344,12 +350,12 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     /* ------------------ AWS CODE END ---------------------- */
 
     ngOnInit() {
-        // console.log(localStorage.getItem('token'));
 
         this.getUserLocation();  // Return User Location Lat lng
         // this.getCompanyServices();
         // this.getCompanies();
 
+        this.customer_Id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
 
 
         this.searchControl = new FormControl();
@@ -600,11 +606,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     addServicesToCart()
     {
-        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        // let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         let service_id = this.services[0].rand_id; //Add this.selectedIndex
         let company_id = this.current_company_location.company_name.id;
-        console.log('Customer =>' + customer_id + ' Service => ' + service_id + ' Company=> ' + company_id );
-        this._demoService.postSevicestoCart(customer_id, service_id, company_id)
+        console.log('Customer =>' + this.customer_Id + ' Service => ' + service_id + ' Company=> ' + company_id );
+        this._demoService.postSevicestoCart(this.customer_Id, service_id, company_id)
             .subscribe(
                 (response:any) => {},
                 (err) => { console.error(err) },
@@ -614,8 +620,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     getServicesToCart(){
         this._demoService.getServicesToCart(this.user_id).subscribe(
-            (response:any) => { this.cartServices = response.data; console.log( "this is cart Items response =>" + JSON.stringify(this.cartServices));
-                console.log(JSON.stringify(response.data.service.company_id));
+            (response:any) => { this.cartServices = response.data; console.log( "this is cart Items response =>" , this.cartServices);
             },
             err => { console.error(err)},
             () => { console.log("Cart Fetching is working") }
@@ -636,10 +641,13 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     proceedCartServices(totalPrice, index)
     {
         let company_id = this.current_company_location.company_name.id;
+        let selectedCompany_id = parseInt(this.cartServices[index].service[index].company_id);
+        this.cartPlaceOrderCompanyId = selectedCompany_id;
+        console.log('this is company_id for which item was added to cart ' + company_id + ' and this is the company id for which items in cart have been proceeded against ' + selectedCompany_id);
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         console.log(' total price is => ' +totalPrice +  ' and index => ' + index);
 
-        this._demoService.proceedCartServices(totalPrice, company_id, customer_id)
+        this._demoService.proceedCartServices(totalPrice, selectedCompany_id, customer_id)
             .subscribe(
                 (response:any) => {this.proceedService = response.data;
                     console.log("Proceed Cart Service: ",this.proceedService)},
@@ -660,18 +668,21 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
 
 
-    getEmpId(event){
-        this.employee_Id = event.target.value;
-        console.log("EMPLOYEEE ID: ",this.employee_Id)
-    }
+
+    /* Code which was used to fetch employee Id now hardcoded to 0 */
+
+            // getEmpId(event){
+            //     this.employee_Id = event.target.value;
+            //     console.log("EMPLOYEEE ID: ",this.employee_Id)
+            // }
 
     saveStaffSchedule(){
         let company_id = this.current_company_location.company_name.id;
 
 
         console.log("Employe ID: ",this.employee_Id,"Date: ",this.staff_book_date,"Time: ",this.staff_book_time,
-            "Company ID: ",company_id)
-        this._demoService.saveStaffSchedule(company_id, this.employee_Id, this.staff_book_date, this.staff_book_time)
+            "Company ID: ",this.cartPlaceOrderCompanyId);
+        this._demoService.saveStaffSchedule(this.cartPlaceOrderCompanyId, this.employee_Id, this.staff_book_date, this.staff_book_time)
             .subscribe(
                 (response:any) => {this.saveStaff = response.data},
                 (err) => { console.error(err) },
@@ -699,12 +710,12 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     //--------------------------------- Save Order Information and Place Order -----------------------------------------
 
     PlaceOrderInformation(){
-        let company_id = this.current_company_location.company_name.id;
-        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        // let company_id = this.current_company_location.company_name.id;
+        // let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         let company_timings = "Timings";
 
 
-        this._demoService.saveOrderInformation(company_id, customer_id, this.total_price, this.servicesPlaceOrder, this.employee_Id,
+        this._demoService.saveOrderInformation(this.cartPlaceOrderCompanyId, this.customer_Id, this.total_price, this.servicesPlaceOrder, this.employee_Id,
             this.staff_book_date, this.staff_book_time, company_timings, this.payment).subscribe(
             (res:any) => { console.log(res.data);
 

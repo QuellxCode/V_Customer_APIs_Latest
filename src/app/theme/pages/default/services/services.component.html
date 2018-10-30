@@ -592,7 +592,7 @@
                     </div>
                     <p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
                     <button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true;placeCartOrder()">Order Now</button>
-                    <button class="btn btn-danger custom-float-right" (click)="visibleSidebar2 = false" style="    margin-right: 5px;">Cancel</button>
+                    <button class="btn btn-danger custom-float-right" (click)="visibleSidebar2 = false; payment=[]; data =[]; console.log(data, payment);" style="margin-right: 5px;">Cancel</button>
                 </div>
                 <div class="col text-center" *ngIf="orderNowCheck">
                     <h4>Congratulations</h4>
@@ -610,69 +610,12 @@
                 <form>
                     <div class="form-group">
                         <label for="sel1" style="font-weight: bold;">Select Employee</label>
-                        <select class="form-control" id="sel1" name="noPreferences" [ngModel]="'0'" (change)=getEmpId($event) #empRefVar>
+                        <select class="form-control" id="sel1" name="noPreferences" [ngModel]="'0'" (change)=getEmpId($event) > <!-- #empRefVar (was using previously now 0 is hardcoded) -->
                             <option value="0">No Preferences </option>
                             <option  *ngFor="let employee of locationEmployees; let empIndex = index;" value={{employee.staff_id}} #empId>{{employee.name}} </option>
                         </select>
                     </div>
-                    <!-- <div class="row">
-                       <div class="col">
-                           <h5>
-                               Company Timings
-                           </h5>
-                           <table class="table table-hover table-sm ">
-                                   <thead>
-                                     <tr>
-                                       <th scope="col">Days</th>
-                                       <th scope="col">Start Time</th>
-                                       <th scope="col">Close Time</th>
-                                     </tr>
-                                   </thead>
-                                   <tbody>
-                                     <tr class="custom-pointer custom-hover-change-color">
-                                       <td>Monday</td>
-                                       <td>9 am</td>
-                                       <td>6 pm</td>
-                                     </tr>
-                                     <tr class="custom-pointer custom-hover-change-color">
-                                       <td>Monday</td>
-                                       <td>9 am</td>
-                                       <td>6 pm</td>
-                                       </tr>
-                                      <tr class="custom-pointer custom-hover-change-color">
-                                       <td>Tuesday</td>
-                                       <td>9 am</td>
-                                       <td>6 pm</td>
-                                      </tr>
-                                       <tr class="custom-pointer custom-hover-change-color">
-                                           <td>Wednesday</td>
-                                           <td>9 am</td>
-                                           <td>6 pm</td>
-                                       </tr>
-                                       <tr class="custom-pointer custom-hover-change-color">
-                                           <td>Thursday</td>
-                                           <td>9 am</td>
-                                           <td>6 pm</td>
-                                       </tr>
-                                       <tr class="custom-pointer custom-hover-change-color">
-                                           <td>Friday</td>
-                                           <td>9 am</td>
-                                           <td>4 pm</td>
-                                       </tr>
-                                       <tr class="custom-pointer custom-hover-change-color">
-                                               <td>Saturaday</td>
-                                               <td class="m--font-danger">close</td>
 
-                                           </tr>
-                                           <tr class="custom-pointer custom-hover-change-color">
-                                                   <td>Sunday</td>
-                                                   <td class="m--font-danger">close</td>
-
-                                               </tr>
-                                   </tbody>
-                                 </table>
-                       </div>
-                       </div> -->
                     <div class="form-group m-form__group">
                         <label>
                             <strong>Select Date</strong>
@@ -708,7 +651,7 @@
                     </div>
                 </form>
                 <div class="col text-right">
-                    <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="empRefVar.value=='' || dateRefVar.value=='' || timeRefvar.value=='' "
+                    <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="dateRefVar.value=='' || timeRefvar.value=='' "
                             (click)="activeTab('payment'); saveStaffSchedule()">Proceed S2</button>
                 </div>
             </div>
