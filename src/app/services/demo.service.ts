@@ -68,7 +68,7 @@ export class DemoService {
     postSevicestoCart(customer_id, services_id, company_id) {
         let obj = {
             "customer_id": customer_id,
-            "services_id": [services_id],
+            "services_id": services_id,
             "company_id": company_id
 
         }

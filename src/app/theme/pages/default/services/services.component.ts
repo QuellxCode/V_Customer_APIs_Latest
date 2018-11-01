@@ -263,7 +263,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     longitude: any; // User Longitude
     latitude: any;  // User latitude
-    radiusInMeters = 20000;
+    radiusInMeters = 7000000;
     radiusInKm = this.radiusInMeters / 1000;
 
     // User marker Icon
@@ -296,6 +296,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     preloader: boolean = true;  // While showing Companies & Locations this loader will trigger until fetched
     preloaderServices: boolean = true; // While showing services this loader will trigger until fetched
 
+    preloaderFetchingCartItems:boolean = true; // While fetching crat Items this loader will trigger until fetched
+
     public company_and_locations = [];
 
     selectedServices;
@@ -304,6 +306,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     markers: Array<{ latitude: number, longitude: number }> = [
         { 'latitude': 33.6844, 'longitude': 73.0479 },
     ];
+
+    // Temporary Array to store selceted services' ids that are to be added in cart
+    servicesTobeAddedInCart = [];
+    isDisabled = false;
 
     // Payment Details of Place Order
     payment: Array<{}> = [
@@ -318,15 +324,20 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     //  Services of Place Order
     servicesPlaceOrder: Array<{}> = [
-        {
-            "service_id":"test_Id",
-            "service_price":"45",
-        }
+
+        /* SAMPLE CODE */
+            // {
+            //     "service_id":"test_Id",
+            //     "service_price":"45",
+            // }
     ]
 
     customer_Id;
     // Company Id of a Company for which order is being placed
     cartPlaceOrderCompanyId;
+
+
+    confirmationStepCardInfo = [];
 
     // The Complete Data of Place Order
     data: Array <{}> = [
@@ -356,7 +367,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // this.getCompanies();
 
         this.customer_Id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-
+        console.log(this.customer_Id);
 
         this.searchControl = new FormControl();
         // this.mapsAPILoader.load().then(() => {
@@ -606,11 +617,15 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     addServicesToCart()
     {
-        // let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        let service_id = this.services[0].rand_id; //Add this.selectedIndex
         let company_id = this.current_company_location.company_name.id;
-        console.log('Customer =>' + this.customer_Id + ' Service => ' + service_id + ' Company=> ' + company_id );
-        this._demoService.postSevicestoCart(this.customer_Id, service_id, company_id)
+
+        // rand Ids of services will be added in temporary array
+        let servicesIds =[];
+            this.servicesTobeAddedInCart.forEach( service => {
+            servicesIds.push(service['rand_id']);
+        });
+        console.log('Customer =>' + this.customer_Id + ' Services ids => ' + servicesIds + ' Company=> ' + company_id );
+        this._demoService.postSevicestoCart(this.customer_Id, servicesIds, company_id)
             .subscribe(
                 (response:any) => {},
                 (err) => { console.error(err) },
@@ -621,6 +636,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     getServicesToCart(){
         this._demoService.getServicesToCart(this.user_id).subscribe(
             (response:any) => { this.cartServices = response.data; console.log( "this is cart Items response =>" , this.cartServices);
+            console.log(this.total_price);
+            this.preloaderFetchingCartItems = false;
             },
             err => { console.error(err)},
             () => { console.log("Cart Fetching is working") }
@@ -638,19 +655,27 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         )
     }
 
-    proceedCartServices(totalPrice, index)
+    proceedCartServices(cartServicesInfo, index)
     {
+        // this.companyNameOnConfirmationStep = cartCompanyName;
+
+        this.confirmationStepCardInfo = cartServicesInfo;
+        console.log(this.confirmationStepCardInfo);
+
         let company_id = this.current_company_location.company_name.id;
         let selectedCompany_id = parseInt(this.cartServices[index].service[index].company_id);
         this.cartPlaceOrderCompanyId = selectedCompany_id;
         console.log('this is company_id for which item was added to cart ' + company_id + ' and this is the company id for which items in cart have been proceeded against ' + selectedCompany_id);
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        console.log(' total price is => ' +totalPrice +  ' and index => ' + index);
+        console.log(' total price is => ' +cartServicesInfo.total_price +  ' and index => ' + index);
+        this.total_price = parseInt(cartServicesInfo[index].total_price);
+        console.log("Total Price is=> ", this.total_price);
 
-        this._demoService.proceedCartServices(totalPrice, selectedCompany_id, customer_id)
+        this._demoService.proceedCartServices(this.total_price, selectedCompany_id, customer_id)
             .subscribe(
                 (response:any) => {this.proceedService = response.data;
-                    console.log("Proceed Cart Service: ",this.proceedService)},
+                    console.log("Proceed Cart Service: ",this.proceedService);
+                    },
                 (err) => { console.error(err) },
                 () => { console.log("Proceed Cart Services have been posted", ) }
             )
@@ -707,6 +732,17 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     }
 
+    placeCartOrder2(){
+        // let status_set_id = 1;
+        let company_id = this.current_company_location.company_name.id;
+        console.log("Company ID is", company_id);
+        console.log("total Price new button => ",this.confirmationStepCardInfo['total_price']);
+
+        console.log("Confirmation Step Card Info Complete => ",this.confirmationStepCardInfo);
+
+
+    }
+
     //--------------------------------- Save Order Information and Place Order -----------------------------------------
 
     PlaceOrderInformation(){
@@ -714,10 +750,19 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         let company_timings = "Timings";
 
+        console.log("aja Yaar bhai=> ",this.confirmationStepCardInfo);
+        /* This code pushes services that are being confirmed in cart in the services array for places order request in Final Data Array */
 
-        this._demoService.saveOrderInformation(this.cartPlaceOrderCompanyId, this.customer_Id, this.total_price, this.servicesPlaceOrder, this.employee_Id,
+        this.confirmationStepCardInfo.service.forEach(x => {
+            this.servicesPlaceOrder.push( { 'service_id': x.rand_id, 'service_price': x.price})
+        });
+
+        console.log("services in final Card => ", this.servicesPlaceOrder);
+
+        // console.log (this.total_price = this.confirmationStepCardInfo['total_price']);
+        this._demoService.saveOrderInformation(this.cartPlaceOrderCompanyId, this.customer_Id, this.confirmationStepCardInfo['total_price'], this.servicesPlaceOrder, this.employee_Id,
             this.staff_book_date, this.staff_book_time, company_timings, this.payment).subscribe(
-            (res:any) => { console.log(res.data);
+            (res:any) => { console.log("this will be posted as order => ", res.data);
 
             },
             (err) => { console.error(err); },
@@ -1163,6 +1208,26 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     //     }
     // }
 
+    servicesCheckboxes(event, index) {
+        console.log(event.target.checked);
+        console.log(index);
+        if(event.target.checked) {
+            this.servicesTobeAddedInCart.push(this.services[index]);
+            console.log(this.servicesTobeAddedInCart);
+        }
+        else {
+           let indexOfObj = this.servicesTobeAddedInCart.indexOf(this.services[index]);
+            this.servicesTobeAddedInCart.splice(indexOfObj,1);
+
+        }
+        if(this.servicesTobeAddedInCart.length > 0) {
+            this.isDisabled = false;
+        }
+        else {
+            this.isDisabled = true;
+        }
+        console.log(this.servicesTobeAddedInCart);
+    }
 
 
     showBookButtonMap(event: Event) {

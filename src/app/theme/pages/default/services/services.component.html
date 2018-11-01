@@ -195,7 +195,7 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <button class="btn btn-sm btn-link btnLinkColor custom-fs-1 pull-right c--margin-right--25"
-                                                        (click)="sideInfoPop('service', company, indexLocation, i)" title="Click to view Company Services">
+                                                        (click)="sideInfoPop('service', company, indexLocation, i); servicesTobeAddedInCart = [];" title="Click to view Company Services">
                                                     <i class="fa fa-cogs custom-fs-1" ></i>
                                                     Services <i class="fa fa-chevron-right"></i>
                                                 </button>
@@ -285,11 +285,11 @@
                                         </h5>
                                         <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderServices"></div>
                                         <div style="overflow-x:auto " *ngIf=" services.length > 0;">
-                                            <p class="custom-margin-bottom-zero"  *ngFor="let service of services;">
+                                            <p class="custom-margin-bottom-zero"  *ngFor="let service of services; let i = index;">
                                  <span class="custom-width">
                                  <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
                                     height: 12px;">
-                                 <input type="checkbox" value="true" (change)="showBookButtonMap($event)">
+                                 <input type="checkbox"  (change)="showBookButtonMap($event); servicesCheckboxes($event, i);">
                                  <span></span>
                                  </label>
                                  </span>
@@ -310,7 +310,7 @@
                                         <div class="row">
                                             <div class="col-md-12" style="margin-top: 10px;
                                  text-align: right;">
-                                                <a (click)="addServicesToCart();" class="btn btn-sm btn-primary custom-margin-right-book-button"
+                                                <a (click)="addServicesToCart();" attr.disabled="isDisabled"  class="btn btn-sm btn-primary custom-margin-right-book-button"
                                                    [ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Add to Cart</a>
                                             </div>
                                         </div>
@@ -360,7 +360,8 @@
             <!-- Items Tab Start Here -->
             <div class="tab-pane active show" id="m_tabs_5_1" role="tabpanel"  [ngClass]="{ 'active' : activeItemTab,
          'show':  activeItemTab }">
-                <p><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
+                <p *ngIf="!preloaderFetchingCartItems"><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
+                <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderFetchingCartItems"></div>
                 <div class="custom-card-shadow" *ngFor="let cartService of cartServices; let i = index;">
                     <h4 style="color:#716aca">{{cartService.company_name}}
                         <br class="add-line-break">
@@ -400,26 +401,26 @@
                         <input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon1check">
                         <button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = false" *ngIf="coupon1check">Apply</button>
                         <button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = true" *ngIf="!coupon1check" style="margin-top: 20px;">Coupon</button>
-                        <span class="text-muted" style="margin-right: 32px;"> Sub Total</span>
-                        <span class="text-muted" style="margin-right: 8px;"> : {{cartService.sub_total_price}}</span>
+                        <span class="text-muted m--margin-right-35"> Sub Total :</span>
+                        <span class="text-muted m--margin-right-10">  {{cartService.sub_total_price}}</span>
                     </p>
-                    <p class="custom-p2-setting" style="margin-bottom: 20px;">
-                        <span class="text-muted" style="margin-right: 3px;">Discount(40%)</span>
-                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : {{ cartService.discount }}</span>
+                    <p class="custom-p2-setting m--margin-bottom-20">
+                        <span class="text-muted m--margin-right-30">Discount(40%) :</span>
+                        <span class="custom-theme-default text-muted m--margin-right-10">  {{ cartService.discount }}</span>
                     </p>
                     <p style="    text-align: right;
                font-weight: 500;
                margin-top: -15px;">
-                        <span class="text-muted" style="margin-right: 34px;"> Tax(10%) </span>
-                        <span class="custom-theme-default text-muted" style="margin-right: 25px;"> : {{ cartService.tax }} </span>
+                        <span class="text-muted m--margin-right-30"> Tax(10%) : </span>
+                        <span class="custom-theme-default text-muted m--margin-right-10">  {{ cartService.tax }} </span>
                     </p>
-                    <p style="text-align: right; font-weight: bold;">
-                        <span style=" margin-right: 4.4rem;" > Total</span>
-                        <span class="custom-theme-default" style="margin-right:12px;"> : {{ cartService.total_price }}</span>
-                    </p>
+                    <h4 style="text-align: right; font-weight: bold;">
+                        <span class="m--margin-right-15"> Total :</span>
+                        <span class="custom-theme-default m--margin-right-10">   {{ cartService.total_price | currency:'CAD' }}</span>
+                    </h4>
                     <div class="col text-right">
                         <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
-                                (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices( cartService.total_price, i)">Proceed S1</button>
+                                (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices(cartService, i)">Proceed S1</button>
                     </div>
                 </div>
                 <!--Start: Comment Location 10-->
@@ -567,7 +568,7 @@
                 <div class="col" *ngIf="!orderNowCheck">
                     <h4>Confirmation</h4>
                     <div class="custom-card-shadow">
-                        <h4 style="color:#716aca">Handy Autos
+                        <h4 style="color:#716aca">{{confirmationStepCardInfo.company_name}}
                             <br class="add-line-break">
                         </h4>
                         <table class="table table-hover">
@@ -578,19 +579,20 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let item of itemsArray; let i= index">
-                                <th scope="row" >{{item.name}}</th>
-                                <td >${{item.price}}</td>
+                            <tr *ngFor="let service of confirmationStepCardInfo.service; let i= index">
+                                <th scope="row" >{{service.name}}</th>
+                                <td >${{service.price}}</td>
                             </tr>
                             </tbody>
                         </table>
                         <hr class="custom-hr-style">
-                        <p class="text-right" style="font-weight:bold;">
+                        <h4 class="text-right" style="font-weight:bold;">
                             <span> Total Price : </span>
-                            <span class="custom-theme-default" style="margin-right: 8px;"> $72.00</span>
-                        </p>
+                            <span class="custom-theme-default" style="margin-right: 8px;"> {{confirmationStepCardInfo.total_price | currency:'CAD'}}</span>
+                        </h4>
                     </div>
                     <p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
+                    <button class="btn btn-primary custom-float-right" (click)="placeCartOrder2()">Order Now New</button>
                     <button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true;placeCartOrder()">Order Now</button>
                     <button class="btn btn-danger custom-float-right" (click)="visibleSidebar2 = false; payment=[]; data =[]; console.log(data, payment);" style="margin-right: 5px;">Cancel</button>
                 </div>
@@ -608,13 +610,13 @@
             <div class="tab-pane" id="m_tabs_5_4 " role="tabpanel"  [ngClass]="{ 'active' : activeScheduleTab,
          'show':  activeScheduleTab }">
                 <form>
-                    <div class="form-group">
-                        <label for="sel1" style="font-weight: bold;">Select Employee</label>
-                        <select class="form-control" id="sel1" name="noPreferences" [ngModel]="'0'" (change)=getEmpId($event) > <!-- #empRefVar (was using previously now 0 is hardcoded) -->
-                            <option value="0">No Preferences </option>
-                            <option  *ngFor="let employee of locationEmployees; let empIndex = index;" value={{employee.staff_id}} #empId>{{employee.name}} </option>
-                        </select>
-                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label for="sel1" style="font-weight: bold;">Select Employee</label>-->
+                        <!--<select class="form-control" id="sel1" name="noPreferences" [ngModel]="'0'" (change)=getEmpId($event) > &lt;!&ndash; #empRefVar (was using previously now 0 is hardcoded) &ndash;&gt;-->
+                            <!--<option value="0">No Preferences </option>-->
+                            <!--<option  *ngFor="let employee of locationEmployees; let empIndex = index;" value={{employee.staff_id}} #empId>{{employee.name}} </option>-->
+                        <!--</select>-->
+                    <!--</div>-->
 
                     <div class="form-group m-form__group">
                         <label>
