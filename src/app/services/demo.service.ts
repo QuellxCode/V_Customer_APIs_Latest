@@ -94,9 +94,18 @@ export class DemoService {
                              calculates prices of all the services and stores it in
                              cart_item[total_price]'s key as its value
                         */
+
+                        /* ----------------------- I am sure they will come back to this logic --------------------- */
+                                // cart_item.service.forEach(
+                                //     item_service => {
+                                //        cart_item['sub_total_price'] += parseFloat(item_service.price);
+                                //     }
+                                // )
+                        /*------------------------------------ END----------------------------------- */
+
                         cart_item.service.forEach(
                             item_service => {
-                               cart_item['sub_total_price'] += parseFloat(item_service.price);
+                                item_service['price'] = parseFloat(item_service.price);
                             }
                         )
 

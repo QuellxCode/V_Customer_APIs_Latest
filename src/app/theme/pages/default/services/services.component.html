@@ -168,7 +168,7 @@
                                         </div>
                                     </form>
                                     <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
-                                    <div class="m--padding-10 m--margin-top-10" *ngFor="let company of company_and_locations">
+                                    <div class="m--padding-10 m--margin-top-10" *ngFor="let company of company_and_locations; let i = index;">
                                         <!-- First Card Start -->
                                         <h5>
                                             {{company.company_name.name | uppercase}}
@@ -195,7 +195,7 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <button class="btn btn-sm btn-link btnLinkColor custom-fs-1 pull-right c--margin-right--25"
-                                                        (click)="sideInfoPop('service', company, indexLocation, i); servicesTobeAddedInCart = [];" title="Click to view Company Services">
+                                                        (click)="sideInfoPop('service', company, indexLocation, i); servicesTobeAddedInCart = [];" title="Click To View Location Services">
                                                     <i class="fa fa-cogs custom-fs-1" ></i>
                                                     Services <i class="fa fa-chevron-right"></i>
                                                 </button>
@@ -284,12 +284,12 @@
                                             Services
                                         </h5>
                                         <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderServices"></div>
-                                        <div style="overflow-x:auto " *ngIf=" services.length > 0;">
+                                        <div class="custom-width-scroll" *ngIf=" services.length > 0;">
                                             <p class="custom-margin-bottom-zero"  *ngFor="let service of services; let i = index;">
                                  <span class="custom-width">
                                  <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
                                     height: 12px;">
-                                 <input type="checkbox"  (change)="showBookButtonMap($event); servicesCheckboxes($event, i);">
+                                 <input type="radio" name="serviceRadioButton"  [disabled]="permissions[i]" (change)="showBookButtonMap($event); servicesCheckboxes($event, i);">
                                  <span></span>
                                  </label>
                                  </span>
@@ -362,12 +362,12 @@
          'show':  activeItemTab }">
                 <p *ngIf="!preloaderFetchingCartItems"><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
                 <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderFetchingCartItems"></div>
-                <div class="custom-card-shadow" *ngFor="let cartService of cartServices; let i = index;">
+                <div class="custom-card-shadow m--margin-bottom-15" *ngFor="let cartService of cartServices; let i = index;">
                     <h4 style="color:#716aca">{{cartService.company_name}}
                         <br class="add-line-break">
                         <span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
                         <label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
-                            <input type="checkbox" (click)="showProceedButton1($event)">
+                            <input type="checkbox" (click)="showProceedButton1($event, i);">
                             <span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal"></span>
                             <span class="custom-check-box-setting " [hidden]="hideTermsModal"></span>
                         </label>
@@ -375,51 +375,92 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th scope="col" class="text-center"></th>
-                            <th scope="col"  class="col-md-6">Items</th>
-                            <th scope="col" >Price</th>
+
+                            <th scope="col" class="text-left c--width-30px"> Pick </th>
+                            <th scope="col" class="text-left">Location Name</th>
+                            <th scope="col"  class="text-left">Items</th>
+                            <th scope="col" class="text-left c--width-30px">Price</th>
+                            <th scope="col" class="text-left"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let serviceInfo of cartService.service">
+                        <tr *ngFor="let serviceInfo of cartService.service; let serviceInfoIndex = index">
                             <!-- *ngFor="let i= index"-->
                             <ng-container *ngIf="deleted">
+
+                                <td>
+                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom m--margin-right-10" style="height: 12px;">
+                                    <input type="radio" name="cartServicesRadioBtn" (click)="servicesInCartRadiosFirstScreen( serviceInfo ,$event, serviceInfoIndex);">
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    {{serviceInfo.company_location_name}}
+                                </td>
+                                <td scope="row" >{{serviceInfo.name}}</td>
+                                <td>{{serviceInfo.price}}</td>
                                 <td class="text-center custom-pointer">
                                     <a (click)="onDelete(i)">
                                         <i class="fa fa-trash" style="color: #f5516c;"></i>
                                     </a>
                                 </td>
-                                <th scope="row" >{{serviceInfo.name}}</th>
-                                <th>{{serviceInfo.price}}</th>
                                 <!-- <td >${{cartService.price}}</td> -->
                             </ng-container>
                         </tr>
                         </tbody>
                     </table>
-                    <hr class="custom-hr-style">
-                    <p class="custom-first-paragraph">
-                        <input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon1check">
-                        <button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = false" *ngIf="coupon1check">Apply</button>
-                        <button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = true" *ngIf="!coupon1check" style="margin-top: 20px;">Coupon</button>
-                        <span class="text-muted m--margin-right-35"> Sub Total :</span>
-                        <span class="text-muted m--margin-right-10">  {{cartService.sub_total_price}}</span>
-                    </p>
-                    <p class="custom-p2-setting m--margin-bottom-20">
-                        <span class="text-muted m--margin-right-30">Discount(40%) :</span>
-                        <span class="custom-theme-default text-muted m--margin-right-10">  {{ cartService.discount }}</span>
-                    </p>
-                    <p style="    text-align: right;
-               font-weight: 500;
-               margin-top: -15px;">
-                        <span class="text-muted m--margin-right-30"> Tax(10%) : </span>
-                        <span class="custom-theme-default text-muted m--margin-right-10">  {{ cartService.tax }} </span>
-                    </p>
-                    <h4 style="text-align: right; font-weight: bold;">
-                        <span class="m--margin-right-15"> Total :</span>
-                        <span class="custom-theme-default m--margin-right-10">   {{ cartService.total_price | currency:'CAD' }}</span>
-                    </h4>
+                    <hr class="custom-hr-style" *ngIf="agreedCartItemIndex == i">  <!-- proceedCounter > 0 -->
+                    <!--<p class="custom-first-paragraph">-->
+                        <!--<input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon1check">-->
+                        <!--<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = false" *ngIf="coupon1check">Apply</button>-->
+                        <!--<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = true" *ngIf="!coupon1check" style="margin-top: 20px;">Coupon</button>-->
+
+                            <!--SUB TOTAL START-->
+                                <!--<span class="text-muted m&#45;&#45;margin-right-35"> Sub Total :</span>-->
+                                    <!--OLD CODE Price-->
+                                    <!--<span class="text-muted m&#45;&#45;margin-right-10">  {{cartService.sub_total_price}}</span>-->
+
+                                    <!--NEW CODE PRICE-->
+                                    <!--<span class="text-muted m&#45;&#45;margin-right-10">  {{selectedLocationServicePrice}}</span>-->
+                            <!--SUB TOTAL END-->
+
+                    <!--</p>-->
+
+                    <!-- DISCOUNT START-->
+                            <!--<p class="custom-p2-setting m&#45;&#45;margin-bottom-20">-->
+                                <!--<span class="text-muted m&#45;&#45;margin-right-30">Discount(40%) :</span>-->
+                                <!--OLD CODE Price-->
+                                <!--<span class="custom-theme-default text-muted m&#45;&#45;margin-right-10">  {{ cartService.discount }}</span>-->
+
+                                <!--OLD CODE Price-->
+                                <!--<span class="text-muted m&#45;&#45;margin-right-10">  {{discountAmount}}</span>-->
+                            <!--</p>-->
+                    <!-- DISCOUNT END -->
+
+                    <!-- TAX START -->
+                            <!--<p style="text-align: right; font-weight: 500; margin-top: -15px;">-->
+                                <!--<span class="text-muted m&#45;&#45;margin-right-30"> Tax(10%) : </span>-->
+                                    <!--OLD CODE Price-->
+                                    <!--<span class="custom-theme-default text-muted m&#45;&#45;margin-right-10">  {{ cartService.tax }} </span>-->
+
+                                    <!--OLD CODE Price-->
+                                    <!--<span class="text-muted m&#45;&#45;margin-right-10">  {{taxAmount}}</span>-->
+                            <!--</p>-->
+                    <!-- TAX END -->
+
+                    <!--TOTAL START-->
+                            <!--<h4 style="text-align: right; font-weight: bold;">-->
+                                <!--<span class="m&#45;&#45;margin-right-15"> Total :</span>-->
+                                <!-- OLD PRICE CODE-->
+                                <!--<span class="custom-theme-default m&#45;&#45;margin-right-10">   {{ cartService.total_price | currency:'CAD' }}</span>-->
+
+                                <!--NEW PRICE CODE-->
+                                <!--<span class="custom-theme-default m&#45;&#45;margin-right-10">   {{ totalAmount | currency:'CAD' }}</span>-->
+                            <!--</h4>-->
+                    <!--TOTAL END-->
+
                     <div class="col text-right">
-                        <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
+                        <button *ngIf="agreedCartItemIndex == i" type="button" class="btn btn-primary"
                                 (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices(cartService, i)">Proceed S1</button>
                     </div>
                 </div>
