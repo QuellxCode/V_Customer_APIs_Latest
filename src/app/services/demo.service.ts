@@ -82,38 +82,40 @@ export class DemoService {
             (data:any)=> {
                 let cart_items = data.data;
                 console.log("insideMap", cart_items);
-                cart_items.forEach(
-                    cart_item=> {
-                        //Creates [ total_price, sub_total_price, tax & discount ] key for each cart item
-                        cart_item['total_price'] = 0;
-                        cart_item['sub_total_price'] = 0;
-                        cart_item['tax'] = 10;
-                        cart_item['discount'] = 40;
+                if(cart_items.length > 0) {
+                    cart_items.forEach(
+                        cart_item => {
+                            //Creates [ total_price, sub_total_price, tax & discount ] key for each cart item
+                            cart_item['total_price'] = 0;
+                            cart_item['sub_total_price'] = 0;
+                            cart_item['tax'] = 10;
+                            cart_item['discount'] = 40;
 
-                        /* iterates over each service in services array and
-                             calculates prices of all the services and stores it in
-                             cart_item[total_price]'s key as its value
-                        */
+                            /* iterates over each service in services array and
+                                 calculates prices of all the services and stores it in
+                                 cart_item[total_price]'s key as its value
+                            */
 
-                        /* ----------------------- I am sure they will come back to this logic --------------------- */
-                                // cart_item.service.forEach(
-                                //     item_service => {
-                                //        cart_item['sub_total_price'] += parseFloat(item_service.price);
-                                //     }
-                                // )
-                        /*------------------------------------ END----------------------------------- */
+                            /* ----------------------- I am sure they will come back to this logic --------------------- */
+                            // cart_item.service.forEach(
+                            //     item_service => {
+                            //        cart_item['sub_total_price'] += parseFloat(item_service.price);
+                            //     }
+                            // )
+                            /*------------------------------------ END----------------------------------- */
 
-                        cart_item.service.forEach(
-                            item_service => {
-                                item_service['price'] = parseFloat(item_service.price);
-                            }
-                        )
+                            cart_item.service.forEach(
+                                item_service => {
+                                    item_service['price'] = parseFloat(item_service.price);
+                                }
+                            )
 
-                        cart_item['discount'] = (cart_item['sub_total_price'] * cart_item['discount'])/100;                 // Calculates Discount
-                        cart_item['tax'] = (cart_item['sub_total_price'] * cart_item['tax'])/100;                           // Calculates Tax
-                        cart_item['total_price'] = cart_item['sub_total_price'] - cart_item['discount'] - cart_item['tax']; // Calculates Total Price
-                    }
-                )
+                            cart_item['discount'] = (cart_item['sub_total_price'] * cart_item['discount']) / 100;                 // Calculates Discount
+                            cart_item['tax'] = (cart_item['sub_total_price'] * cart_item['tax']) / 100;                           // Calculates Tax
+                            cart_item['total_price'] = cart_item['sub_total_price'] - cart_item['discount'] - cart_item['tax']; // Calculates Total Price
+                        }
+                    )
+                }
                 return data;
             }
         );

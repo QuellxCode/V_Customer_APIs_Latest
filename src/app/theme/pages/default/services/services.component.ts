@@ -308,6 +308,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     preloaderFetchingCartItems:boolean = true; // While fetching crat Items this loader will trigger until fetched
 
+    preloaderNoCartItemsFound : boolean = true;
+
     public company_and_locations = [];
 
 
@@ -347,6 +349,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     customer_Id;
     // Company Id of a Company for which order is being placed
     cartPlaceOrderCompanyId;
+
+    // Selected Company Id of service being ordered
+    selectedCompany_id;
 
     //    Format of ConfirmationStepCardInfo
 
@@ -693,7 +698,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             console.log(this.total_price);
             this.preloaderFetchingCartItems = false;
             },
-            err => { console.error(err)},
+            err => { console.error(err);
+                this.preloaderNoCartItemsFound = false;
+            },
             () => { console.log("Cart Fetching is working") }
 
         )
@@ -709,23 +716,23 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         )
     }
 
-    proceedCartServices(cartServicesInfo, index)
+    proceedCartServices(cartServicesInfo, index, serviceInfoIndex)
     {
         // this.companyNameOnConfirmationStep = cartCompanyName;
-
         this.confirmationStepCardInfo = cartServicesInfo;
         console.log("this is confirmationStepCardInfo => ", this.confirmationStepCardInfo);
-
+        console.log('Hellow New => ',this.current_company_location);
         let company_id = this.current_company_location.company_name.id;
-        let selectedCompany_id = parseInt(this.cartServices[index].service[index].company_id);
-        this.cartPlaceOrderCompanyId = selectedCompany_id;
-        console.log('this is company_id for which item was added to cart ' + company_id + ' and this is the company id for which items in cart have been proceeded against ' + selectedCompany_id);
+        console.log("company_id is => ",company_id);
+        console.log("selectedCompany_id => ",this.selectedCompany_id);
+        this.cartPlaceOrderCompanyId = this.selectedCompany_id;
+        console.log('this is company_id for which item was added to cart ' + company_id + ' and this is the company id for which items in cart have been proceeded against ' + this.selectedCompany_id);
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        console.log(' total price is => ' +cartServicesInfo.total_price +  ' and index => ' + index);
-        this.total_price = parseInt(cartServicesInfo[index].total_price);
+        // console.log(' total price is => ' + this.confirmationStepCardInfo.service[serviceInfoIndex].price +  ' and index => ' + index);
+        // this.total_price = parseInt(cartServicesInfo[serviceInfoIndex].price);
         console.log("Total Price is=> ", this.total_price);
 
-        this._demoService.proceedCartServices(this.total_price, selectedCompany_id, customer_id)
+        this._demoService.proceedCartServices(this.total_price, this.selectedCompany_id, customer_id)
             .subscribe(
                 (response:any) => {this.proceedService = response.data;
                     console.log("Proceed Cart Service: ",this.proceedService);
@@ -751,6 +758,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // this.taxAmount = (this.selectedLocationServicePrice*10)/100;
         // this.totalAmount = this.selectedLocationServicePrice - this.discountAmount - this.taxAmount;
         console.log('info is => ', info.rand_id);
+        console.log("company ID => ", info.company_id);
+        this.selectedCompany_id = parseInt(info.company_id);
 
         // console.log('discount is => ', this.discountAmount);
         // console.log('Tax is => ', this.taxAmount);

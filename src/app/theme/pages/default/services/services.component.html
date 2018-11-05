@@ -362,6 +362,12 @@
          'show':  activeItemTab }">
                 <p *ngIf="!preloaderFetchingCartItems"><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
                 <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderFetchingCartItems"></div>
+
+                <!--<div class="m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25" *ngIf="preloaderNoCartItemsFound"></div>-->
+                <!--<h3 class="text-center text-dark text-capitalize m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25"-->
+                     <!--*ngIf="preloaderFetchingCartItems == true && !preloaderNoCartItemsFound">-->
+                    <!--No items inside your cart..-->
+                <!--</h3>-->
                 <div class="custom-card-shadow m--margin-bottom-15" *ngFor="let cartService of cartServices; let i = index;">
                     <h4 style="color:#716aca">{{cartService.company_name}}
                         <br class="add-line-break">
@@ -461,7 +467,7 @@
 
                     <div class="col text-right">
                         <button *ngIf="agreedCartItemIndex == i" type="button" class="btn btn-primary"
-                                (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices(cartService, i)">Proceed S1</button>
+                                (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices(cartService, i, serviceInfoIndex)">Proceed S1</button>
                     </div>
                 </div>
                 <!--Start: Comment Location 10-->
@@ -622,14 +628,14 @@
                             <tbody>
                             <tr *ngFor="let service of confirmationStepCardInfo.service; let i= index">
                                 <th scope="row" >{{service.name}}</th>
-                                <td >${{service.price}}</td>
+                                <td >{{service.price | currency:'CAD'}}</td>
                             </tr>
                             </tbody>
                         </table>
                         <hr class="custom-hr-style">
                         <h4 class="text-right" style="font-weight:bold;">
                             <span> Total Price : </span>
-                            <span class="custom-theme-default" style="margin-right: 8px;"> {{confirmationStepCardInfo.total_price | currency:'CAD'}}</span>
+                            <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price | currency:'CAD'}}</span>
                         </h4>
                     </div>
                     <p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
