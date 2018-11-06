@@ -44,7 +44,8 @@ import {
 
 import { ServerServices_Services } from "../../../../services/serverServices.services";
 
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import {NgbCalendar, NgbDatepickerConfig, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDate} from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-date";
 
 // serverServices for posting the data to server
 
@@ -245,10 +246,23 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         private ngZone: NgZone,
         private serverServies_services: ServerServices_Services,
         private _demoService: DemoService,
-        private http: Http
+        private http: Http,
+        config: NgbDatepickerConfig,
+        calendar: NgbCalendar
     ) {
         // this.itemsArray=[{name:"Oil & Oil Filter Change", price: 12.00},
         //                  { name:"Spark Plugs Changing", price: 60.00}];
+
+        // customize default values of datepickers used by this component tree
+        config.minDate = {year: 2010, month: 1, day: 1};
+        config.maxDate = {year: 2050, month: 12, day: 31};
+
+        // days that don't belong to current month are not visible
+        // config.outsideDays = 'hidden';
+
+        // weekends are disabled
+        config.markDisabled = (date: NgbDate) => calendar.getWeekday(date) >= 6;
+
     }
 
     reqBeautyCategories: any[];
@@ -786,15 +800,28 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         console.log('index is => ', index);
     }
 
+    // OLD CODE
+    // changeDateFunc(event) {
+    //     this.staff_book_date = event.target.value;
+    //     console.log("The date selected is ", this.staff_book_date);
+    // }
 
-    changeDateFunc(event) {
-        this.staff_book_date = event.target.value;
-        console.log("The date selected is ", this.staff_book_date);
-    }
+
 
     changeTimeFunc(event) {
         this.staff_book_time = event.target.value;
         console.log("The time selected is ", this.staff_book_time);
+    }
+
+    // date: NgbDate = new NgbDate(2018,11,6);
+    // dateDisabled = (date: NgbDate, current: {month: number}) => day.date === 13;
+
+    changeDateFunc2(event) {
+        console.log(event);
+        let selectedDate;
+        selectedDate = event.year + '-' + event.month + '-' + event.day;
+        console.log("The date selected is ", selectedDate);
+        this.staff_book_time = selectedDate;
     }
 
 

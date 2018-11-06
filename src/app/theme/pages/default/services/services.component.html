@@ -677,21 +677,28 @@
                     <!--</div>-->
 
                     <div class="form-group m-form__group">
+                        <h5> <strong>NOTE:</strong> Choose preferred date &amp; time for availing service</h5>
                         <label>
                             <strong>Select Date</strong>
                         </label>
                         <br>
-                        <div>
-                            <div class="Iinput-group date">
-                                <!-- <input [(ngModel)]="staff_book_date" class="form-control m-input " id="m_datepicker_2_validate" placeholder="Select Date" type="date"> -->
-                                <div class="input-group-append">
-                                    <input  class="form-control m-input" (change)="changeDateFunc($event);"  #dateRefVar  placeholder="Select Date" type="date">
-                                    <span class="input-group-text">
-                        <i class="la la-calendar-check-o glyphicon-th"></i>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
+                        <ngb-datepicker (select)="changeDateFunc2($event);" style="width: 100%;" #dateRefVar
+                                        [minDate]="{year: 2018, month: 11, day: 1}"
+                                        [maxDate]="{year: 2058, month: 12, day: 31}"
+                                        [markDisabled]="dateDisabled">
+                        </ngb-datepicker>
+
+                        <!--<div>-->
+                            <!--<div class="input-group date">-->
+                                <!--&lt;!&ndash; <input [(ngModel)]="staff_book_date" class="form-control m-input " id="m_datepicker_2_validate" placeholder="Select Date" type="date"> &ndash;&gt;-->
+                                <!--<div class="input-group-append">-->
+                                    <!--<input  class="form-control m-input" (change)="changeDateFunc($event);"  #dateRefVar  placeholder="Select Date" type="date">-->
+                                    <!--<span class="input-group-text">-->
+                        <!--<i class="la la-calendar-check-o glyphicon-th"></i>-->
+                        <!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                     <div class="form-group m-form__group">
                         <label>
@@ -711,7 +718,7 @@
                     </div>
                 </form>
                 <div class="col text-right">
-                    <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="dateRefVar.value=='' || timeRefvar.value=='' "
+                    <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
                             (click)="activeTab('payment'); saveStaffSchedule()">Proceed S2</button>
                 </div>
             </div>
