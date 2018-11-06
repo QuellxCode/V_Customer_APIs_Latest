@@ -1,8 +1,3 @@
-<style>
-    .custom-fs-1 {
-        font-size: 1.2rem !important;
-    }
-</style>
 <!-- Begin Sub Header -->
 <div class="m-subheader" appunwraptag="" [ngClass]="{'d-none': isHeaderShow}">
     <!--  -->
@@ -151,7 +146,7 @@
                         <div class="col-sm-12" style="padding-right: 0px">
                             <div class="row">
                                 <!-- All Service show Here -->
-                                <div class="col-sm-3" style="padding: 0px; overflow-y: scroll; height: 47rem;">
+                                <div class="col-sm-3" style="padding: 0px; overflow-y: auto; overflow-x: hidden;">
                                     <form style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" placeholder="Search Service" style="border-radius: 15px;" >
@@ -168,9 +163,10 @@
                                         </div>
                                     </form>
                                     <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
-                                    <div class="m--padding-10 m--margin-top-10" *ngFor="let company of company_and_locations; let i = index;">
+                                    <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies" *ngFor="let company of company_and_locations; let i = index;">
                                         <!-- First Card Start -->
-                                        <h5>
+                                        <h5 class="m--font-brand m--font-boldest">
+                                            <i class="fa fa-industry" style="color: darkslateblue;"> </i>
                                             {{company.company_name.name | uppercase}}
                                             <!--Comment Location 7-->
                                             <!--Comment Location 7-->
@@ -181,27 +177,31 @@
                                         <!--<p class="custom-margin-bottom-zero">-->
                                         <!--{{company.email}}-->
                                         <!--</p>-->
-                                        <br/>
-                                        <div class="m--padding-10 box-shadow_for_locations m--margin-bottom-10 row"
+                                        <h6 class="m--font-brand m--font-bolder m--margin-top-15"> <i class="fa fa-map-marker" style="color: red; margin-left: 3px;"></i> LOCATIONS </h6>
+                                        <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 row" style="padding-bottom: 0px !important;;"
                                              *ngFor="let loc of company.location; let indexLocation = index;"
                                              [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'">
                                             <div class="col-md-12">
-                                                <h6>{{loc.name | uppercase}}</h6>
+                                                <h6 class="m--font-bold"> <i class="fa fa-building-o"> </i>  {{loc.name | uppercase}}</h6>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-8">
                                                 <p class="custom-margin-bottom-zero">
                                                     {{loc.address}}
                                                 </p>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <button class="btn btn-sm btn-link btnLinkColor custom-fs-1 pull-right c--margin-right--25"
                                                         (click)="sideInfoPop('service', company, indexLocation, i); servicesTobeAddedInCart = [];" title="Click To View Location Services">
                                                     <i class="fa fa-cogs custom-fs-1" ></i>
                                                     Services <i class="fa fa-chevron-right"></i>
                                                 </button>
                                             </div>
+                                            <div class="col-md-12">
+                                                <hr class="customHr">
+                                            </div>
+
                                         </div>
-                                        <hr>
+                                        <!--<hr>-->
                                         <!-- First Card End -->
                                         <!--Start: Comment Location 5-->
                                         <!--ENd: Comment Location 5-->
@@ -396,7 +396,7 @@
 
                                 <td>
                                     <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom m--margin-right-10" style="height: 12px;">
-                                    <input type="radio" name="cartServicesRadioBtn" (click)="servicesInCartRadiosFirstScreen( serviceInfo ,$event, serviceInfoIndex);">
+                                    <input type="radio" name="cartServicesRadioBtn" (click)="servicesInCartRadiosFirstScreen(cartService.company_name, serviceInfo ,$event, serviceInfoIndex);">
                                         <span></span>
                                     </label>
                                 </td>
@@ -615,7 +615,11 @@
                 <div class="col" *ngIf="!orderNowCheck">
                     <h4>Confirmation</h4>
                     <div class="custom-card-shadow">
-                        <h4 style="color:#716aca">{{confirmationStepCardInfo.company_name}}
+                            <!--OLD CODE-->
+                                <!--<h4 style="color:#716aca">{{confirmationStepCardInfo.company_name}}-->
+
+                            <!--NEW CODE-->
+                                <h4 style="color:#716aca">{{selectedCompanyName}}
                             <br class="add-line-break">
                         </h4>
                         <table class="table table-hover">
@@ -626,10 +630,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let service of confirmationStepCardInfo.service; let i= index">
-                                <th scope="row" >{{service.name}}</th>
-                                <td >{{service.price | currency:'CAD'}}</td>
-                            </tr>
+                                <!--OLD CODE-->
+                                    <!--<tr *ngFor="let service of confirmationStepCardInfo.service; let i= index">-->
+                                        <!--<th scope="row" >{{service.name}}</th>-->
+                                        <!--<td >{{service.price | currency:'CAD'}}</td>-->
+                                    <!--</tr>-->
+
+                                <!--NEW CODE-->
+                                <tr>
+                                    <th scope="row" >{{selectedServiceName}}</th>
+                                    <td >{{total_price | currency:'CAD'}}</td>
+                                </tr>
                             </tbody>
                         </table>
                         <hr class="custom-hr-style">
@@ -641,7 +652,7 @@
                     <p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
                     <button class="btn btn-primary custom-float-right" (click)="placeCartOrder2()">Order Now New</button>
                     <button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true;placeCartOrder()">Order Now</button>
-                    <button class="btn btn-danger custom-float-right" (click)="visibleSidebar2 = false; payment=[]; data =[]; console.log(data, payment);" style="margin-right: 5px;">Cancel</button>
+                    <button class="btn btn-danger custom-float-right" (click)="payment=[]; data =[]; servicesPlaceOrder = []; clearPlacedOrder(); visibleSidebar2 = false;" style="margin-right: 5px;">Cancel</button>
                 </div>
                 <div class="col text-center" *ngIf="orderNowCheck">
                     <h4>Congratulations</h4>

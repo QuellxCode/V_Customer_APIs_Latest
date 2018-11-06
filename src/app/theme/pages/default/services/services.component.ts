@@ -742,16 +742,31 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             )
     }
 
+    clearPlacedOrder() {
+        console.log(this.servicesPlaceOrder, this.data, this.payment);
+    }
+
 
     /* Cart First Screen Variables */
-    // selectedLocationServicePrice = 0;   // AKA  Sub Total Price
-    // discountAmount = 0;
-    // taxAmount = 0;
-    // totalAmount = 0;
+        // selectedLocationServicePrice = 0;   // AKA  Sub Total Price
+        // discountAmount = 0;
+        // taxAmount = 0;
+        // totalAmount = 0;
+
+        selectedCompanyName;
+        selectedServiceName;
 
     // Get selected location service and its information on radio button selection
 
-    servicesInCartRadiosFirstScreen(info, event, index) {
+    servicesInCartRadiosFirstScreen(company_name,info, event, index) {
+
+        this.servicesPlaceOrder = [];
+        this.servicesPlaceOrder.push({
+                "service_id": info.rand_id,
+                "service_price": info.price
+            }
+        );
+
         this.total_price = parseInt(info.price);
         console.log('price is => ', this.total_price);
         // this.discountAmount = (this.selectedLocationServicePrice*40)/100;
@@ -760,6 +775,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         console.log('info is => ', info.rand_id);
         console.log("company ID => ", info.company_id);
         this.selectedCompany_id = parseInt(info.company_id);
+
+        this.selectedCompanyName = company_name;
+        this.selectedServiceName = info.name;
 
         // console.log('discount is => ', this.discountAmount);
         // console.log('Tax is => ', this.taxAmount);
@@ -823,7 +841,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // let status_set_id = 1;
         let company_id = this.current_company_location.company_name.id;
         console.log("Company ID is", company_id);
-        console.log("total Price new button => ",this.confirmationStepCardInfo['total_price']);
+        console.log("total Price new button => ",this.total_price);
 
         console.log("Confirmation Step Card Info Complete => ",this.confirmationStepCardInfo);
 
@@ -840,14 +858,14 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         console.log("aja Yaar bhai=> ",this.confirmationStepCardInfo);
         /* This code pushes services that are being confirmed in cart in the services array for places order request in Final Data Array */
 
-        this.confirmationStepCardInfo.service.forEach(x => {
-            this.servicesPlaceOrder.push( { 'service_id': x.rand_id, 'service_price': x.price})
-        });
+        // this.confirmationStepCardInfo.service.forEach(x => {
+        //     this.servicesPlaceOrder.push( { 'service_id': x.rand_id, 'service_price': x.price})
+        // });
 
         console.log("services in final Card => ", this.servicesPlaceOrder);
 
         // console.log (this.total_price = this.confirmationStepCardInfo['total_price']);
-        this._demoService.saveOrderInformation(this.cartPlaceOrderCompanyId, this.customer_Id, this.confirmationStepCardInfo['total_price'], this.servicesPlaceOrder, this.employee_Id,
+        this._demoService.saveOrderInformation(this.cartPlaceOrderCompanyId, this.customer_Id, this.total_price, this.servicesPlaceOrder, this.employee_Id,
             this.staff_book_date, this.staff_book_time, company_timings, this.payment).subscribe(
             (res:any) => { console.log("this will be posted as order => ", res.data);
 

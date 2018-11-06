@@ -647,6 +647,11 @@ textarea.ng-invalid.ng-touched {
   box-shadow: rgb(238, 238, 238) 1px 1px 3px 3px;
 }
 
+.box-shadow_for_companies {
+	margin: 3px;
+	box-shadow: 1px 1px 2px 3px #eee;
+}
+
 .c--margin-right--25 {
   margin-right: -25px !important;
 }
@@ -659,4 +664,15 @@ textarea.ng-invalid.ng-touched {
 
 .c--width-30px {
 	width: 30px !important;
+}
+
+.custom-fs-1 {
+	font-size: 1rem !important;
+}
+
+.customHr {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
