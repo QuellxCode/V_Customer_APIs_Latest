@@ -121,6 +121,13 @@ export class DemoService {
         );
     }
 
+    getCompanySchedule(companyID, locationRandID) {
+        let obj = {
+            "location_id" : locationRandID
+        }
+        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift/'+companyID, obj, httpOptions);
+    }
+
 
     getStaffFromLocation(location_RandId){
 

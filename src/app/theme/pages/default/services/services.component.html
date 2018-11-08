@@ -373,7 +373,7 @@
                         <br class="add-line-break">
                         <span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
                         <label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
-                            <input type="checkbox" (click)="showProceedButton1($event, i);">
+                            <input type="radio" name="cartItemTermsCheckbox" (click)="showProceedButton1($event, i);">
                             <span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal"></span>
                             <span class="custom-check-box-setting " [hidden]="hideTermsModal"></span>
                         </label>
@@ -396,7 +396,7 @@
 
                                 <td>
                                     <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom m--margin-right-10" style="height: 12px;">
-                                    <input type="radio" name="cartServicesRadioBtn" (click)="servicesInCartRadiosFirstScreen(cartService.company_name, serviceInfo ,$event, serviceInfoIndex);">
+                                    <input type="radio" name="cartServicesRadioBtn" (click)="servicesInCartRadiosFirstScreen(cartService.company_name, serviceInfo ,$event, serviceInfoIndex, i);">
                                         <span></span>
                                     </label>
                                 </td>
@@ -466,7 +466,8 @@
                     <!--TOTAL END-->
 
                     <div class="col text-right">
-                        <button *ngIf="agreedCartItemIndex == i" type="button" class="btn btn-primary"
+                                                                                                                                    <!--  isProceedFirstEnabled &&  -->
+                        <button *ngIf="agreedCartItemIndex == i" type="button" class="btn btn-primary" [disabled]="selectedServiceParentIndex != i || termsAndConditonIndex != i"
                                 (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices(cartService, i, serviceInfoIndex)">Proceed S1</button>
                     </div>
                 </div>
@@ -682,10 +683,10 @@
                             <strong>Select Date</strong>
                         </label>
                         <br>
-                        <ngb-datepicker (select)="changeDateFunc2($event);" style="width: 100%;" #dateRefVar
-                                        [minDate]="{year: 2018, month: 11, day: 1}"
-                                        [maxDate]="{year: 2058, month: 12, day: 31}"
-                                        [markDisabled]="dateDisabled">
+                        <ngb-datepicker (select)="changeDateFunc2($event);" name="datepickerSchedule" ngModel style="width: 100%;" #dateRefVar
+                                        [minDate]
+                                        [maxDate]
+                                        [markDisabled]>
                         </ngb-datepicker>
 
                         <!--<div>-->
@@ -700,26 +701,41 @@
                             <!--</div>-->
                         <!--</div>-->
                     </div>
-                    <div class="form-group m-form__group">
-                        <label>
-                            <strong> Select Time Slot </strong>
-                        </label>
-                        <br>
-                        <div>
-                            <div class="input-group date">
-                                <input class="form-control m-input timepicker" #timeRefvar placeholder="Select Time" [value]="staff_book_time" (change)="changeTimeFunc($event);" id="m_timepicker_2_validate" placeholder="Select Time " type="time">
-                                <div class="input-group-append">
-                        <span class="input-group-text">
-                        <i class="la la-calendar-check-o glyphicon-th"></i>
-                        </span>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group m-form__group">
+                                <label>
+                                    <strong> Select Time Slot </strong>
+                                </label>
+                                <ngb-timepicker [(ngModel)]="timeSlotPicker" [hourStep]="hourStep" [minuteStep]="minuteStep"
+                                                (change)="changeTimeFunc2($event);" name="timeSlotPicer">
+                                </ngb-timepicker>
+                                <pre>Selected time: {{timeSlotPicker | json}}</pre>
+
+                                <!-- OLD CODE TIME PICKER -->
+                                <!--<div>-->
+                                    <!--<div class="input-group date">-->
+                                        <!--<input class="form-control m-input timepicker" #timeRefvar placeholder="Select Time" [value]="staff_book_time" (change)="changeTimeFunc($event);" id="m_timepicker_2_validate" placeholder="Select Time " type="time">-->
+                                        <!--<div class="input-group-append">-->
+                                            <!--<span class="input-group-text">-->
+                                            <!--<i class="la la-calendar-check-o glyphicon-th"></i>-->
+                                            <!--</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-link">
+                                Check Availibility
+                            </button>
+                        </div>
                     </div>
+
                 </form>
                 <div class="col text-right">
                     <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
-                            (click)="activeTab('payment'); saveStaffSchedule()">Proceed S2</button>
+                            (click)="activeTab('payment'); getTimeAndDate(); saveStaffSchedule();">Proceed S2</button>
                 </div>
             </div>
             <!-- schedule Tab Start Here -->

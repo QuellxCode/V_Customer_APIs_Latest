@@ -265,6 +265,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     }
 
+
     reqBeautyCategories: any[];
 
 
@@ -339,6 +340,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     servicesTobeAddedInCart = [];
     isDisabled = true;
 
+    // This check if Cart Item is selected or not (terms and condition checkbox)
+    isProceedFirstEnabled = true;
+
+    // This check if service in cart is checked or not
+    isServiceInCartChecked = false;
     // Payment Details of Place Order
     payment: Array<{}> = [
         {
@@ -707,6 +713,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
 
     getServicesToCart(){
+        this.isProceedFirstEnabled = true;
+        this.agreedCartItemIndex = undefined;
         this._demoService.getServicesToCart(this.user_id).subscribe(
             (response:any) => { this.cartServices = response.data; console.log( "this is cart Items response =>" , this.cartServices);
             console.log(this.total_price);
@@ -730,8 +738,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         )
     }
 
+
     proceedCartServices(cartServicesInfo, index, serviceInfoIndex)
     {
+
+
         // this.companyNameOnConfirmationStep = cartCompanyName;
         this.confirmationStepCardInfo = cartServicesInfo;
         console.log("this is confirmationStepCardInfo => ", this.confirmationStepCardInfo);
@@ -746,6 +757,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // this.total_price = parseInt(cartServicesInfo[serviceInfoIndex].price);
         console.log("Total Price is=> ", this.total_price);
 
+        this.fetchCompanySchedule();
+
         this._demoService.proceedCartServices(this.total_price, this.selectedCompany_id, customer_id)
             .subscribe(
                 (response:any) => {this.proceedService = response.data;
@@ -755,6 +768,20 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                 () => { console.log("Proceed Cart Services have been posted", ) }
             )
     }
+
+
+    // Get Schedule for the selected Company
+
+    fetchCompanySchedule() {
+        alert('Company ID is=>' + this.selectedCompany_id);
+        alert('Location Rand ID is=>' + this.selectedCompanyLocationId);
+        this._demoService.getCompanySchedule(this.selectedCompany_id, this.selectedCompanyLocationId).subscribe(
+            (response:any) => { console.log(response.data); },
+            (err) => { console.error(err) },
+            () => { console.log("Schedule Fetched") }
+        )
+    }
+
 
     clearPlacedOrder() {
         console.log(this.servicesPlaceOrder, this.data, this.payment);
@@ -769,11 +796,20 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
         selectedCompanyName;
         selectedServiceName;
+        selectedCompanyLocationId;
 
     // Get selected location service and its information on radio button selection
 
-    servicesInCartRadiosFirstScreen(company_name,info, event, index) {
+    servicesInCartRadiosFirstScreen(company_name,info, event, index, parentIndex) {
 
+        // Check for looking what is selected service parent's index
+        this.selectedServiceParentIndex = parentIndex;
+
+        this.isServiceInCartChecked = event.target.checked;
+
+
+
+        this.isProceedFirstEnabled = false;
         this.servicesPlaceOrder = [];
         this.servicesPlaceOrder.push({
                 "service_id": info.rand_id,
@@ -786,8 +822,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // this.discountAmount = (this.selectedLocationServicePrice*40)/100;
         // this.taxAmount = (this.selectedLocationServicePrice*10)/100;
         // this.totalAmount = this.selectedLocationServicePrice - this.discountAmount - this.taxAmount;
-        console.log('info is => ', info.rand_id);
+        console.log('service rand id => ', info.rand_id);
         console.log("company ID => ", info.company_id);
+
+        this.selectedCompanyLocationId = info.company_location_id;
+        console.log("company Location ID => ", this.selectedCompanyLocationId);
         this.selectedCompany_id = parseInt(info.company_id);
 
         this.selectedCompanyName = company_name;
@@ -806,11 +845,26 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     //     console.log("The date selected is ", this.staff_book_date);
     // }
 
-
+    timeSlotPicker = {hour: 13, minute: 30};
+    hourStep = 1;
+    minuteStep = 15;
 
     changeTimeFunc(event) {
         this.staff_book_time = event.target.value;
         console.log("The time selected is ", this.staff_book_time);
+    }
+
+    getTimeAndDate() {
+        this.staff_book_time = this.timeSlotPicker.hour + ':' + this.timeSlotPicker.minute + ':' + '00';
+        console.log('time is', this.staff_book_time);
+        console.log('Date is', this.staff_book_date);
+    }
+
+    changeTimeFunc2(event) {
+        console.log(event.target.value);
+        console.log(this.timeSlotPicker);
+        this.staff_book_time = this.timeSlotPicker.hour + ':' + this.timeSlotPicker.minute + ':' + '00';
+        console.log(this.staff_book_time);
     }
 
     // date: NgbDate = new NgbDate(2018,11,6);
@@ -821,7 +875,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         let selectedDate;
         selectedDate = event.year + '-' + event.month + '-' + event.day;
         console.log("The date selected is ", selectedDate);
-        this.staff_book_time = selectedDate;
+        this.staff_book_date = selectedDate;
     }
 
 
@@ -1280,7 +1334,23 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         }
     }
 
+
+    // Cart Item Index
+    termsAndConditonIndex;
+
+    //Cart Items' service index
+    selectedServiceParentIndex;
+
+
     showProceedButton1(event: Event, index) {
+
+        this.termsAndConditonIndex = index;
+        console.log("Terms Index is =>", this.termsAndConditonIndex);
+
+        // this.selectedServiceParentIndex = index;
+        console.log("Service Index is =>", this.selectedServiceParentIndex);
+
+        this.isServiceInCartChecked = false;
         if ((<HTMLInputElement>event.target).checked) {
             this.proceedCounter++;
             this.hideTermsModal = false;
