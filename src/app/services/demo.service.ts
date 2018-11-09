@@ -76,6 +76,20 @@ export class DemoService {
         return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/cart', obj, httpOptions);
     }
 
+    postResolutionCenter(company_id, service_id, description, status) {
+        let obj = {
+            "company_id": company_id,
+            "service_id": service_id,
+            "description": description,
+            "status": status
+
+        }
+        console.log("Posting Resolution Center is: ",obj);
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/resolution-center/'+customer_id, obj, httpOptions);
+    }
+
+
     getServicesToCart(user_id) {
         console.log("THE USER ID URL IS http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/"+user_id);
         return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/' + user_id , httpOptions).map(

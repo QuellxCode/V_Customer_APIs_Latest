@@ -53,21 +53,28 @@
             </h5>
             <div class="m-section">
                 <div class="m-section__content">
-                    <table class="table table-hover" cellspacing="0" id="datatable">
-                        <thead>
+                    <table class="table table-hover "  cellspacing="0" id="datatable">
+                        <thead style="text-align: center;">
                             <tr>
                                 <th>#</th>
                                 <th>Company</th>
                                 <th>Service</th>
-                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr *ngFor="let dispute of arrayOfDispute; let i = index" (click)="activeRow(i+1)">
-                                <td>{{dispute.id}}</td>
-                                <td>{{dispute.company}}</td>
-                                <td>{{dispute.service}}</td>
-                                <td>{{dispute.status}}</td>
+                        <tbody style="text-align: center;">
+                            <tr *ngFor="let completedOrder of order_stage_3; let i = index" >
+                                <td>{{i}}</td>
+                                <td>{{completedOrder.company_name}}</td>
+                                <td *ngFor="let service of completedOrder.services; let i = index">
+                                    {{service.name}}
+                                </td>
+                                <td *ngFor="let service of completedOrder.services; " (click)="activeRow(i+1)">
+                                       <button class="btn btn-link" style="color:#1EC95B;" 
+                                       (click)="sendCompanyID_Service_id(service.company_id, service.rand_id)"><b>CLICK</b> <i class="fa fa-chevron-right"></i></button>
+                                </td>
+
+                                
                             </tr>
                         </tbody>
                     </table>
@@ -171,7 +178,7 @@
 
 
                         </div>
-                        <!--Timeline 2 text-->
+                        
                     </div>
                     <!--Job width-->
 
@@ -182,6 +189,7 @@
             <!--End: TimeLine Scrolable-->
         </div>
         <div class="col-md-3" [hidden]="!disputeRightSideActive">
+            <form (ngSubmit)="resolutionCenter(RC)" #RC="ngForm">
             <label class="m--font-danger custom-label-setting">
                 <span>*Choose Below Option Accordingly</span>
             </label>
@@ -189,7 +197,7 @@
                 <label for="exampleSelect1">
                     Order Status
                 </label>
-                <select name="status" id="order_status" class="form-control m-input m-input--air">
+                <select name="status" id="order_status" ngModel name="order_status" class="form-control m-input m-input--air">
                     <option value="inprogress">In-Progress</option>
                     <option value="resolved">Resolved</option>
                 </select>
@@ -197,15 +205,16 @@
             <div class="form-group m-form__group">
                 <div class="form-group">
                     <label for="comment">Description:</label>
-                    <textarea class="form-control" rows="5" id="comment"></textarea>
+                    <textarea class="form-control" ngModel name="description" rows="5" id="comment"></textarea>
                 </div>
                 <span class="m-form__help">
                     We'll never share your order id with anyone else.
                 </span>
             </div>
-            <button class="btn btn-primary m-btn m-btn--custom" type="button">
+            <button class="btn btn-primary m-btn m-btn--custom" type="submit">
                 Submit
             </button>
+            </form>
         </div>
 
         <div class="col-md-7" *ngIf="!disputeRightSideActive">
