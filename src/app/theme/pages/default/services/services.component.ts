@@ -46,6 +46,7 @@ import { ServerServices_Services } from "../../../../services/serverServices.ser
 
 import {NgbCalendar, NgbDatepickerConfig, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgbDate} from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-date";
+import { ToastrService } from '../../../../services/toastrService.service';
 
 // serverServices for posting the data to server
 
@@ -125,6 +126,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     paymentCheckTickHide = false;
     isCustomer = true;
 
+    itemlistTab = true;
+    scheduletab = true;
+    paymenttab = true;
+
     /**/
     companies: any = [];
     cityName = '';
@@ -135,8 +140,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     };
 
-
-
+    confirmation = false;
 
 
     /*  currentService= {
@@ -248,7 +252,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         private _demoService: DemoService,
         private http: Http,
         config: NgbDatepickerConfig,
-        calendar: NgbCalendar
+        calendar: NgbCalendar,
+        private toastrService: ToastrService
     ) {
         // this.itemsArray=[{name:"Oil & Oil Filter Change", price: 12.00},
         //                  { name:"Spark Plugs Changing", price: 60.00}];
@@ -338,6 +343,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     // Temporary Array to store selceted services' ids that are to be added in cart
     servicesTobeAddedInCart = [];
     isDisabled = true;
+
+    // disable first proceed btn if service is not selected
+    isProceedFirstEnabled = true;
 
     // Payment Details of Place Order
     payment: Array<{}> = [
@@ -700,7 +708,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         console.log('Customer =>' + this.customer_Id + ' Services ids => ' + servicesIds + ' Company=> ' + company_id );
         this._demoService.postSevicestoCart(this.customer_Id, servicesIds, company_id)
             .subscribe(
-                (response:any) => {},
+                (response:any) => {
+                    this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
+                },
                 (err) => { console.error(err) },
                 () => { console.log("Status 200 Posted!") }
             )
@@ -773,7 +783,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     // Get selected location service and its information on radio button selection
 
     servicesInCartRadiosFirstScreen(company_name,info, event, index) {
-
+        this.isProceedFirstEnabled = false;
         this.servicesPlaceOrder = [];
         this.servicesPlaceOrder.push({
                 "service_id": info.rand_id,
@@ -1285,6 +1295,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             this.proceedCounter++;
             this.hideTermsModal = false;
             this.agreedCartItemIndex = index;
+            // this.confirmation = true;
         } else {
             this.hideTermsModal = true;
             this.agreedCartItemIndex = -1;
@@ -1293,6 +1304,15 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             }
             this.proceedCounter--;
         }
+    }
+
+    hideTabs(event: Event, index){
+        this.proceedCounter--;
+        this.hideTermsModal = true;
+        this.confirmation = true;
+        this.activeItemTab = true;
+        this.agreedCartItemIndex = -1;
+        return true;
     }
 
 
@@ -1438,6 +1458,19 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         this.isDisplayDetail = true;
         this.isListViewHide = true;
         this.isGridViewHide = true;
+    }
+
+    scheduleTabShow(){
+        this.activeScheduleTab = true;
+        this.activePaymentTab = false;
+    }
+
+    itemTabShow(){
+        this.activeScheduleTab = false;
+        this.activeItemTab = true;
+    }
+    showConfirmationTab(){
+        this.confirmation = false;
     }
 
 }

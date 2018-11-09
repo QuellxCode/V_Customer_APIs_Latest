@@ -55,7 +55,7 @@
         </div>
         <div style="padding-right:0px;">
             <!--Start: List/Grid View-->
-            <button class="btn-primary" style="padding:10px; border-radius: 20px; font-size: 22px" (click)="visibleSidebar2 = true; getServicesToCart(); services">
+            <button class="btn-primary" style="padding:10px; border-radius: 20px; font-size: 22px" (click)="visibleSidebar2 = true; getServicesToCart();  services ">
                 <i style="font-size: 26px" class="la la-cart-arrow-down"></i>Open Cart
             </button>
             <!--   <span (click)="isDisplayDetail=false;">
@@ -334,23 +334,23 @@
 <p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000" >
     <div>
         <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" id="m_quick_sidebar_tabs" role="tablist">
-            <li class="nav-item m-tabs__item">
+            <li class="nav-item m-tabs__item" style="pointer-events: none">
                 <a class="nav-link m-tabs__link active show custom-font-size" data-toggle="tab" href=""
                    aria-selected="true" [ngClass]="{ 'active' : activeItemTab}" (click)="activeTab('items')" >
                     Items-List
                 </a>
             </li>
-            <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
-                <a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('schedule')"  [ngClass]="{ 'active' : activeScheduleTab}" >
+            <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 " style="pointer-events: none">
+                <a class="nav-link m-tabs__link custom-font-size" disabled data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('schedule')"  [ngClass]="{ 'active' : activeScheduleTab}" >
                     Schedule
                 </a>
             </li>
-            <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
+            <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 " style="pointer-events: none">
                 <a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('payment')"  [ngClass]="{ 'active' : activePaymentTab}" >
                     Payment
                 </a>
             </li>
-            <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
+            <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 " style="pointer-events: none">
                 <a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href="" ng-reflect-href="#m_tabs_5_3" aria-selected="false" (click)="activeTab('more')" [ngClass]="{ 'active' : activeMoreTab}">
                     Confirmation
                 </a>
@@ -373,7 +373,7 @@
                         <br class="add-line-break">
                         <span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
                         <label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
-                            <input type="checkbox" (click)="showProceedButton1($event, i);">
+                            <input type="radio" name="cartItemTermsCheckbox" (click)="showProceedButton1($event, i);">
                             <span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal"></span>
                             <span class="custom-check-box-setting " [hidden]="hideTermsModal"></span>
                         </label>
@@ -396,7 +396,7 @@
 
                                 <td>
                                     <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom m--margin-right-10" style="height: 12px;">
-                                    <input type="radio" name="cartServicesRadioBtn" (click)="servicesInCartRadiosFirstScreen(cartService.company_name, serviceInfo ,$event, serviceInfoIndex);">
+                                    <input type="radio" name="cartServicesRadioBtn" #radio_btn_checked (click)="servicesInCartRadiosFirstScreen(cartService.company_name, serviceInfo ,$event, serviceInfoIndex);">
                                         <span></span>
                                     </label>
                                 </td>
@@ -464,11 +464,13 @@
                                 <!--<span class="custom-theme-default m&#45;&#45;margin-right-10">   {{ totalAmount | currency:'CAD' }}</span>-->
                             <!--</h4>-->
                     <!--TOTAL END-->
-
+                               
                     <div class="col text-right">
-                        <button *ngIf="agreedCartItemIndex == i" type="button" class="btn btn-primary"
-                                (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices(cartService, i, serviceInfoIndex)">Proceed S1</button>
+                        <button *ngIf="agreedCartItemIndex == i" type="button" class="btn btn-primary" 
+                        [disabled]="isProceedFirstEnabled"
+                                (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices(cartService, i, serviceInfoIndex);  ">Proceed S1 <i class="fa fa-chevron-right"></i></button>
                     </div>
+                   
                 </div>
                 <!--Start: Comment Location 10-->
                 <!--End: Comment Location 10-->
@@ -575,7 +577,15 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('more')">Proceed S3</button>
+                    <div class="row">
+                            <div class="col">
+                                   <button class="btn btn-default custom-float-left" style="margin-top: 10px;"  (click)=" scheduleTabShow(); "><i class="fa fa-chevron-left"></i> Back</button>
+                            </div>            
+                           <div class="col text-right">
+                                <button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('more'); showConfirmationTab();">Proceed S3 <i class="fa fa-chevron-right"></i></button>
+                           </div>
+                           </div>
+                   
                 </div>
                 <!-- Add new Payment Methonds -->
                 <form *ngIf="addNewPaymentCardHide">
@@ -610,7 +620,7 @@
             </div>
             <!-- Payment Tab End Here -->
             <!-- Conformation Tab Start Here -->
-            <div class="tab-pane" id="m_tabs_5_3" role="tabpanel" [ngClass]="{ 'active' : activeMoreTab,
+            <div class="tab-pane" id="m_tabs_5_3" role="tabpanel" [hidden]="confirmation" [ngClass]="{ 'active' : activeMoreTab,
          'show':  activeMoreTab }">
                 <div class="col" *ngIf="!orderNowCheck">
                     <h4>Confirmation</h4>
@@ -651,8 +661,9 @@
                     </div>
                     <p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
                     <button class="btn btn-primary custom-float-right" (click)="placeCartOrder2()">Order Now New</button>
-                    <button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true;placeCartOrder()">Order Now</button>
-                    <button class="btn btn-danger custom-float-right" (click)="payment=[]; data =[]; servicesPlaceOrder = []; clearPlacedOrder(); visibleSidebar2 = false;" style="margin-right: 5px;">Cancel</button>
+                    <button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true;placeCartOrder()">Order Now <i class="fa fa-check"></i></button>
+                    <button class="btn btn-danger custom-float-left" (click)="payment=[]; data =[]; servicesPlaceOrder = []; clearPlacedOrder(); visibleSidebar2 = false; hideTabs($event, i);" style="margin-right: 5px;">Cancel</button>
+                    
                 </div>
                 <div class="col text-center" *ngIf="orderNowCheck">
                     <h4>Congratulations</h4>
@@ -717,10 +728,16 @@
                         </div>
                     </div>
                 </form>
-                <div class="col text-right">
-                    <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
-                            (click)="activeTab('payment'); saveStaffSchedule()">Proceed S2</button>
-                </div>
+                <div class="row">
+                        <div class="col">
+                               <button  class="btn btn-default custom-float-left"  (click)=" itemTabShow(); "><i class="fa fa-chevron-left"></i> Back</button>
+                        </div>            
+                       <div class="col text-right">
+                            <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
+                                    (click)="activeTab('payment'); saveStaffSchedule() ">Proceed S2 <i class="fa fa-chevron-right"></i></button>
+                       </div>
+                       </div>
+               
             </div>
             <!-- schedule Tab Start Here -->
         </div>
