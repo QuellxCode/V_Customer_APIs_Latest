@@ -283,6 +283,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     longitude: any; // User Longitude
     latitude: any;  // User latitude
+    savedMarkers;
     radiusInMeters = 7000000;
     radiusInKm = this.radiusInMeters / 1000;
 
@@ -294,6 +295,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             height: 50
         }
     }
+
+    //----- Search String for Search Filter Pipe ------------------------
+    searchText;
 
     services = [];  // This array will have all the services that are returned against a company location
     company_locations = [];
@@ -568,12 +572,35 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                     // this.getCompanies();
                     this.getCompaniesNew();
                     console.log('user_lat => ' + this.latitude + "| user_lng => " + this.longitude);
+                    this.updateMarkers(event);
                 }
             });
         } else {
             // no can do
             console.log("Your Browser Doesn't Support Location!");
         }
+    }
+
+    updateMarkers(event) {
+
+        // console.log(typeof(parseInt(event.target.value)));
+
+        this.radiusInKm = parseInt(event.target.value)/1000;
+
+        this.savedMarkers = this.markers;
+
+        this.mapsAPILoader.load().then(() => {
+            const center = new google.maps.LatLng(this.latitude, this.longitude);
+            this.filteredMarkers = this.savedMarkers.filter(m => {
+                const markerLoc = new google.maps.LatLng(m.latitude, m.longitude);
+                const  distanceInKm = google.maps.geometry.spherical.computeDistanceBetween(markerLoc, center)/ 1000;
+
+                if (distanceInKm < this.radiusInKm){
+                    return m;
+                }
+            });
+        });
+
     }
 
     // GET COMPANIES & LOCATIONS OLD CODE When the response was chaotic (changed on 24th October to getCompaniesNew())

@@ -21,7 +21,7 @@ import { ToastrService } from './services/toastrService.service';
 @NgModule({
     declarations: [
         ThemeComponent,
-        AppComponent,
+        AppComponent
     ],
     imports: [
         LayoutModule,

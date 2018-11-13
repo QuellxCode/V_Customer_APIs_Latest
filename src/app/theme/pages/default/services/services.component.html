@@ -149,7 +149,7 @@
                                 <div class="col-sm-3" style="padding: 0px; overflow-y: auto; overflow-x: hidden;">
                                     <form style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" placeholder="Search Service" style="border-radius: 15px;" >
+                                            <input type="text" class="form-control" [(ngModel)]="searchText" name="searchInputFilter" placeholder="Search Company..." style="border-radius: 15px;" >
                                             <div class="input-group-append custom-pointer">
                                                 <!-- <span class="input-group-text">
                                                    <i class="fa fa-search">
@@ -163,7 +163,9 @@
                                         </div>
                                     </form>
                                     <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
-                                    <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies" *ngFor="let company of company_and_locations; let i = index;">
+                                    <div class="col-sm-12 m--margin-top-10 h4" *ngIf="(company_and_locations | searchFilter : searchText).length === 0"> No records found against your search...</div>
+                                    <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies"
+                                         *ngFor="let company of company_and_locations | searchFilter: searchText; let i = index;">
                                         <!-- First Card Start -->
                                         <h5 class="m--font-brand m--font-boldest">
                                             <i class="fa fa-industry" style="color: darkslateblue;"> </i>
@@ -210,7 +212,7 @@
                                 <!-- All Services End Here -->
                                 <!-- Map Start Here -->
                                 <div class="col-sm-9" style="padding-right: 0px">
-                                    <input type="number" [(ngModel)]="radiusInMeters" />
+                                    <input type="number" [(ngModel)]="radiusInMeters" (input)="updateMarkers($event)" />
                                     <p> {{radiusInMeters}} </p>
                                     <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10" >
                                         <agm-marker [latitude]="latitude" [longitude]="longitude" [iconUrl]="icon">
@@ -224,14 +226,14 @@
                                                 <!--<strong>Contact</strong>: 019182010-->
                                             </agm-info-window>
                                         </agm-marker>
-                                        <agm-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude" >
+                                        <agm-marker *ngFor="let marker of filteredMarkers" [latitude]="marker.latitude" [longitude]="marker.longitude" >
                                             <agm-info-window [disableAutoPan]="true">
                                                 <!--<a routerLink="/">Go there</a>-->
                                                 <strong> Location Name  </strong>
                                             </agm-info-window>
                                         </agm-marker>
                                         <agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="radiusInMeters" [fillColor]="'blue'"
-                                                    [circleDraggable]="true" [editable]="true">
+                                                    [circleDraggable]="false" [editable]="true">
                                         </agm-circle>
                                     </agm-map>
                                 </div>
