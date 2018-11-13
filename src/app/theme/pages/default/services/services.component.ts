@@ -46,6 +46,7 @@ import { ServerServices_Services } from "../../../../services/serverServices.ser
 
 import {NgbCalendar, NgbDatepickerConfig, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgbDate} from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-date";
+import { ToastrService } from '../../../../services/toastrService.service';
 
 // serverServices for posting the data to server
 
@@ -125,6 +126,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     paymentCheckTickHide = false;
     isCustomer = true;
 
+    itemlistTab = true;
+    scheduletab = true;
+    paymenttab = true;
+
     /**/
     companies: any = [];
     cityName = '';
@@ -135,8 +140,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     };
 
-
-
+    confirmation = false;
 
 
     /*  currentService= {
@@ -248,14 +252,15 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         private _demoService: DemoService,
         private http: Http,
         private config: NgbDatepickerConfig,
-        private calendar: NgbCalendar
+        private calendar: NgbCalendar,
+        private toastrService: ToastrService
     ) {
         // this.itemsArray=[{name:"Oil & Oil Filter Change", price: 12.00},
         //                  { name:"Spark Plugs Changing", price: 60.00}];
 
         // customize default values of datepickers used by this component tree
-        config.minDate = {year: 2010, month: 1, day: 1};
-        config.maxDate = {year: 2050, month: 12, day: 31};
+        this.config.minDate = {year: 2010, month: 1, day: 1};
+        this.config.maxDate = {year: 2050, month: 12, day: 31};
 
         // days that don't belong to current month are not visible
         // config.outsideDays = 'hidden';
@@ -340,11 +345,13 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     servicesTobeAddedInCart = [];
     isDisabled = true;
 
+
     // This check if Cart Item is selected or not (terms and condition checkbox)
     isProceedFirstEnabled = true;
 
     // This check if service in cart is checked or not
     isServiceInCartChecked = false;
+
     // Payment Details of Place Order
     payment: Array<{}> = [
         {
@@ -706,7 +713,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         console.log('Customer =>' + this.customer_Id + ' Services ids => ' + servicesIds + ' Company=> ' + company_id );
         this._demoService.postSevicestoCart(this.customer_Id, servicesIds, company_id)
             .subscribe(
-                (response:any) => {},
+                (response:any) => {
+                    this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
+                },
                 (err) => { console.error(err) },
                 () => { console.log("Status 200 Posted!") }
             )
@@ -853,12 +862,14 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     // Get selected location service and its information on radio button selection
 
+
     servicesInCartRadiosFirstScreen(company_name,info, event, index, parentIndex) {
 
         // Check for looking what is selected service parent's index
         this.selectedServiceParentIndex = parentIndex;
 
         this.isServiceInCartChecked = event.target.checked;
+
 
 
 
@@ -1429,6 +1440,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             this.proceedCounter++;
             this.hideTermsModal = false;
             this.agreedCartItemIndex = index;
+            // this.confirmation = true;
         } else {
             this.hideTermsModal = true;
             this.agreedCartItemIndex = -1;
@@ -1437,6 +1449,15 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             }
             this.proceedCounter--;
         }
+    }
+
+    hideTabs(event: Event, index){
+        this.proceedCounter--;
+        this.hideTermsModal = true;
+        this.confirmation = true;
+        this.activeItemTab = true;
+        this.agreedCartItemIndex = -1;
+        return true;
     }
 
 
@@ -1582,6 +1603,19 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         this.isDisplayDetail = true;
         this.isListViewHide = true;
         this.isGridViewHide = true;
+    }
+
+    scheduleTabShow(){
+        this.activeScheduleTab = true;
+        this.activePaymentTab = false;
+    }
+
+    itemTabShow(){
+        this.activeScheduleTab = false;
+        this.activeItemTab = true;
+    }
+    showConfirmationTab(){
+        this.confirmation = false;
     }
 
 }

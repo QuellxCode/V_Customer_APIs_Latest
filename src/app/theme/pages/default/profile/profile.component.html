@@ -125,23 +125,24 @@
 						<div class="m-card-profile__title m--hide">
 							Your Profile
 						</div>
-						<div class="m-card-profile__pic">
+						<div class="m-card-profile__pic" (click)="profileImage.click()">
 							<div class="m-card-profile__pic-wrapper">
-								<img src="./assets/app/media/img/users/user4.jpg" alt="" />
+								<img class="profileImage" src="{{customerImageUrl+CustomerProfile.picture}}" alt="" />
+
 							</div>
 
 							<a class="btn btn-brand m-btn m-btn--icon m-btn--icon-only custom-plus-setting btn-file" data-container="body" data-placement="right"
 							 data-toggle="m-tooltip" title="" data-original-title="Upload Photo jpg/png">
-								<i class="fa fa-plus"></i>
-								<input type="file" class="form-control-file" accept="image/png,  image/jpg ">
+								<i class="fa fa-plus" ></i>
+							
 							</a>
 						</div>
 						<div class="m-card-profile__details">
 							<span class="m-card-profile__name">
-								Mark Andre
+								{{CustomerProfile.first_name+CustomerProfile.last_name}}
 							</span>
 							<a href="" class="m-card-profile__email m-link">
-								mark.andre@gmail.com
+								{{CustomerProfile.email}}
 							</a>
 						</div>
 					</div>
@@ -302,8 +303,10 @@
 				</div>
 
 				<div class="tab-content">
+				
 					<div class="tab-pane active" id="m_user_profile_tab_1">
-						<form class="m-form m-form--fit m-form--label-align-right">
+						<!-- CP stand for create profile -->
+						<form (ngSubmit)="createProfile(P)" #P="ngForm" class="m-form m-form--fit m-form--label-align-right">
 							<div class="m-portlet__body">
 								<div class="form-group m-form__group m--margin-top-10 m--hide">
 									<div class="alert m-alert m-alert--default" role="alert">
@@ -320,10 +323,26 @@
 								</div>
 								<div class="form-group m-form__group row">
 									<label for="example-text-input" class="col-2 col-form-label media-view-right">
-										Full Name
+										First Name
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="Enter Full Name">
+										<input class="form-control m-input" [ngModel]="CustomerProfile.first_name" name="f_name" type="text" placeholder="Enter First Name">
+									</div>
+								</div>
+								<div class="form-group m-form__group row">
+									<label for="example-text-input" class="col-2 col-form-label media-view-right">
+										Last Name
+									</label>
+									<div class="col-7">
+										<input class="form-control m-input" [ngModel]="CustomerProfile.last_name" name="l_name" type="text" placeholder="Enter Last Name">
+									</div>
+								</div>
+								<div class="form-group m-form__group row">
+									<label for="example-text-input" class="col-2 col-form-label media-view-right">
+										Email
+									</label>
+									<div class="col-7">
+										<input class="form-control m-input" [ngModel]="CustomerProfile.email" name="p_email" type="email" placeholder="Enter Email Address">
 									</div>
 								</div>
 								<div class="form-group m-form__group row">
@@ -331,7 +350,7 @@
 										Occupation
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="Enter Occupation">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.occupation" name="p_occupation" type="text" placeholder="Enter Occupation">
 									</div>
 								</div>
 								<div class="form-group m-form__group row">
@@ -339,7 +358,7 @@
 										Company Name
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="Enter Company Name">
+										<input class="form-control m-input" type="text"  [ngModel]="CustomerProfile.company_name" name="p_companyName" placeholder="Enter Company Name">
 
 									</div>
 								</div>
@@ -348,7 +367,15 @@
 										Phone No.
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="Enter Phone Number">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.phone" name="p_phone" type="text" placeholder="Enter Phone Number">
+									</div>
+								</div>
+								<div class="form-group m-form__group row" style="display: none;">
+									<label for="example-text-input" class="col-2 col-form-label media-view-right">
+										Picture
+									</label>
+									<div class="col-7">
+										<input class="form-control m-input" (change)="onFileSelected($event)"  [ngModel]="CustomerProfile.picture" name="p_image" type="file" placeholder="Enter Phone Number" #profileImage>
 									</div>
 								</div>
 								<div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
@@ -360,11 +387,19 @@
 									</div>
 								</div>
 								<div class="form-group m-form__group row">
-									<label for="example-text-input" class="col-2 col-form-label media-view-right">
+									<label for="example-text-input"  class="col-2 col-form-label media-view-right">
 										Address
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="Enter Address">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.address"	 name="p_address" type="text" placeholder="Enter Address">
+									</div>
+								</div>
+								<div class="form-group m-form__group row" >
+									<label for="example-text-input"  class="col-2 col-form-label media-view-right">
+										Date of Birth
+									</label>
+									<div class="col-7">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.date_of_birth"  name="p_dob" type="text" placeholder="2018/02/29">
 									</div>
 								</div>
 								<div class="form-group m-form__group row">
@@ -372,7 +407,7 @@
 										City
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="Enter City">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.city" name="p_city" type="text" placeholder="Enter City">
 									</div>
 								</div>
 								<div class="form-group m-form__group row">
@@ -380,7 +415,7 @@
 										State
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="Enter State">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.state" name="p_state" type="text" placeholder="Enter State">
 									</div>
 								</div>
 								<div class="form-group m-form__group row">
@@ -388,7 +423,7 @@
 										Postcode
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="Enter Postcode">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.postcode" name="p_postcode" type="text" placeholder="Enter Postcode">
 									</div>
 								</div>
 								<div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
@@ -404,7 +439,7 @@
 										Linkedin
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="URL">
+										<input class="form-control m-input" [ngModel]="CustomerProfile.linkedin" name="p_linkedin" type="text" placeholder="URL">
 									</div>
 								</div>
 								<div class="form-group m-form__group row">
@@ -412,7 +447,7 @@
 										Facebook
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="URL">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.facebook" name="p_facebook" type="text" placeholder="URL">
 									</div>
 								</div>
 								<div class="form-group m-form__group row">
@@ -420,7 +455,7 @@
 										Twitter
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="URL">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.twitter" name="p_twitter" type="text" placeholder="URL">
 									</div>
 								</div>
 								<div class="form-group m-form__group row">
@@ -428,7 +463,7 @@
 										Instagram
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="text" placeholder="URL">
+										<input class="form-control m-input"  [ngModel]="CustomerProfile.instagram" name="p_instagram" type="text" placeholder="URL">
 									</div>
 								</div>
 							</div>
@@ -437,7 +472,7 @@
 									<div class="row">
 										<div class="col-2"></div>
 										<div class="col-7">
-											<button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">
+											<button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom">
 												Save changes
 											</button>
 											&nbsp;&nbsp;
@@ -450,6 +485,8 @@
 							</div>
 						</form>
 					</div>
+
+				
 
 					<div class="tab-pane" id="m_user_profile_tab_2">
 						<div class="m-portlet__body">
@@ -563,7 +600,8 @@
 				<div class="tab-content">
 
 					<div class="tab-pane active" id="m_security_tab_1">
-						<form class="m-form m-form--fit m-form--label-align-right">
+						<!-- CS stand for Create Security -->
+						<form (ngSubmit)="security(CS)" #CS="ngForm" class="m-form m-form--fit m-form--label-align-right">
 							<div class="m-portlet__body">
 								<div class="form-group m-form__group m--margin-top-10 m--hide">
 									<div class="alert m-alert m-alert--default" role="alert">
@@ -576,7 +614,7 @@
 										Old Password
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="password">
+										<input class="form-control m-input"  ngModel name="oldPassword" type="password">
 									</div>
 								</div>
 
@@ -585,7 +623,7 @@
 										New Password
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="password">
+										<input class="form-control m-input"  ngModel name="newPassword" type="password">
 									</div>
 								</div>
 
@@ -594,7 +632,7 @@
 										Conform Password
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" type="password">
+										<input class="form-control m-input"  ngModel name="confirmPassword" type="password">
 									</div>
 								</div>
 							</div>
@@ -603,7 +641,7 @@
 									<div class="row">
 										<div class="col-2"></div>
 										<div class="col-7">
-											<button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">
+											<button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom">
 												Save changes
 											</button>
 											&nbsp;&nbsp;

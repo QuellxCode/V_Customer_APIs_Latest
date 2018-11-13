@@ -13,6 +13,8 @@ import { ThemeRoutingModule } from "./theme/theme-routing.module";
 import { AuthModule } from "./auth/auth.module";
 import { AgmCoreModule } from '@agm/core';
 import { CalendarModule } from 'angular-calendar';
+import { profileService } from './services/profile.service';
+import { ToastrService } from './services/toastrService.service';
 // import { ServerServices_Services } from ''
 
 
@@ -34,7 +36,7 @@ import { CalendarModule } from 'angular-calendar';
             apiKey: 'AIzaSyABAXCmYooxcSc5GajYQIDIGgM9U2n6vyg'
         }),
     ],
-    providers: [ScriptLoaderService, DemoService],
+    providers: [ScriptLoaderService, DemoService, profileService, ToastrService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
