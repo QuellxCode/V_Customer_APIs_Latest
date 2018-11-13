@@ -11,7 +11,7 @@ import {
     ElementRef,
     NgZone
 } from "@angular/core";
-import { FormControl, FormGroup, NgForm, Validators } from "@angular/forms";
+import { FormControl, FormGroup, NgForm, Validators, ReactiveFormsModule } from "@angular/forms";
 import { Helpers } from "../../../../helpers";
 import { ScriptLoaderService } from "../../../../_services/script-loader.service";
 import { } from "googlemaps";
@@ -247,8 +247,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         private serverServies_services: ServerServices_Services,
         private _demoService: DemoService,
         private http: Http,
-        config: NgbDatepickerConfig,
-        calendar: NgbCalendar
+        private config: NgbDatepickerConfig,
+        private calendar: NgbCalendar
     ) {
         // this.itemsArray=[{name:"Oil & Oil Filter Change", price: 12.00},
         //                  { name:"Spark Plugs Changing", price: 60.00}];
@@ -261,10 +261,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // config.outsideDays = 'hidden';
 
         // weekends are disabled
-        config.markDisabled = (date: NgbDate) => calendar.getWeekday(date) >= 6;
-
+         this.config.markDisabled = (date: NgbDate) => this.calendar.getWeekday(date) >= 6 || (date.month==11 && date.day == 7);
+        // const dateDisabled = (date: NgbDate, current: {month: number}) => date.day === 13;
     }
-
+    
 
     reqBeautyCategories: any[];
 
@@ -741,6 +741,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     proceedCartServices(cartServicesInfo, index, serviceInfoIndex)
     {
+        // weekends are disabled
 
 
         // this.companyNameOnConfirmationStep = cartCompanyName;
@@ -757,6 +758,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // this.total_price = parseInt(cartServicesInfo[serviceInfoIndex].price);
         console.log("Total Price is=> ", this.total_price);
 
+        // Fetches The company Schedule
         this.fetchCompanySchedule();
 
         this._demoService.proceedCartServices(this.total_price, this.selectedCompany_id, customer_id)
@@ -769,16 +771,67 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             )
     }
 
+    //Sample Days Array Against which schedule days will be compared
+    disabledDaysArray = [];
+
+    dateDisabled;
+
+    locationSchedule : string;
+    startingScheduleHour:number;
+    endingScheduleHour:number;
+
 
     // Get Schedule for the selected Company
-
     fetchCompanySchedule() {
         alert('Company ID is=>' + this.selectedCompany_id);
         alert('Location Rand ID is=>' + this.selectedCompanyLocationId);
         this._demoService.getCompanySchedule(this.selectedCompany_id, this.selectedCompanyLocationId).subscribe(
-            (response:any) => { console.log(response.data); },
+            (response:any) => {
+                    console.log("Company Schedule is=> ",response.data);
+                    console.log("Scheduled days is=> ", response.data['0'].company_schedule.day);
+                    if (response.data['0'].company_schedule.day.indexOf("Mon") == -1) {
+                        this.disabledDaysArray.push(1);
+                    }
+                    if (response.data['0'].company_schedule.day.indexOf("Tue") == -1) {
+                        this.disabledDaysArray.push(2);
+                    }
+                    if (response.data['0'].company_schedule.day.indexOf("Wed") == -1) {
+                        this.disabledDaysArray.push(3);
+                    }
+                    if (response.data['0'].company_schedule.day.indexOf("Thu") == -1) {
+                        this.disabledDaysArray.push(4);
+                    }
+                    if (response.data['0'].company_schedule.day.indexOf("Fri") == -1) {
+                        this.disabledDaysArray.push(5);
+                    }
+                    if (response.data['0'].company_schedule.day.indexOf("Sat") == -1) {
+                        this.disabledDaysArray.push(6);
+                    }
+                    if (response.data['0'].company_schedule.day.indexOf("Sun") == -1) {
+                        this.disabledDaysArray.push(7);
+                    }
+
+                    console.log("Disabled days are=> ",this.disabledDaysArray);
+                    this.locationSchedule = response.data['0'].company_schedule.from + ' - ' + response.data['0'].company_schedule.to;
+                    this.startingScheduleHour = parseInt(response.data['0'].company_schedule.from.split(':')['0']);
+                    this.endingScheduleHour = parseInt(response.data['0'].company_schedule.to.split(':')['0']);
+                    alert(this.locationSchedule);
+                    //----------- THIS LINE DISABLES THE DAYS THAT ARE NOT RETURNED IN LOCATION SCHEDULE! ----------
+                    this.dateDisabled = (date: NgbDate, current: {month: number}) =>  this.disabledDaysArray.indexOf(this.calendar.getWeekday(date)) != -1;
+
+                },
             (err) => { console.error(err) },
             () => { console.log("Schedule Fetched") }
+        )
+    }
+
+    checkTimeAvailability() {
+
+        alert("Data Passed=>" + 'loc_ID' + this.selectedCompanyLocationId + 'Comp_ID' + this.selectedCompany_id + 'Time' +this.staff_book_time+ 'Date' + this.staff_book_date);
+        this._demoService.checkAvailableTime(this.selectedCompanyLocationId, this.selectedCompany_id, this.staff_book_time, this.staff_book_date).subscribe(
+            (res:any)=>{ console.log(" Available Api Response is => ",res.data) },
+            (err)=> { console.error(err) },
+            () =>{ }
         )
     }
 
@@ -845,9 +898,30 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     //     console.log("The date selected is ", this.staff_book_date);
     // }
 
+
+
     timeSlotPicker = {hour: 13, minute: 30};
     hourStep = 1;
     minuteStep = 15;
+
+    //Disable Time that is not in schedule
+
+    ctrl = new FormControl('', (control: FormControl) => {
+        const value = control.value;
+
+        if (!value) {
+            return null;
+        }
+
+        if (value.hour < this.startingScheduleHour ) {
+            return {tooEarly: true};
+        }
+        if (value.hour > this.endingScheduleHour ) {
+            return {tooLate: true};
+        }
+
+        return null;
+    });
 
     changeTimeFunc(event) {
         this.staff_book_time = event.target.value;

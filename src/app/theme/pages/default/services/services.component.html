@@ -686,7 +686,7 @@
                         <ngb-datepicker (select)="changeDateFunc2($event);" name="datepickerSchedule" ngModel style="width: 100%;" #dateRefVar
                                         [minDate]
                                         [maxDate]
-                                        [markDisabled]>
+                                        [markDisabled]="dateDisabled">
                         </ngb-datepicker>
 
                         <!--<div>-->
@@ -707,9 +707,18 @@
                                 <label>
                                     <strong> Select Time Slot </strong>
                                 </label>
-                                <ngb-timepicker [(ngModel)]="timeSlotPicker" [hourStep]="hourStep" [minuteStep]="minuteStep"
+                                <ngb-timepicker [(ngModel)]="timeSlotPicker" [formControl]="ctrl" [hourStep]="hourStep" [minuteStep]="minuteStep"
                                                 (change)="changeTimeFunc2($event);" name="timeSlotPicer">
                                 </ngb-timepicker>
+                                <b *ngIf="locationSchedule != ''">Choose time between <span class="text-success">{{locationSchedule}}</span></b>
+                                <br>
+                                <div *ngIf="ctrl.valid" class="small form-text text-success">Great choice</div>
+                                <div class="small form-text text-danger" *ngIf="!ctrl.valid">
+                                    <div *ngIf="ctrl.errors['required']">Select some time during Schedule</div>
+                                    <div *ngIf="ctrl.errors['tooLate']">Oh no, it's way too late</div>
+                                    <div *ngIf="ctrl.errors['tooEarly']">It's a bit too early</div>
+                                </div>
+
                                 <pre>Selected time: {{timeSlotPicker | json}}</pre>
 
                                 <!-- OLD CODE TIME PICKER -->
@@ -726,7 +735,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-link">
+                            <button class="btn btn-link" (click)="checkTimeAvailability();">
                                 Check Availibility
                             </button>
                         </div>
@@ -734,7 +743,7 @@
 
                 </form>
                 <div class="col text-right">
-                    <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
+                    <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="!ctrl.valid"
                             (click)="activeTab('payment'); getTimeAndDate(); saveStaffSchedule();">Proceed S2</button>
                 </div>
             </div>
