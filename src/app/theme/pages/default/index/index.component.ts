@@ -10,7 +10,7 @@ import { ScriptLoaderService } from "../../../../_services/script-loader.service
 @Component({
     selector: "app-index",
     templateUrl: "./index.component.html",
-    styles: ["agm-map {height: 600px;}"],
+    styleUrls: ["./fullcalendar.bundle.css"],
     encapsulation: ViewEncapsulation.None
 })
 export class IndexComponent implements OnInit, AfterViewInit {
