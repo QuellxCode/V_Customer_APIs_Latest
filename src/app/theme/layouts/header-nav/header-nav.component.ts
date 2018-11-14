@@ -9,21 +9,21 @@ declare let mLayout: any;
     templateUrl: "./header-nav.component.html",
     styleUrls: ["./headerCss.css"],
     encapsulation: ViewEncapsulation.None,
-    providers:[profileService]
+    providers: [profileService]
 })
 export class HeaderNavComponent implements OnInit, AfterViewInit {
 
     public CustomerProfile = {
         first_name: '',
-        last_name:''
-       
+        last_name: ''
+
     };
 
-    
-    constructor( private customerProfileData: profileService, private zone: NgZone, private _router: Router) {
+
+    constructor(private customerProfileData: profileService, private zone: NgZone, private _router: Router) {
 
     }
-    
+
     ngOnInit() {
         this.getProfile();
     }
@@ -33,11 +33,11 @@ export class HeaderNavComponent implements OnInit, AfterViewInit {
 
     }
 
-      // to get profile image of customer
-      public customerImageUrl  = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
+    // to get profile image of customer
+    public customerImageUrl = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
 
 
-      
+
     getProfile() {
         this.customerProfileData.getCutomerProfile().subscribe(
             (data: any) => {
@@ -45,17 +45,17 @@ export class HeaderNavComponent implements OnInit, AfterViewInit {
                 console.log(data);
 
             },
-            err => { 
+            err => {
                 console.error(err)
                 // location.reload();
                 // this.zone.run(() => this._router.navigateByUrl('./login'))
                 // this.zone.run(() => this._router.navigate(['/login']));
                 // this._router.navigate(['/login']);
                 // return false;
-               
+
             }
-            
-            
+
+
 
         );
     }

@@ -72,7 +72,7 @@ export class DemoService {
             "company_id": company_id
 
         }
-        console.log("Posting Service to Cart done is: ",obj);
+        console.log("Posting Service to Cart done is: ", obj);
         return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/cart', obj, httpOptions);
     }
 
@@ -84,19 +84,19 @@ export class DemoService {
             "status": status
 
         }
-        console.log("Posting Resolution Center is: ",obj);
+        console.log("Posting Resolution Center is: ", obj);
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/resolution-center/'+customer_id, obj, httpOptions);
+        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/resolution-center/' + customer_id, obj, httpOptions);
     }
 
 
     getServicesToCart(user_id) {
-        console.log("THE USER ID URL IS http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/"+user_id);
-        return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/' + user_id , httpOptions).map(
-            (data:any)=> {
+        console.log("THE USER ID URL IS http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/" + user_id);
+        return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items/' + user_id, httpOptions).map(
+            (data: any) => {
                 let cart_items = data.data;
                 console.log("insideMap", cart_items);
-                if(cart_items.length > 0) {
+                if (cart_items.length > 0) {
                     cart_items.forEach(
                         cart_item => {
                             //Creates [ total_price, sub_total_price, tax & discount ] key for each cart item
@@ -137,35 +137,35 @@ export class DemoService {
 
     getCompanySchedule(companyID, locationRandID) {
         let obj = {
-            "location_id" : locationRandID
+            "location_id": locationRandID
         };
-        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift/'+companyID, obj, httpOptions);
+        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift/' + companyID, obj, httpOptions);
     }
 
     checkAvailableTime(location_id, company_id, time, date) {
         let obj = {
-            "location_id" : location_id,
-            "company_id" : company_id,
-            "time" : time,
-            "date" : date
+            "location_id": location_id,
+            "company_id": company_id,
+            "time": time,
+            "date": date
         };
         console.log(obj);
-        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/shift/'+company_id, obj, httpOptions);
+        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/shift/' + company_id, obj, httpOptions);
     }
 
 
-    getStaffFromLocation(location_RandId){
+    getStaffFromLocation(location_RandId) {
 
-        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/location-staff/'+location_RandId, httpOptions);
+        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/location-staff/' + location_RandId, httpOptions);
     }
 
-    placeCartOrder(status_id_set, company_id){
+    placeCartOrder(status_id_set, company_id) {
         let status_object = {
             "status": status_id_set
         }
-        console.log("status is: ",status_object);
-        console.log("http://www.sharjeelkhan.ca/vease/vease-app/api/v1/place-order/"+company_id);
-        return this.http.post('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/place-order/'+company_id, status_object, httpOptions)
+        console.log("status is: ", status_object);
+        console.log("http://www.sharjeelkhan.ca/vease/vease-app/api/v1/place-order/" + company_id);
+        return this.http.post('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/place-order/' + company_id, status_object, httpOptions)
     }
 
     proceedCartServices(price, company_id, customer_id) {
@@ -180,21 +180,21 @@ export class DemoService {
 
 
 
-    saveStaffSchedule(company_id, employee_id, date, time){
+    saveStaffSchedule(company_id, employee_id, date, time) {
         let obj = {
             "employee_id": employee_id,
             "date": date,
             "time": time
         }
 
-        console.log("http://sharjeelkhan.ca/vease/vease-app/api/v1/book-employee/"+company_id);
-        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/book-employee/'+company_id, obj, httpOptions);
+        console.log("http://sharjeelkhan.ca/vease/vease-app/api/v1/book-employee/" + company_id);
+        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/book-employee/' + company_id, obj, httpOptions);
 
     }
 
 
-    saveOrderInformation(company_id:number, customer_id:number, total_price, servicesPlaceOrder, 
-                         employee_id, date:string, time:string, company_timings:string, payment) {
+    saveOrderInformation(company_id: number, customer_id: number, total_price, servicesPlaceOrder,
+        employee_id, date: string, time: string, company_timings: string, payment) {
         let array_obj = {
             "data": [{
                 "company_id": company_id,
@@ -215,9 +215,9 @@ export class DemoService {
 
     // this api will use to get lead section api
 
-    getCustomerOrders(){
+    getCustomerOrders() {
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/order-customer/'+customer_id, httpOptions);
+        return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/order-customer/' + customer_id, httpOptions);
     }
 
     /*ESTIMATED RESPONSE*/

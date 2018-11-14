@@ -185,7 +185,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
                 .next()
                 .find(".m-widget4")
                 .append(
-                    `
+                `
             <div class="m-widget4__item">
                             <div class="m-widget4__img m-widget4__img--logo">
                                 <img src="./assets/app/media/img/client-logos/logo5.png" alt="">
@@ -193,8 +193,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
                             <div class="m-widget4__info">
                                 <span class="m-widget4__title">
                                     New Item ` +
-                    counter +
-                    `
+                counter +
+                `
                                 </span>
                                 <br>
                                 <span class="m-widget4__sub">
@@ -280,14 +280,14 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         //             this.requestForms.value.reqIsPublish, this.fileToUpload);
         this.serverServies_services
             .storeRequests(
-                this.requestForms.value.reqName,
-                this.requestForms.value.reqDetail,
-                this.requestForms.value.reqCategory,
-                this.requestForms.value.reqPrice,
-                this.requestForms.value.reqDuration,
-                this.requestForms.value.reqContactNumber,
-                this.requestForms.value.reqIsPublish,
-                this.fileToUpload
+            this.requestForms.value.reqName,
+            this.requestForms.value.reqDetail,
+            this.requestForms.value.reqCategory,
+            this.requestForms.value.reqPrice,
+            this.requestForms.value.reqDuration,
+            this.requestForms.value.reqContactNumber,
+            this.requestForms.value.reqIsPublish,
+            this.fileToUpload
             )
             .subscribe(response => {
                 console.log(response);

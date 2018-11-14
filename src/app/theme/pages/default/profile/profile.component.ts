@@ -18,10 +18,10 @@ export class ProfileComponent implements OnInit {
     currencyDDLHidden: boolean;
     selectedFile: File;
     // CustomerProfile;
-    
+
     public CustomerProfile = {
         first_name: ''
-       
+
     };
 
     constructor(private _script: ScriptLoaderService, private demoService: DemoService, private profileService: profileService) { }
@@ -50,7 +50,7 @@ export class ProfileComponent implements OnInit {
     }
 
     // to get profile image of customer
-    public customerImageUrl  = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
+    public customerImageUrl = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
 
 
     getProfile() {
@@ -73,60 +73,60 @@ export class ProfileComponent implements OnInit {
 
 
     createProfile(form_data: NgForm) {
-        
-             this.profileService.createProfileApi(
-                form_data.value.f_name,
-                form_data.value.l_name,
-                this.selectedFile[0],
-                // form_data.value.p_image,
-                form_data.value.p_address,
-                form_data.value.p_email,
-                form_data.value.p_phone,
-                form_data.value.p_dob,
-                form_data.value.p_companyName,
-                form_data.value.p_occupation,
-                form_data.value.p_city,
-                
-                form_data.value.p_state,
-                form_data.value.p_postcode,
-                form_data.value.p_linkedin,
-                form_data.value.p_facebook,
-                form_data.value.p_twitter,
-                form_data.value.p_instagram )
-                .subscribe(
-                    (data : Response) => {
-                      console.log(data);
-                      this.getProfile();
-                        console.log(form_data);
-                     },
-                    error => {
-                        console.error("Error saving Profile!");
-                       
-                    }
-                    );
-     }   
 
-     
+        this.profileService.createProfileApi(
+            form_data.value.f_name,
+            form_data.value.l_name,
+            this.selectedFile[0],
+            // form_data.value.p_image,
+            form_data.value.p_address,
+            form_data.value.p_email,
+            form_data.value.p_phone,
+            form_data.value.p_dob,
+            form_data.value.p_companyName,
+            form_data.value.p_occupation,
+            form_data.value.p_city,
 
-     security(form_data: NgForm) {
+            form_data.value.p_state,
+            form_data.value.p_postcode,
+            form_data.value.p_linkedin,
+            form_data.value.p_facebook,
+            form_data.value.p_twitter,
+            form_data.value.p_instagram)
+            .subscribe(
+            (data: Response) => {
+                console.log(data);
+                this.getProfile();
+                console.log(form_data);
+            },
+            error => {
+                console.error("Error saving Profile!");
+
+            }
+            );
+    }
+
+
+
+    security(form_data: NgForm) {
         console.log(form_data.value.category_name);
-        
-             this.profileService.passwordApi(
-                form_data.value.oldPassword,
-                form_data.value.newPassword,
-                form_data.value.confirmPassword )
-                .subscribe(
-                    (data : Response) => {
-                      console.log(data);
-                      
-                        console.log(form_data);
-                     },
-                    error => {
-                        console.error("Error saving Securtiy info!");
-                       
-                    }
-                    );
-     }   
+
+        this.profileService.passwordApi(
+            form_data.value.oldPassword,
+            form_data.value.newPassword,
+            form_data.value.confirmPassword)
+            .subscribe(
+            (data: Response) => {
+                console.log(data);
+
+                console.log(form_data);
+            },
+            error => {
+                console.error("Error saving Securtiy info!");
+
+            }
+            );
+    }
 
 
 
@@ -148,6 +148,6 @@ export class ProfileComponent implements OnInit {
         }
     }
 
-   
+
 
 }

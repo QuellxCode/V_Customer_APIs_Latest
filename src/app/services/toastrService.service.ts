@@ -1,25 +1,21 @@
-declare var showSuccessMessage:any;
-declare var showErrorMessage:any;
+declare var showSuccessMessage: any;
+declare var showErrorMessage: any;
 
-export class ToastrService
-{
-    constructor()
-    {
+export class ToastrService {
+    constructor() {
 
     }
 
 
-    showErrorMessages(message)
-    {
+    showErrorMessages(message) {
         showErrorMessage(message);
     }
 
 
-    showSuccessMessages(message)
-    {
+    showSuccessMessages(message) {
         showSuccessMessage(message);
     }
-    
+
 
 
 

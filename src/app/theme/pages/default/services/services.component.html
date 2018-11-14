@@ -752,8 +752,12 @@
                         </div>
                         <div class="col-md-4">
                             <button class="btn btn-link" (click)="checkTimeAvailability();">
-                                Check Availibility
+                                Check Availability
                             </button>
+                        </div>
+                        <div class="col-md-12" *ngIf="isMessageDisplayed">
+                            <h4 class="text-success" *ngIf="availableSlotMessage"> Selected time is available! You may proceed.</h4>
+                            <h4 class="text-danger" *ngIf="!availableSlotMessage"> Sorry time slot booked, choose another time!</h4>
                         </div>
                     </div>
 
@@ -763,7 +767,7 @@
                                <button  class="btn btn-default custom-float-left"  (click)=" itemTabShow(); "><i class="fa fa-chevron-left"></i> Back</button>
                         </div>            
                         <div class="col text-right">
-                            <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="!ctrl.valid"
+                            <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="!ctrl.valid || !enableScheduleProceedBtn"
                                     (click)="activeTab('payment'); getTimeAndDate(); saveStaffSchedule();">Proceed S2</button>
                         </div>
                 </div>
