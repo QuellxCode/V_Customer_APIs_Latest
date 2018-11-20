@@ -1122,6 +1122,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.log("Status 01 HAS BEEN Posted!");
                 // New Place Order Api Called Here
                 this.PlaceOrderInformation();
+                this.orderNowCheck = true;
             }
         )
 
