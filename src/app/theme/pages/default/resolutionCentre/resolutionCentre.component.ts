@@ -37,6 +37,9 @@ export class ResolutionCentreComponent {
     companyID;
     customerOrders;
 
+    firstMessage = true;
+    preloader: boolean = true;
+
     constructor(
         private _script: ScriptLoaderService,
         private http: HttpClient,
@@ -125,6 +128,10 @@ export class ResolutionCentreComponent {
         this.demo.getCustomerOrders().subscribe(
             (data: any) => {
                 console.log(data.data);
+                     
+                this.firstMessage = false;
+                this.preloader = false;
+               
                 this.customerOrders = data.data
                 this.order_stage_3 = this.customerOrders.filter(x => x.order_stage.trim() == "3");
                 console.log("Completed", this.order_stage_3);

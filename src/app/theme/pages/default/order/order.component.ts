@@ -45,6 +45,8 @@ export class OrderComponent implements OnInit {
     order_stage_3;      // completed
     customerOrders;
     servicesToShow = [];
+    firstMessage = true;
+    preloader: boolean = true;
 
     @ViewChild("search") public searchElementRef: ElementRef;
     constructor(
@@ -171,6 +173,12 @@ export class OrderComponent implements OnInit {
         this.demo.getCustomerOrders().subscribe(
             (data: any) => {
                 console.log(data.data);
+                
+                
+                this.firstMessage = false;
+                this.preloader = false;
+               
+                
                 this.customerOrders = data.data
                 this.order_stage_1 = this.customerOrders.filter(x => x.order_stage.trim() == "1");
                 this.order_stage_2 = this.customerOrders.filter(x => x.order_stage.trim() == "2");

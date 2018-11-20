@@ -53,7 +53,8 @@
             </h5>
             <div class="m-section">
                 <div class="m-section__content">
-                    <table class="table table-hover "  cellspacing="0" id="datatable">
+                    <!-- <table class="table table-hover "  cellspacing="0" id="datatable">    >>>> nasir remove id-"datatable" for a reason -->
+                    <table class="table table-hover "  cellspacing="0">
                         <thead style="text-align: center;">
                             <tr>
                                 <th>#</th>
@@ -62,9 +63,15 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody style="text-align: center;">
-                            <tr *ngFor="let completedOrder of order_stage_3; let i = index" >
-                                <td>{{i}}</td>
+                        <tbody style="text-align: center; ">
+                            
+                        <!-- this text and preloader hide after successfully order fetch -->
+                        <p  *ngIf="firstMessage"><b>Fetching Resolution Center</b></p>
+                        <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
+                        <!-- this text and preloader hide after successfully order fetch -->
+
+                            <tr *ngFor="let completedOrder of order_stage_3; let i = index">
+                                <td>{{i + 1}}</td>
                                 <td>{{completedOrder.company_name}}</td>
                                 <td *ngFor="let service of completedOrder.services; let i = index">
                                     {{service.name}}
