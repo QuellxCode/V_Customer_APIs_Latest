@@ -226,10 +226,11 @@
                                                 <!--<strong>Contact</strong>: 019182010-->
                                             </agm-info-window>
                                         </agm-marker>
-                                        <agm-marker *ngFor="let marker of filteredMarkers" [latitude]="marker.latitude" [longitude]="marker.longitude" >
-                                            <agm-info-window [disableAutoPan]="true">
+                                        <agm-marker *ngFor="let marker of filteredMarkers; let markerIndex = index;"
+                                                    [latitude]="marker.latitude" [longitude]="marker.longitude" (markerClick)="clickedMarker(infoWindow)">
+                                            <agm-info-window [disableAutoPan]="true" #infoWindow>
                                                 <!--<a routerLink="/">Go there</a>-->
-                                                <strong> Location Name  </strong>
+                                                <strong> {{marker.name | uppercase}} </strong>
                                             </agm-info-window>
                                         </agm-marker>
                                         <agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="radiusInMeters" [fillColor]="'blue'"
@@ -244,7 +245,7 @@
                         height: 98%;
                         margin-top: 5px;" *ngIf="showServices">
                                     <div class="container" style="padding: 10px">
-                                        <h4>
+                                        <h4> <i class="fa fa-map-marker custom-marker-style"></i>
                                             {{current_company_location.location[selectedIndex].name | uppercase}}
                                             <span class="custom-float-right custom-pointer" (click)="showServices=false;">
                               <i class="fa fa-times"></i>
@@ -257,8 +258,6 @@
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star"></span>
-                                            (7)
-                                            One Room With Bath
                                         </p>
                                         <p class="custom-margin-bottom-zero">
                                             <strong>
@@ -301,7 +300,7 @@
                                  </span>
                                  </span>
                                                 <span class="custom-float-right m--font-success">
-                                 {{service.price}}
+                                 {{service.price | currency:'CAD'}}
                                  </span>
                                             </p>
                                         </div>
@@ -348,15 +347,16 @@
                 </a>
             </li>
             <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 " style="pointer-events: none">
-                <a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('payment')"  [ngClass]="{ 'active' : activePaymentTab}" >
-                    Payment
-                </a>
-            </li>
-            <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 " style="pointer-events: none">
                 <a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href="" ng-reflect-href="#m_tabs_5_3" aria-selected="false" (click)="activeTab('more')" [ngClass]="{ 'active' : activeMoreTab}">
                     Confirmation
                 </a>
             </li>
+            <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 " style="pointer-events: none">
+                <a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('payment')"  [ngClass]="{ 'active' : activePaymentTab}" >
+                    Pay &amp; Place Order
+                </a>
+            </li>
+
         </ul>
         <div class="tab-content">
             <!-- Items Tab Start Here -->
@@ -408,7 +408,7 @@
                                     {{serviceInfo.company_location_name}}
                                 </td>
                                 <td scope="row" >{{serviceInfo.name}}</td>
-                                <td>{{serviceInfo.price}}</td>
+                                <td>{{serviceInfo.price | currency:'CAD'}}</td>
                                 <td class="text-center custom-pointer">
                                     <a (click)="onDelete(i)">
                                         <i class="fa fa-trash" style="color: #f5516c;"></i>
@@ -486,6 +486,23 @@
             <div class="tab-pane" [ngClass]="{ 'active' : activePaymentTab,
          'show':  activePaymentTab }"
                  id="m_tabs_5_2" role="tabpanel">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <form #checkout="ngForm" (ngSubmit)="onSubmitPayment(checkout)" class="checkout">
+                            <div class="form-row">
+                                <label for="card-info">Card Info</label>
+                                <div id="card-info" #cardInfo></div>
+
+                                <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
+                            </div>
+
+                            <button type="submit">Pay  {{total_price | currency:'CAD'}}</button>
+
+                        </form>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6">
                         <button class="btn btn-link pull-left custom-padding-left-top-zero" (click)="addNewPaymentCardHide = false" *ngIf="addNewPaymentCardHide">
@@ -508,16 +525,40 @@
                                         <img src="./assets/demo/demo3/media/img/americanexpress.png">
                                         <span class="m--padding-left-15">American Express</span>
                                     </div>
-                                    <div class="col-md-4 custom-color m--padding-top-15">
+                                    <div class="col-md-4 custom-color m--padding-top-5">
                                         <i class="fa fa-check" *ngIf="paymentCheckTickHide"></i>
+                                        <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                            <input type="radio" name="paymentCard">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="m--font-thin">
+                                            Number :
+                                        </label>
+                                        <span> 3706 732443 18610</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="m--font-thin">
+                                            Expiry (MM/YY) :
+                                        </label>
+                                        <span> 04/20</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="m--font-thin">
+                                            CVV :
+                                        </label>
+                                        <span> 123</span>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12" style="text-align: right;">
                                         <img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
                                         <span class="custom-card-owner-setting">
-                           Niaz Khan Card
-                           </span>
+                                           Niaz Khan Card
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -530,6 +571,10 @@
                                         <span class="m--padding-left-15">Master-Card</span>
                                     </div>
                                     <div class="col-md-4" style="text-align: right;">
+                                        <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                            <input type="radio" name="paymentCard">
+                                            <span></span>
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -550,6 +595,10 @@
                                         <span class="m--padding-left-15">Paypal</span>
                                     </div>
                                     <div class="col-md-4" style="text-align: right;">
+                                        <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                            <input type="radio" name="paymentCard">
+                                            <span></span>
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -570,6 +619,10 @@
                                         <span class="m--padding-left-15">Visa</span>
                                     </div>
                                     <div class="col-md-4" style="text-align: right;">
+                                        <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                            <input type="radio" name="paymentCard">
+                                            <span></span>
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -583,14 +636,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="!orderNowCheck">
                             <div class="col">
-                                   <button class="btn btn-default custom-float-left" style="margin-top: 10px;"  (click)=" scheduleTabShow(); "><i class="fa fa-chevron-left"></i> Back</button>
+                                <button class="btn btn-danger custom-float-left" (click)="payment=[]; data =[]; servicesPlaceOrder = []; clearPlacedOrder(); visibleSidebar2 = false; hideTabs($event, i);" style="margin-right: 5px;">Cancel</button>
                             </div>            
                            <div class="col text-right">
-                                <button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('more'); showConfirmationTab();">Proceed S3 <i class="fa fa-chevron-right"></i></button>
+                                <!--<button class="btn btn-primary custom-float-right m&#45;&#45;margin-top-10" (click)="activeTab('payment'); showConfirmationTab();">Proceed S3 <i class="fa fa-chevron-right"></i></button>-->
+                               <button class="btn btn-primary custom-float-right" (click)="placeCartOrder2()">Order Now New</button>
+                               <button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true;placeCartOrder()">Order Now <i class="fa fa-check"></i></button>
+
                            </div>
-                           </div>
+                    </div>
+
+                    <div class="col text-center" *ngIf="orderNowCheck">
+                        <h4>Congratulations</h4>
+                        <div class="text-center">
+                            <img src="./assets/demo/demo3/media/img/confetti.png" class="rounded" alt="..." style="width:15%;">
+                        </div>
+                        <p>Your Order Has Been Successfully Placed</p>
+                        <button class="btn btn-primary" (click)="thanksUpdate()" >Return</button>
+                    </div>
                    
                 </div>
                 <!-- Add new Payment Methonds -->
@@ -626,9 +691,10 @@
             </div>
             <!-- Payment Tab End Here -->
             <!-- Conformation Tab Start Here -->
-            <div class="tab-pane" id="m_tabs_5_3" role="tabpanel" [hidden]="confirmation" [ngClass]="{ 'active' : activeMoreTab,
-         'show':  activeMoreTab }">
-                <div class="col" *ngIf="!orderNowCheck">
+            <div class="tab-pane" id="m_tabs_5_3" role="tabpanel" [ngClass]="{ 'active' : activeMoreTab,
+         'show':  activeMoreTab }">   <!-- [hidden]="confirmation" -->
+
+                <div class="col">
                     <h4>Confirmation</h4>
                     <div class="custom-card-shadow">
                             <!--OLD CODE-->
@@ -665,20 +731,19 @@
                             <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price | currency:'CAD'}}</span>
                         </h4>
                     </div>
-                    <p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
-                    <button class="btn btn-primary custom-float-right" (click)="placeCartOrder2()">Order Now New</button>
-                    <button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true;placeCartOrder()">Order Now <i class="fa fa-check"></i></button>
-                    <button class="btn btn-danger custom-float-left" (click)="payment=[]; data =[]; servicesPlaceOrder = []; clearPlacedOrder(); visibleSidebar2 = false; hideTabs($event, i);" style="margin-right: 5px;">Cancel</button>
+                    <p class="text-right" style="margin-top:15px;">Are your sure to confirm &amp; proceed ?</p>
+
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-default custom-float-left" style="margin-top: 10px;"  (click)=" scheduleTabShow(); "><i class="fa fa-chevron-left"></i> Back</button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('payment'); showConfirmationTab();">Confirm &amp; Proceed S3 <i class="fa fa-chevron-right"></i></button>
+                        </div>
+                    </div>
                     
                 </div>
-                <div class="col text-center" *ngIf="orderNowCheck">
-                    <h4>Congratulations</h4>
-                    <div class="text-center">
-                        <img src="./assets/demo/demo3/media/img/confetti.png" class="rounded" alt="..." style="width:15%;">
-                    </div>
-                    <p>Your Order Has Been Successfully Placed</p>
-                    <button class="btn btn-primary" (click)="thanksUpdate()" >Return</button>
-                </div>
+
             </div>
             <!-- Conformation Tab end Here -->
             <!-- schedule Tab Start Here -->
@@ -768,7 +833,7 @@
                         </div>            
                         <div class="col text-right">
                             <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="!ctrl.valid || !enableScheduleProceedBtn"
-                                    (click)="activeTab('payment'); getTimeAndDate(); saveStaffSchedule();">Proceed S2</button>
+                                    (click)="activeTab('more'); getTimeAndDate(); saveStaffSchedule(); orderNowCheck = false;">Proceed S2</button>
                         </div>
                 </div>
                
