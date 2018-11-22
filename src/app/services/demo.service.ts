@@ -26,6 +26,11 @@ export class DemoService {
         return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/locations/' + lat + "/" + lng + "/" + radius, httpOptions);
     }
 
+    // Get Companies, Locations & Their Services
+    getCompanyAndLocationsAndServicesWithLatLng(lat, lng, radius) {
+        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/locationdata/'+ lat +'/' + lng + '/' + radius, httpOptions);
+    }
+
     getCompanyLocationServices(rand_id) {
         return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/location-service/' + rand_id, httpOptions);
     }
