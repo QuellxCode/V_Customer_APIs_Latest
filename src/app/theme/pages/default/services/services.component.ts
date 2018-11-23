@@ -300,6 +300,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //----- Search String for Search Filter Pipe ------------------------
     searchText;
+    searchServiceText;
 
     services = [];  // This array will have all the services that are returned against a company location
     company_locations = [];
@@ -445,6 +446,9 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     // Filtered locations based on user radius selection from front end
     filteredMarkers = [];
 
+
+    // Search By Company and Service variable
+    searchByCompanyView:boolean = true;
 
     // PAYMENT STRIPE VARIABLES
 
@@ -651,9 +655,17 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.latitude = position.coords.latitude;
                     console.log(`longitude: ${this.longitude} | latitude: ${this.latitude}`);
                     // this.getCompanies();
+
+
+                    // Get Companies, Locations first then gets services when location_rand id is sent
                     this.getCompaniesNew();
                     console.log('user_lat => ' + this.latitude + "| user_lng => " + this.longitude);
+
+                    // Get Companies, Locations and Services
+                    this.getAllCompanyServices();
+
                     this.updateMarkers(event);
+
                 }
             });
         } else {
@@ -777,6 +789,33 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         )
 
     }
+
+    companyLocationServices = [];
+
+    getAllCompanyServices() {
+        this._demoService.getCompanyAndLocationsAndServicesWithLatLng(this.latitude,this.longitude, this.radiusInKm).subscribe(
+            (response:any) => {
+                this.companyLocationServices = response.data;
+                console.log("All Companies, Locations & Services are => ", this.companyLocationServices);
+            },
+            (err) => { console.error(err); },
+            () => { console.log('Data Fetched.'); }
+        )
+    }
+
+
+    // Search By Company and Service Functions
+
+    searchByCompany(event) {
+        this.searchByCompanyView = true;
+    }
+
+    searchByService(event) {
+        this.searchByCompanyView = false;
+    }
+
+
+
 
     //This fetches all the services of the selected location OLD CODE (changed on 24th october to FetchCompaniesLocationSerices())
     FetchCompanyLocationServices() {

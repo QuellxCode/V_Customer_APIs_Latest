@@ -147,67 +147,155 @@
                             <div class="row">
                                 <!-- All Service show Here -->
                                 <div class="col-sm-3" style="padding: 0px; overflow-y: auto; overflow-x: hidden;">
-                                    <form style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
-                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control" [(ngModel)]="searchText" name="searchInputFilter" placeholder="Search Company..." style="border-radius: 15px;" >
-                                            <div class="input-group-append custom-pointer">
-                                                <!-- <span class="input-group-text">
-                                                   <i class="fa fa-search">
 
-                                                    </i></span> -->
-                                                <!-- <button type="submit" class="custom-pointer custom-border-map-button" style="border: none;
-                                                   background: transparent;">
-                                                   <i class="fa fa-search"></i>
-                                                   </button> -->
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
-                                    <div class="col-sm-12 m--margin-top-10 h4" *ngIf="(company_and_locations | searchFilter : searchText).length === 0"> No records found against your search...</div>
-                                    <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies"
-                                         *ngFor="let company of company_and_locations | searchFilter: searchText; let i = index;">
-                                        <!-- First Card Start -->
-                                        <h5 class="m--font-brand m--font-boldest">
-                                            <i class="fa fa-industry" style="color: darkslateblue;"> </i>
-                                            {{company.company_name.name | uppercase}}
-                                            <!--Comment Location 7-->
-                                            <!--Comment Location 7-->
-                                        </h5>
-                                        <!--<p class="custom-margin-bottom-zero">-->
-                                        <!--{{company.id}}-->
-                                        <!--</p>-->
-                                        <!--<p class="custom-margin-bottom-zero">-->
-                                        <!--{{company.email}}-->
-                                        <!--</p>-->
-                                        <h6 class="m--font-brand m--font-bolder m--margin-top-15"> <i class="fa fa-map-marker" style="color: red; margin-left: 3px;"></i> LOCATIONS </h6>
-                                        <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 row" style="padding-bottom: 0px !important;;"
-                                             *ngFor="let loc of company.location; let indexLocation = index;"
-                                             [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'">
-                                            <div class="col-md-12">
-                                                <h6 class="m--font-bold"> <i class="fa fa-building-o"> </i>  {{loc.name | uppercase}}</h6>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <p class="custom-margin-bottom-zero">
-                                                    {{loc.address}}
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <button class="btn btn-sm btn-link btnLinkColor custom-fs-1 pull-right c--margin-right--25"
-                                                        (click)="sideInfoPop('service', company, indexLocation, i); servicesTobeAddedInCart = [];" title="Click To View Location Services">
-                                                    <i class="fa fa-cogs custom-fs-1" ></i>
-                                                    Services <i class="fa fa-chevron-right"></i>
-                                                </button>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <hr class="customHr">
-                                            </div>
-
-                                        </div>
-                                        <!--<hr>-->
-                                        <!-- First Card End -->
-                                        <!--Start: Comment Location 5-->
-                                        <!--ENd: Comment Location 5-->
+                                    <!-- BEGIN SEARCH CRITERIA RADIOS -->
+                                    <div class="m-radio-inline">
+                                        <label class="m-radio m-radio--solid m-radio--brand">
+                                            <input type="radio" name="search_criteria" checked="true" (change)="searchByCompany($event)"> Search By Company
+                                            <span></span>
+                                        </label>
+                                        <label class="m-radio m-radio--solid m-radio--brand">
+                                            <input type="radio" name="search_criteria" (change)="searchByService($event)"> Search By Service
+                                            <span></span>
+                                        </label>
                                     </div>
+                                    <!-- END SEARCH CRITERIA RADIOS -->
+
+                                    <!-- ------------------ BEGIN Search By Company View BEGIN ------------------------- -->
+                                    <div *ngIf="searchByCompanyView">
+
+                                        <form style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" [(ngModel)]="searchText" name="searchInputFilter" placeholder="Search Company..." style="border-radius: 15px;" >
+                                                <div class="input-group-append custom-pointer">
+                                                    <!-- <span class="input-group-text">
+                                                       <i class="fa fa-search">
+
+                                                        </i></span> -->
+                                                    <!-- <button type="submit" class="custom-pointer custom-border-map-button" style="border: none;
+                                                       background: transparent;">
+                                                       <i class="fa fa-search"></i>
+                                                       </button> -->
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
+                                        <div class="col-sm-12 m--margin-top-10 h4" *ngIf="(company_and_locations | searchFilter : searchText).length === 0"> No records found against your search...</div>
+                                        <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies"
+                                             *ngFor="let company of company_and_locations | searchFilter: searchText; let i = index;">
+                                            <!-- First Card Start -->
+                                            <h5 class="m--font-brand m--font-boldest">
+                                                <i class="fa fa-industry" style="color: darkslateblue;"> </i>
+                                                {{company.company_name.name | uppercase}}
+                                                <!--Comment Location 7-->
+                                                <!--Comment Location 7-->
+                                            </h5>
+                                            <!--<p class="custom-margin-bottom-zero">-->
+                                            <!--{{company.id}}-->
+                                            <!--</p>-->
+                                            <!--<p class="custom-margin-bottom-zero">-->
+                                            <!--{{company.email}}-->
+                                            <!--</p>-->
+                                            <h6 class="m--font-brand m--font-bolder m--margin-top-15"> <i class="fa fa-map-marker" style="color: red; margin-left: 3px;"></i> LOCATIONS </h6>
+                                            <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 row" style="padding-bottom: 0px !important;;"
+                                                 *ngFor="let loc of company.location; let indexLocation = index;"
+                                                 [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'">
+                                                <div class="col-md-12">
+                                                    <h6 class="m--font-bold"> <i class="fa fa-building-o"> </i>  {{loc.name | uppercase}}</h6>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <p class="custom-margin-bottom-zero">
+                                                        {{loc.address}}
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button class="btn btn-sm btn-link btnLinkColor custom-fs-1 pull-right c--margin-right--25"
+                                                            (click)="sideInfoPop('service', company, indexLocation, i); servicesTobeAddedInCart = [];" title="Click To View Location Services">
+                                                        <i class="fa fa-cogs custom-fs-1" ></i>
+                                                        Services <i class="fa fa-chevron-right"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <hr class="customHr">
+                                                </div>
+
+                                            </div>
+                                            <!--<hr>-->
+                                            <!-- First Card End -->
+                                            <!--Start: Comment Location 5-->
+                                            <!--ENd: Comment Location 5-->
+                                        </div>
+
+                                    </div>
+                                    <!-- ------------------ END Search By Company View END ---------------------- -->
+
+                                    <!-- ------------------ BEGIN: Search By Service View  ---------------------- -->
+                                    <div *ngIf="!searchByCompanyView">
+
+                                        <form style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" [(ngModel)]="searchServiceText" name="searchInputServiceFilter" placeholder="Search Service..." style="border-radius: 15px;" >
+                                                <div class="input-group-append custom-pointer">
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <!--<div class="m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25" *ngIf="preloader"></div>-->
+                                        <div class="col-sm-12 m--margin-top-10 h4" *ngIf="(companyLocationServices | serviceSearchFilter : searchServiceText).length === 0"> No services found against your search...</div>
+
+                                        <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies"
+                                             *ngFor="let company of companyLocationServices | serviceSearchFilter: searchServiceText; let i = index;">
+
+                                            <h5 class="m--font-brand m--font-boldest">
+                                                <i class="fa fa-industry" style="color: darkslateblue;"> </i>
+                                                {{company.company_name.name | uppercase}}
+
+                                            </h5>
+                                            <!--<h6 class="m&#45;&#45;font-brand m&#45;&#45;font-bolder m&#45;&#45;margin-top-15"> <i class="fa fa-map-marker" style="color: red; margin-left: 3px;"></i> LOCATIONS </h6>-->
+                                            <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 row" style="padding-bottom: 0px !important;;"
+                                                 *ngFor="let loc of company.locations; let indexLocation = index;"
+                                                 [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'">
+                                                <div class="col-md-12">
+                                                    <h6 class="m--font-bold"> <i class="fa fa-map-marker" style="color: red;"> </i>  {{loc.location.name | uppercase}}</h6>
+                                                </div>
+                                                <!--<div class="col-md-8">-->
+                                                    <!--<p class="custom-margin-bottom-zero">-->
+                                                        <!--{{loc.location.address}}-->
+                                                    <!--</p>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-md-4">-->
+                                                    <!--<button class="btn btn-sm btn-link btnLinkColor custom-fs-1 pull-right c&#45;&#45;margin-right&#45;&#45;25"-->
+                                                            <!--(click)="sideInfoPop('service', company, indexLocation, i); servicesTobeAddedInCart = [];" title="Click To View Location Services">-->
+                                                        <!--<i class="fa fa-cogs custom-fs-1" ></i>-->
+                                                        <!--Services <i class="fa fa-chevron-right"></i>-->
+                                                    <!--</button>-->
+                                                <!--</div>-->
+                                                <hr>
+                                                <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 row"
+                                                     style="padding-bottom: 0px; margin: 0 7px; !important; max-height: 100px; overflow-y: auto;">
+
+                                                    <p class="m--font-brand m--font-bold" style="width: 100%;"
+                                                       *ngFor="let service of loc.services; let indexLocServices = index;">
+                                                        <i class="fa fa-cog" style="color: darkslateblue;"> </i>
+                                                        {{service.name}}
+
+                                                    </p>
+
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <hr class="customHr">
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        Services Search!
+                                    </div>
+
+                                    <!-- ------------------ END: Search By Service View END ---------------------- -->
+
                                 </div>
                                 <!-- All Services End Here -->
                                 <!-- Map Start Here -->
