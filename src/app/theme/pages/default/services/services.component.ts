@@ -191,6 +191,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     //Right Side Bar variables Start
 
     proceedCounter = 0;
+    hiddenScheduleProcceed = false;
     activePaymentTab = false;
     activeScheduleTab = false;
     activeItemTab = true;
@@ -606,18 +607,37 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
      */
 
     async onSubmitPayment(form: NgForm) {
+        
         const { token, error } = await stripe.createToken(this.card, {
             email: this.customer_EmailAddress,
             name: "Jim Carrie"
         });
 
         if (error) {
+           
             console.log('Something is wrong:', error);
         } else {
+            
             console.log(this.customer_EmailAddress);
             console.log('Success!', token);
             // ...send the token to the your backend to process the charge
+
+            let status_set_id = 1;
+            let company_id = this.current_company_location.company_name.id;
+            console.log("Company ID is", company_id);
+            this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
+                (response: any) => { },
+                (err) => { console.error(err) },
+                () => {
+                    console.log("Status 01 HAS BEEN Posted!");
+                    // New Place Order Api Called Here
+                    this.PlaceOrderInformation();
+                    this.orderNowCheck = true;
+                }
+            )
+            
         }
+       
     }
 
 
@@ -952,6 +972,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.enableScheduleProceedBtn = true;
                     this.isMessageDisplayed = true;
                     this.availableSlotMessage = true;
+                    this.hiddenScheduleProcceed = true;
                 }
                 else {
                     this.enableScheduleProceedBtn = false;
@@ -1111,22 +1132,22 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
-    placeCartOrder() {
-        let status_set_id = 1;
-        let company_id = this.current_company_location.company_name.id;
-        console.log("Company ID is", company_id);
-        this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
-            (response: any) => { },
-            (err) => { console.error(err) },
-            () => {
-                console.log("Status 01 HAS BEEN Posted!");
-                // New Place Order Api Called Here
-                this.PlaceOrderInformation();
-                this.orderNowCheck = true;
-            }
-        )
+    // placeCartOrder() {
+    //     let status_set_id = 1;
+    //     let company_id = this.current_company_location.company_name.id;
+    //     console.log("Company ID is", company_id);
+    //     this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
+    //         (response: any) => { },
+    //         (err) => { console.error(err) },
+    //         () => {
+    //             console.log("Status 01 HAS BEEN Posted!");
+    //             // New Place Order Api Called Here
+    //             this.PlaceOrderInformation();
+    //             this.orderNowCheck = true;
+    //         }
+    //     )
 
-    }
+    // }
 
     placeCartOrder2() {
         // let status_set_id = 1;
@@ -1583,7 +1604,12 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confirmation = true;
         this.activeItemTab = true;
         this.agreedCartItemIndex = -1;
-        return true;
+        this.hideTermsModal1 = true;
+        if (this.proceedCounter == 0) {
+            return;
+        }
+        this.proceedCounter--;
+        
     }
 
 

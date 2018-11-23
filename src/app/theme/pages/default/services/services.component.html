@@ -363,6 +363,7 @@
             <div class="tab-pane active show" id="m_tabs_5_1" role="tabpanel"  [ngClass]="{ 'active' : activeItemTab,
          'show':  activeItemTab }">
                 <p *ngIf="!preloaderFetchingCartItems"><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
+                <p *ngIf="preloaderFetchingCartItems" style="text-align: center;">No Orders Found.</p>
                 <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderFetchingCartItems"></div>
 
                 <!--<div class="m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25" *ngIf="preloaderNoCartItemsFound"></div>-->
@@ -499,13 +500,13 @@
                                     <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
                                 </div>
 
-                                <button type="submit">Pay  {{total_price | currency:'CAD'}}</button>
+                                <button type="submit" #payNowBtn style="display: none;">Pay  {{total_price | currency:'CAD'}}</button>
 
                             </form>
                         </div>
                     </div>
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-6">
                             <button class="btn btn-link pull-left custom-padding-left-top-zero" (click)="addNewPaymentCardHide = false" *ngIf="addNewPaymentCardHide">
                                 <i class="fa fa-angle-left m--padding-right-5" style=" padding-bottom: 3px;"></i>BACK
@@ -516,10 +517,10 @@
                                 <i class="fa fa-plus"></i> Add new Card
                             </button>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Payment Cards -->
                     <div class="m-demo__preview" *ngIf="!addNewPaymentCardHide">
-                        <div class="m-stack m-stack--hor m-stack--general m-stack--demo" style="height: 400px">
+                        <!-- <div class="m-stack m-stack--hor m-stack--general m-stack--demo" style="height: 400px">
                             <div class="m-stack__item">
                                 <div class="m-stack__demo-item custom-card-design custom-h-class" (click)="paymentCheckTickHide = true">
                                     <div class="row">
@@ -637,15 +638,17 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col">
                                 <button class="btn btn-danger custom-float-left" (click)="payment=[]; data =[]; servicesPlaceOrder = []; clearPlacedOrder(); visibleSidebar2 = false; hideTabs($event, i);" style="margin-right: 5px;">Cancel</button>
                             </div>
                             <div class="col text-right">
                                 <!--<button class="btn btn-primary custom-float-right m&#45;&#45;margin-top-10" (click)="activeTab('payment'); showConfirmationTab();">Proceed S3 <i class="fa fa-chevron-right"></i></button>-->
-                                <button class="btn btn-primary custom-float-right" (click)="placeCartOrder2()">Order Now New</button>
-                                <button class="btn btn-primary custom-float-right" (click)="placeCartOrder()">Order Now <i class="fa fa-check"></i></button>
+                                <!-- <button class="btn btn-primary custom-float-right" (click)="placeCartOrder2()">Order Now New</button> -->
+                                <!-- <button type="submit">Pay  {{total_price | currency:'CAD'}}</button>  -->
+                                <button class="btn btn-primary custom-float-right" (click)="payNowBtn.click()">Order Now <i class="fa fa-check"></i></button>
+                               
 
                             </div>
                         </div>
@@ -821,16 +824,16 @@
                                 <!--</div>-->
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12" style="text-align:center;">
                             <hr>
                             <button class="btn btn-link" (click)="checkTimeAvailability();">
                                 Check Availability
                             </button>
                             <hr>
                         </div>
-                        <div class="col-md-12" *ngIf="isMessageDisplayed">
+                        <div class="col-md-12" *ngIf="isMessageDisplayed" style="text-align:center;">
                             <h4 class="text-success" *ngIf="availableSlotMessage"> Selected time is available! You may proceed.</h4>
-                            <h4 class="text-danger" *ngIf="!availableSlotMessage"> Sorry time slot booked, choose another time!</h4>
+                            <h4 class="text-danger" *ngIf="!availableSlotMessage"> Sorry no employee available, try again later!</h4>
                         </div>
                     </div>
 
