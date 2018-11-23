@@ -272,6 +272,10 @@
   padding: 1rem 2rem 1rem 2rem;
 }
 
+.m-portlet .m-portlet__body {
+  padding: 1.2rem 2.2rem;
+}
+
 .breadcrumb-header[_ngcontent-c3]
   li[_ngcontent-c3]
   a[_ngcontent-c3]
@@ -481,7 +485,7 @@ a.btn-primary {
   font-weight: 600;
 }
 agm-map {
-  height: 600px;
+  height: calc(100%);
 }
 
 .servicesListForm .services-categories {
@@ -681,6 +685,19 @@ textarea.ng-invalid.ng-touched {
   color: red !important;
   margin-left: 3px !important;
   font-size: 23px !important;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.radius_filter_div {
+  position: absolute;
+  z-index: 1;
+  top: 1%;
+  left: 2%;
+  padding: 10px 10px;
+  background-color: #eeeeeed1;
 }
 
 /* Stripe Checkout Form Design */

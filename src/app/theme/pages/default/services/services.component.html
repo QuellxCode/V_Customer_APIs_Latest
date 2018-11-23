@@ -140,13 +140,13 @@
         <div class="col-md-12">
             <div class="m-portlet" style="margin-left: -30px; margin-right: -30px; margin-top: -80px; margin-bottom: -32px;">
                 <div class="m-portlet__body">
-                    <div class="row">
-                        <!--Start: Comment Location 4-->
-                        <!--End: Comment Location 4-->
-                        <div class="col-sm-12" style="padding-right: 0px">
-                            <div class="row">
+                    <!--<div class="row">-->
+                            <!--Start: Comment Location 4-->
+                            <!--End: Comment Location 4-->
+                        <!--<div class="col-sm-12" style="padding-right: 0px">-->
+                            <div class="row" style="display: flex;">
                                 <!-- All Service show Here -->
-                                <div class="col-sm-3" style="padding: 0px; overflow-y: auto; overflow-x: hidden;">
+                                <div class="col-sm-3" style="padding: 0px; overflow-y: auto; overflow-x: hidden; height: calc(100%);">
 
                                     <!-- BEGIN SEARCH CRITERIA RADIOS -->
                                     <div class="m-radio-inline">
@@ -253,10 +253,10 @@
                                             </h5>
                                             <!--<h6 class="m&#45;&#45;font-brand m&#45;&#45;font-bolder m&#45;&#45;margin-top-15"> <i class="fa fa-map-marker" style="color: red; margin-left: 3px;"></i> LOCATIONS </h6>-->
                                             <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 row" style="padding-bottom: 0px !important;;"
-                                                 *ngFor="let loc of company.locations; let indexLocation = index;"
-                                                 [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'">
+                                                 *ngFor="let loc of company.locations; let indexLocation = index;">
+                                                <!-- [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'" -->
                                                 <div class="col-md-12">
-                                                    <h6 class="m--font-bold"> <i class="fa fa-map-marker" style="color: red;"> </i>  {{loc.location.name | uppercase}}</h6>
+                                                    <h6 class="m--font-bolder"> <i class="fa fa-map-marker" style="color: red;"> </i>  {{loc.location.name | uppercase}}</h6>
                                                 </div>
                                                 <!--<div class="col-md-8">-->
                                                     <!--<p class="custom-margin-bottom-zero">-->
@@ -271,16 +271,43 @@
                                                     <!--</button>-->
                                                 <!--</div>-->
                                                 <hr>
-                                                <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 row"
-                                                     style="padding-bottom: 0px; margin: 0 7px; !important; max-height: 100px; overflow-y: auto;">
+                                                <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 width-100 row"
+                                                     style="padding-bottom: 0px; margin: 0 7px; max-height: 100px; overflow-y: auto;">
 
-                                                    <p class="m--font-brand m--font-bold" style="width: 100%;"
-                                                       *ngFor="let service of loc.services; let indexLocServices = index;">
-                                                        <i class="fa fa-cog" style="color: darkslateblue;"> </i>
-                                                        {{service.name}}
+                                                    <!--<p class="m&#45;&#45;font-brand m&#45;&#45;font-bold" style="width: 100%;"-->
+                                                       <!--*ngFor="let service of loc.services; let indexLocServices = index;">-->
+                                                        <!--<i class="fa fa-cog" style="color: darkslateblue;"> </i>-->
+                                                        <!--{{service.name}}-->
 
-                                                    </p>
+                                                    <!--</p>-->
 
+                                                    <!--<div class="custom-width-scroll" *ngIf=" services.length > 0;">-->
+                                                        <p class="custom-margin-bottom-zero width-100"  *ngFor="let service of loc.services; let indexLocService = index;">
+                                                             <span class="custom-width">
+                                                                 <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
+                                                                    height: 12px;">
+                                                                     <input type="radio" name="serviceRadioButton"  [disabled]="permissions[indexLocService]" (change)="showBookButtonMap($event); servicesCheckboxes2($event, indexLocService, service);">
+                                                                     <span></span>
+                                                                 </label>
+                                                             </span>
+                                                            <span class="custom-hover-change-color custom-pointer">
+                                                                 <span data-toggle="modal" data-target="#infoModal" (click)="selectService(indexLocService)">
+                                                                     {{service.name}}
+                                                                 </span>
+                                                             </span>
+                                                            <span class="custom-float-right m--font-success">
+                                                                 {{service.price + (service.price*application_fee_percent/100) | currency:'CAD'}}
+                                                             </span>
+                                                        </p>
+                                                    <!--</div>-->
+
+
+                                                </div>
+                                                <div class="row width-100">
+                                                    <div class="col-md-12 m--margin-top-10 text-right">
+                                                        <a (click)="addServicesToCart2(company, loc, service);" attr.disabled="isDisabled"  class="btn btn-sm btn-primary custom-margin-right-book-button"
+                                                           [ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Add to Cart</a>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <hr class="customHr">
@@ -290,8 +317,6 @@
 
                                         </div>
 
-
-                                        Services Search!
                                     </div>
 
                                     <!-- ------------------ END: Search By Service View END ---------------------- -->
@@ -300,8 +325,10 @@
                                 <!-- All Services End Here -->
                                 <!-- Map Start Here -->
                                 <div class="col-sm-9" style="padding-right: 0px">
-                                    <input type="number" [(ngModel)]="radiusInMeters" (input)="updateMarkers($event)" />
-                                    <p> {{radiusInMeters}} </p>
+                                    <div class="radius_filter_div">
+                                        <input type="number" [(ngModel)]="radiusInMeters" (input)="updateMarkers($event)" />
+                                    </div>
+                                    <!--<p> {{radiusInMeters}} </p>-->
                                     <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10" >
                                         <agm-marker [latitude]="latitude" [longitude]="longitude" [iconUrl]="icon">
                                             <agm-info-window>
@@ -328,16 +355,13 @@
                                 </div>
                                 <!-- Map End Here -->
                                 <!-- side Services info popup start -->
-                                <div style="position: absolute;	margin-left: 27%; background-color: white;
-                        width: 35%;
-                        height: 98%;
-                        margin-top: 5px;" *ngIf="showServices">
+                                <div style="z-index: 2; position: absolute;	margin-left: 27%; background-color: white;width: 35%;height: 98%;margin-top: 5px;" *ngIf="showServices">
                                     <div class="container" style="padding: 10px">
                                         <h4> <i class="fa fa-map-marker custom-marker-style"></i>
                                             {{current_company_location.location[selectedIndex].name | uppercase}}
                                             <span class="custom-float-right custom-pointer" (click)="showServices=false;">
-                              <i class="fa fa-times"></i>
-                              </span>
+                                                <i class="fa fa-times"></i>
+                                            </span>
                                         </h4>
                                         <p class="custom-margin-bottom-zero">
                                             <span class="checked"> 4.0 </span>
@@ -375,21 +399,21 @@
                                         <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderServices"></div>
                                         <div class="custom-width-scroll" *ngIf=" services.length > 0;">
                                             <p class="custom-margin-bottom-zero"  *ngFor="let service of services; let i = index;">
-                                 <span class="custom-width">
-                                 <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
-                                    height: 12px;">
-                                 <input type="radio" name="serviceRadioButton"  [disabled]="permissions[i]" (change)="showBookButtonMap($event); servicesCheckboxes($event, i);">
-                                 <span></span>
-                                 </label>
-                                 </span>
-                                                <span class="custom-hover-change-color custom-pointer">
-                                 <span data-toggle="modal" data-target="#infoModal" (click)="selectService(i)">
-                                 {{service.service_name}}
-                                 </span>
-                                 </span>
-                                                <span class="custom-float-right m--font-success">
-                                 {{service.price | currency:'CAD'}}
-                                 </span>
+                                                 <span class="custom-width">
+                                                     <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
+                                                        height: 12px;">
+                                                     <input type="radio" name="serviceRadioButton"  [disabled]="permissions[i]" (change)="showBookButtonMap($event); servicesCheckboxes($event, i);">
+                                                     <span></span>
+                                                     </label>
+                                                 </span>
+                                                 <span class="custom-hover-change-color custom-pointer">
+                                                     <span data-toggle="modal" data-target="#infoModal" (click)="selectService(i)">
+                                                     {{service.service_name}}
+                                                     </span>
+                                                 </span>
+                                                 <span class="custom-float-right m--font-success">
+                                                     {{service.price + (service.price*application_fee_percent/100) | currency:'CAD'}}
+                                                 </span>
                                             </p>
                                         </div>
                                         <ng-template #noServicesFound [ngIf]="services.length == 0 && !preloaderServices">
@@ -411,8 +435,8 @@
                                 <!--Start: Comment Location 9-->
                                 <!--End: Comment Location 9-->
                             </div>
-                        </div>
-                    </div>
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>

@@ -347,7 +347,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         { 'latitude': 33.6844, 'longitude': 73.0479, 'name': 'Pre-Filled' },
     ];
 
-    // Temporary Array to store selceted services' ids that are to be added in cart
+    // Temporary Array to store selected services' ids that are to be added in cart
     servicesTobeAddedInCart = [];
     isDisabled = true;
 
@@ -380,7 +380,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     ]
 
     customer_Id;
-
+    application_fee_percent;
+    application_fee_amount;
     customer_EmailAddress;
 
     // Company Id of a Company for which order is being placed
@@ -469,6 +470,9 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.customer_Id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         this.customer_EmailAddress = JSON.parse(localStorage.getItem('currentUser')).success.email;
+        this.application_fee_percent = parseInt(JSON.parse(localStorage.getItem('currentUser')).success.application_fee);
+        console.log("application %age => ",this.application_fee_percent);
+
         console.log(this.customer_Id);
 
         this.getServicesToCart();
@@ -792,6 +796,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     searchByService(event) {
         this.searchByCompanyView = false;
+        this.showServices = false;
     }
 
 
@@ -858,6 +863,26 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             (err) => { console.error(err) },
             () => { console.log("Status 200 Posted!") }
+            )
+    }
+
+    addServicesToCart2(company, location, service) {
+        console.log("company =>",company);
+        console.log("location =>",location);
+        console.log("service =>",service);
+
+        let servicesIds = [];
+        this.servicesTobeAddedInCart.forEach(service => {
+            servicesIds.push(service['rand_id']);
+        });
+
+        this._demoService.postSevicestoCart(this.customer_Id, servicesIds, company.company_name.id)
+            .subscribe(
+                (response: any) => {
+                    this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
+                },
+                (err) => { console.error(err) },
+                () => { console.log("Status 200 Posted!") }
             )
     }
 
@@ -1346,6 +1371,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentService = this.services[i];
     }
 
+
     changeView() {
         this.listGridViewContent = false;
         this.mapView = false;
@@ -1719,6 +1745,21 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             this.isDisabled = true;
         }
         console.log(this.servicesTobeAddedInCart);
+    }
+
+    servicesCheckboxes2(event, index, service) {
+        console.log("change service Event =>", service);
+        this.servicesTobeAddedInCart = [];
+        if (event.target.checked) {
+            this.servicesTobeAddedInCart.push(this.services[index]);
+            console.log(this.servicesTobeAddedInCart);
+        }
+        else {
+            let indexOfObj = this.servicesTobeAddedInCart.indexOf(this.services[index]);
+            this.servicesTobeAddedInCart.splice(indexOfObj, 1);
+
+        }
+        alert(this.servicesTobeAddedInCart);
     }
 
 
