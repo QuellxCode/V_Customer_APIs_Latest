@@ -142,6 +142,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     confirmation = false;
 
+    application_fee_price;
+    application_fee_percentage;
+    total_fee_ammount;
+
 
     /*  currentService= {
           name: "",
@@ -310,7 +314,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedIndex;
     selectedParentIndex;
 
-    total_price = 0;
+    total_price = 0 ;
+
+    
+
 
     staff_book_date;
     staff_book_time = new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds();
@@ -436,6 +443,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             "total_price": this.total_price,
             "services": this.servicesPlaceOrder,
             "employee_id": this.employee_Id,
+            "application_fee_price": this.application_fee_price,
+            "application_fee_percentage": this.application_fee_percentage,
             "date": this.staff_book_date,
             "time": this.staff_book_time,
             "company_schedule": "company_timings",
@@ -467,10 +476,15 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.getCompanyServices();
         // this.getCompanies();
 
+        this.application_fee_percentage = JSON.parse(localStorage.getItem('currentUser')).success.application_fee;
+             
+        // alert(this.application_fee_percentage);
+        // alert(this.total_price);
 
         this.customer_Id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         this.customer_EmailAddress = JSON.parse(localStorage.getItem('currentUser')).success.email;
         console.log(this.customer_Id);
+
 
         this.getServicesToCart();
         console.log("cart Items => ", this.cartServices);
@@ -1213,11 +1227,30 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         //     this.servicesPlaceOrder.push( { 'service_id': x.rand_id, 'service_price': x.price})
         // });
 
+       
+       
         console.log("services in final Card => ", this.servicesPlaceOrder);
-
+         
+        this.application_fee_price = this.total_price*(parseInt(this.application_fee_percentage)/100);
+        alert(this.application_fee_price);  
+        console.log("total amount bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb => ", this.application_fee_price);
+        
         // console.log (this.total_price = this.confirmationStepCardInfo['total_price']);
-        this._demoService.saveOrderInformation(this.cartPlaceOrderCompanyId, this.customer_Id, this.total_price, this.servicesPlaceOrder, this.employee_Id,
-            this.staff_book_date, this.staff_book_time, company_timings, this.payment).subscribe(
+        this._demoService.saveOrderInformation(
+
+            this.cartPlaceOrderCompanyId, 
+            this.customer_Id, 
+            this.total_price, 
+            this.servicesPlaceOrder, 
+            this.employee_Id,
+            this.application_fee_price,
+            this.application_fee_percentage,
+            this.staff_book_date, 
+            this.staff_book_time, 
+            company_timings, 
+            this.payment
+            
+            ).subscribe(
             (res: any) => {
                 console.log("this will be posted as order => ", res.data);
 
