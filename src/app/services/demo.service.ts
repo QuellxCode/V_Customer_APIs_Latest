@@ -199,14 +199,17 @@ export class DemoService {
 
 
     saveOrderInformation(company_id: number, customer_id: number, total_price, servicesPlaceOrder,
-        employee_id, date: string, time: string, company_timings: string, payment) {
+        employee_id,application_fee_price,application_fee_percentage, date: string, time: string, company_timings: string, payment) {
         let array_obj = {
             "data": [{
+
                 "company_id": company_id,
                 "customer_id": customer_id,
                 "total_price": total_price,
                 "services": servicesPlaceOrder,
                 "employee_id": employee_id,
+                "application_fee_price": application_fee_price,
+                "application_fee_percentage": application_fee_percentage,
                 "date": date,
                 "time": time,
                 "company_schedule": company_timings,

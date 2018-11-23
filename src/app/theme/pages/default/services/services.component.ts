@@ -142,6 +142,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     confirmation = false;
 
+    application_fee_price;
+    application_fee_percentage;
+    total_fee_ammount;
+
 
     /*  currentService= {
           name: "",
@@ -191,6 +195,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     //Right Side Bar variables Start
 
     proceedCounter = 0;
+    hiddenScheduleProcceed = false;
     activePaymentTab = false;
     activeScheduleTab = false;
     activeItemTab = true;
@@ -309,7 +314,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedIndex;
     selectedParentIndex;
 
-    total_price = 0;
+    total_price = 0 ;
+
+    
+
 
     staff_book_date;
     staff_book_time = new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds();
@@ -436,6 +444,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             "total_price": this.total_price,
             "services": this.servicesPlaceOrder,
             "employee_id": this.employee_Id,
+            "application_fee_price": this.application_fee_price,
+            "application_fee_percentage": this.application_fee_percentage,
             "date": this.staff_book_date,
             "time": this.staff_book_time,
             "company_schedule": "company_timings",
@@ -467,6 +477,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.getCompanyServices();
         // this.getCompanies();
 
+        this.application_fee_percentage = JSON.parse(localStorage.getItem('currentUser')).success.application_fee;
+             
+        // alert(this.application_fee_percentage);
+        // alert(this.total_price);
 
         this.customer_Id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         this.customer_EmailAddress = JSON.parse(localStorage.getItem('currentUser')).success.email;
@@ -474,6 +488,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log("application %age => ",this.application_fee_percent);
 
         console.log(this.customer_Id);
+
 
         this.getServicesToCart();
         console.log("cart Items => ", this.cartServices);
@@ -614,18 +629,37 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
      */
 
     async onSubmitPayment(form: NgForm) {
+        
         const { token, error } = await stripe.createToken(this.card, {
             email: this.customer_EmailAddress,
             name: "Jim Carrie"
         });
 
         if (error) {
+           
             console.log('Something is wrong:', error);
         } else {
+            
             console.log(this.customer_EmailAddress);
             console.log('Success!', token);
             // ...send the token to the your backend to process the charge
+
+            let status_set_id = 1;
+            let company_id = this.current_company_location.company_name.id;
+            console.log("Company ID is", company_id);
+            this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
+                (response: any) => { },
+                (err) => { console.error(err) },
+                () => {
+                    console.log("Status 01 HAS BEEN Posted!");
+                    // New Place Order Api Called Here
+                    this.PlaceOrderInformation();
+                    this.orderNowCheck = true;
+                }
+            )
+            
         }
+       
     }
 
 
@@ -1016,6 +1050,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.enableScheduleProceedBtn = true;
                     this.isMessageDisplayed = true;
                     this.availableSlotMessage = true;
+                    this.hiddenScheduleProcceed = true;
                 }
                 else {
                     this.enableScheduleProceedBtn = false;
@@ -1175,22 +1210,22 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
-    placeCartOrder() {
-        let status_set_id = 1;
-        let company_id = this.current_company_location.company_name.id;
-        console.log("Company ID is", company_id);
-        this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
-            (response: any) => { },
-            (err) => { console.error(err) },
-            () => {
-                console.log("Status 01 HAS BEEN Posted!");
-                // New Place Order Api Called Here
-                this.PlaceOrderInformation();
-                this.orderNowCheck = true;
-            }
-        )
+    // placeCartOrder() {
+    //     let status_set_id = 1;
+    //     let company_id = this.current_company_location.company_name.id;
+    //     console.log("Company ID is", company_id);
+    //     this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
+    //         (response: any) => { },
+    //         (err) => { console.error(err) },
+    //         () => {
+    //             console.log("Status 01 HAS BEEN Posted!");
+    //             // New Place Order Api Called Here
+    //             this.PlaceOrderInformation();
+    //             this.orderNowCheck = true;
+    //         }
+    //     )
 
-    }
+    // }
 
     placeCartOrder2() {
         // let status_set_id = 1;
@@ -1217,11 +1252,30 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         //     this.servicesPlaceOrder.push( { 'service_id': x.rand_id, 'service_price': x.price})
         // });
 
+       
+       
         console.log("services in final Card => ", this.servicesPlaceOrder);
-
+         
+        this.application_fee_price = this.total_price*(parseInt(this.application_fee_percentage)/100);
+        alert(this.application_fee_price);  
+        console.log("total amount bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb => ", this.application_fee_price);
+        
         // console.log (this.total_price = this.confirmationStepCardInfo['total_price']);
-        this._demoService.saveOrderInformation(this.cartPlaceOrderCompanyId, this.customer_Id, this.total_price, this.servicesPlaceOrder, this.employee_Id,
-            this.staff_book_date, this.staff_book_time, company_timings, this.payment).subscribe(
+        this._demoService.saveOrderInformation(
+
+            this.cartPlaceOrderCompanyId, 
+            this.customer_Id, 
+            this.total_price, 
+            this.servicesPlaceOrder, 
+            this.employee_Id,
+            this.application_fee_price,
+            this.application_fee_percentage,
+            this.staff_book_date, 
+            this.staff_book_time, 
+            company_timings, 
+            this.payment
+            
+            ).subscribe(
             (res: any) => {
                 console.log("this will be posted as order => ", res.data);
 
@@ -1648,7 +1702,12 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confirmation = true;
         this.activeItemTab = true;
         this.agreedCartItemIndex = -1;
-        return true;
+        this.hideTermsModal1 = true;
+        if (this.proceedCounter == 0) {
+            return;
+        }
+        this.proceedCounter--;
+        
     }
 
 
