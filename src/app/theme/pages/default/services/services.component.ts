@@ -391,6 +391,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     ]
 
     customer_Id;
+    chargeApiUrl;
     application_fee_percent;
     application_fee_amount;
     customer_EmailAddress;
@@ -630,7 +631,14 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     /* Our form submission method, onSubmit, is an async function that awaits
         for Stripe’s createToken promise to resolve.
      */
-
+    // here is things defined globally...
+    stripe_token_id;
+    application_fee_inCents;
+    transaction_id_for_Transaction;
+    order_id_for_Transaction;
+    behalf_account; 
+    card_id; 
+    application_fee;
     async onSubmitPayment(form: NgForm) {
         
         const { token, error } = await stripe.createToken(this.card, {
@@ -642,25 +650,85 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
            
             console.log('Something is wrong:', error);
         } else {
+
+
             
+             // -----------------------------------first api for stripe------------------------------------------------------
             console.log(this.customer_EmailAddress);
             console.log('Success!', token);
+            this.stripe_token_id = token.id;
+            console.log("stripe token id",this.stripe_token_id);
             // ...send the token to the your backend to process the charge
+           
+            
 
             let status_set_id = 1;
             let company_id = this.current_company_location.company_name.id;
             console.log("Company ID is", company_id);
+
+            //price calculation system
+            this.application_fee_price = this.total_price*(parseInt(this.application_fee_percentage)/100);
+            alert(this.application_fee_price); 
+
+            this.application_fee_inCents = this.application_fee_price*100;
+            alert("InCents"+this.application_fee_inCents);
+            console.log("total amount bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb => ", this.application_fee_price);
+         
+             // ---------------------------------------second api for carge------------------------------------------------------
+             this._demoService.createChargesApi(
+
+                // "application_fee": application_fee,
+                // "amount" : amount,
+                // "company_id" : company_id
+
+                this.application_fee_inCents, 
+                this.total_price, 
+                company_id,
+                this.stripe_token_id
+                
+                ).subscribe(
+                (res: any) => {
+                    console.log("here is the charge api hitted", res);
+                    this.transaction_id_for_Transaction = res.id;
+                    this.behalf_account = res.on_behalf_of;
+                    alert("on behalf" +  this.behalf_account);
+                    this.application_fee = res.application_fee;
+                    alert("Application fee" + this.application_fee);
+                    this.card_id = res.source.id;
+                    alert("card id" +  this.card_id);
+                    console.log("here is the transaction id"+this.transaction_id_for_Transaction);
+
+                    
+             // ---------------------------------------third api for place order-------------------------------------------------
+
             this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
                 (response: any) => { },
                 (err) => { console.error(err) },
                 () => {
                     console.log("Status 01 HAS BEEN Posted!");
                     // New Place Order Api Called Here
-                    this.PlaceOrderInformation();
                     this.orderNowCheck = true;
+                    alert(this.transaction_id_for_Transaction);
+                    this.PlaceOrderInformation();
+ 
+            
+
                 }
             )
-            
+    
+                },
+                (err) => { console.error(err); },
+                () => { console.log("Charge Api Placed Successfully from new API"); 
+                
+
+                
+            }
+                )
+
+
+
+
+           
         }
        
     }
@@ -1283,13 +1351,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         //     this.servicesPlaceOrder.push( { 'service_id': x.rand_id, 'service_price': x.price})
         // });
 
-       
+       alert("transaction_id"+this.transaction_id_for_Transaction);
        
         console.log("services in final Card => ", this.servicesPlaceOrder);
          
-        this.application_fee_price = this.total_price*(parseInt(this.application_fee_percentage)/100);
-        alert(this.application_fee_price);  
-        console.log("total amount bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb => ", this.application_fee_price);
         
         // console.log (this.total_price = this.confirmationStepCardInfo['total_price']);
         this._demoService.saveOrderInformation(
@@ -1308,11 +1373,39 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             
             ).subscribe(
             (res: any) => {
-                console.log("this will be posted as order => ", res.data);
+                console.log("this will be posted as order => ", res);
+                this.order_id_for_Transaction = res.order_id;
+                console.log("here is the order id"+this.order_id_for_Transaction);
 
             },
             (err) => { console.error(err); },
-            () => { console.log("Test Order Placed Successfully from new API"); }
+            () => { console.log("Test Order Placed Successfully from new API"); 
+            
+            
+                      // ---------------------------------------fourth api for place order-------------------------------------
+                
+                      let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+                        let company_id = this.current_company_location.company_name.id;
+                      this._demoService.createTransaction(
+                        customer_id,
+                        this.transaction_id_for_Transaction,
+                        this.order_id_for_Transaction,                         
+                        this.behalf_account, 
+                        this.card_id, 
+                        this.application_fee,
+                        company_id
+                        
+                        ).subscribe(
+                        (res: any) => {
+                            console.log("here is the transaction api hitted");
+            
+                                
+                        },
+                        (err) => { console.error(err); },
+                        () => { console.log(""); }
+                        )  
+            
+        }
             )
     }
 
