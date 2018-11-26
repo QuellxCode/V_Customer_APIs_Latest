@@ -272,7 +272,7 @@
                                                 <!--</div>-->
                                                 <hr>
                                                 <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 width-100 row"
-                                                     style="padding-bottom: 0px; margin: 0 7px; max-height: 100px; overflow-y: auto;">
+                                                     style="padding-bottom: 0px; margin: 0 7px; min-height: 50px; max-height: 100px; overflow-y: auto;">
 
                                                     <!--<p class="m&#45;&#45;font-brand m&#45;&#45;font-bold" style="width: 100%;"-->
                                                        <!--*ngFor="let service of loc.services; let indexLocServices = index;">-->
@@ -286,13 +286,16 @@
                                                              <span class="custom-width">
                                                                  <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
                                                                     height: 12px;">
-                                                                     <input type="radio" name="serviceRadioButton"  [disabled]="permissions[indexLocService]" (change)="showBookButtonMap($event); servicesCheckboxes2($event, indexLocService, service);">
+                                                                     <input type="radio" name="serviceRadioButton"
+                                                                            [disabled]="permissions2.indexOf(service.rand_id) > -1"
+                                                                            (change)="showBookButtonMap($event);
+                                                                            servicesCheckboxes2($event, indexLocService, loc.services, company.company_name.id);">
                                                                      <span></span>
                                                                  </label>
                                                              </span>
                                                             <span class="custom-hover-change-color custom-pointer">
                                                                  <span data-toggle="modal" data-target="#infoModal" (click)="selectService(indexLocService)">
-                                                                     {{service.name}}
+                                                                     {{service.service_name}}
                                                                  </span>
                                                              </span>
                                                             <span class="custom-float-right m--font-success">
@@ -303,18 +306,25 @@
 
 
                                                 </div>
-                                                <div class="row width-100">
-                                                    <div class="col-md-12 m--margin-top-10 text-right">
-                                                        <a (click)="addServicesToCart2(company, loc, service);" attr.disabled="isDisabled"  class="btn btn-sm btn-primary custom-margin-right-book-button"
-                                                           [ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Add to Cart</a>
-                                                    </div>
-                                                </div>
+                                                <!--<div class="row width-100 d-none">-->
+                                                    <!--<div class="col-md-12 m&#45;&#45;margin-top-10 text-right">-->
+                                                        <!--<a (click)="addServicesToCart2(company, loc, service);" attr.disabled="isDisabled" class="btn btn-sm btn-primary custom-margin-right-book-button"-->
+                                                           <!--[ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Add to Cart</a>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
                                                 <div class="col-md-12">
                                                     <hr class="customHr">
                                                 </div>
 
                                             </div>
 
+                                        </div>
+
+                                        <div class="row width-100 pull-right">
+                                            <div class="col-md-12 m--margin-top-10 text-right m--padding-right-10">
+                                                <a (click)="addServicesToCart2();" attr.disabled="isDisabled" class="btn btn-sm btn-primary custom-margin-right-book-button"
+                                                   [ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Add to Cart</a>
+                                            </div>
                                         </div>
 
                                     </div>

@@ -337,6 +337,9 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     //permissions array for services checkboxes which will be disabled if already present in cartItems' as services (smj mujay bhi nai aae but theek hai :p)
     permissions = [];
 
+    // Permissions array for search by service functionality
+    permissions2 =[];
+
     preloader: boolean = true;  // While showing Companies & Locations this loader will trigger until fetched
     preloaderServices: boolean = true; // While showing services this loader will trigger until fetched
 
@@ -810,11 +813,29 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     companyLocationServices = [];
 
+    locations_Services = [];
+
     getAllCompanyServices() {
         this._demoService.getCompanyAndLocationsAndServicesWithLatLng(this.latitude,this.longitude, this.radiusInKm).subscribe(
             (response:any) => {
                 this.companyLocationServices = response.data;
                 console.log("All Companies, Locations & Services are => ", this.companyLocationServices);
+
+                // this.permissions2 = [];
+                // this.services.forEach(x => {
+                //     let isExist = false;
+                //     cartServices.forEach(y => {
+                //         if (y['rand_id'] == x['rand_id']) {
+                //             isExist = true;
+                //         }
+                //         console.log("Y Rand Id => ", y['rand_id']);
+                //         console.log("X Rand Id => ", x['rand_id']);
+                //     })
+                //     this.permissions2.push(isExist);
+                // })
+                // console.log('Permissions Array has => ', this.permissions2);
+
+
             },
             (err) => { console.error(err); },
             () => { console.log('Data Fetched.'); }
@@ -900,17 +921,14 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             )
     }
 
-    addServicesToCart2(company, location, service) {
-        console.log("company =>",company);
-        console.log("location =>",location);
-        console.log("service =>",service);
+    addServicesToCart2() {
 
         let servicesIds = [];
-        this.servicesTobeAddedInCart.forEach(service => {
-            servicesIds.push(service['rand_id']);
+        this.servicesTobeAddedInCart.forEach(locationSelectedService => {
+            servicesIds.push(locationSelectedService['rand_id']);
         });
 
-        this._demoService.postSevicestoCart(this.customer_Id, servicesIds, company.company_name.id)
+        this._demoService.postSevicestoCart(this.customer_Id, servicesIds, this.companyIdFromSelectedService)
             .subscribe(
                 (response: any) => {
                     this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
@@ -927,6 +945,19 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             (response: any) => {
                 this.cartServices = response.data; console.log("this is cart Items response =>", this.cartServices);
                 console.log(this.total_price);
+
+                /*  This Code will push services' rand_id into permissions2 array
+                    and later will be used as a check for disabling services
+                    checkboxes in SEARCH BY SERVICE section
+                */
+                this.permissions2 = [];
+                this.cartServices.forEach(item => {
+                    item.service.forEach(service => {
+                        this.permissions2.push(service.rand_id);
+                    });
+                });
+
+                console.log("permissions2 => ",this.permissions2);
                 this.preloaderFetchingCartItems = false;
             },
             err => {
@@ -1790,7 +1821,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.servicesTobeAddedInCart = [];
         if (event.target.checked) {
             this.servicesTobeAddedInCart.push(this.services[index]);
-            console.log(this.servicesTobeAddedInCart);
+            console.log("Cart to be added in cart details=> ",this.servicesTobeAddedInCart);
         }
         else {
             let indexOfObj = this.servicesTobeAddedInCart.indexOf(this.services[index]);
@@ -1806,12 +1837,18 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.servicesTobeAddedInCart);
     }
 
-    servicesCheckboxes2(event, index, service) {
-        console.log("change service Event =>", service);
+    companyIdFromSelectedService;  // Search By Service's Service company_id
+    locationSelectedService = [];
+
+    servicesCheckboxes2(event, index, services, company_id) {
+        console.log("change service Event =>", services[index]);
+        this.companyIdFromSelectedService = '';
+        this.locationSelectedService = services;
         this.servicesTobeAddedInCart = [];
         if (event.target.checked) {
-            this.servicesTobeAddedInCart.push(this.services[index]);
-            console.log(this.servicesTobeAddedInCart);
+            this.companyIdFromSelectedService = company_id;
+            this.servicesTobeAddedInCart.push(this.locationSelectedService[index]);
+            console.log("Service to be added in cart details=> ",this.servicesTobeAddedInCart);
         }
         else {
             let indexOfObj = this.servicesTobeAddedInCart.indexOf(this.services[index]);

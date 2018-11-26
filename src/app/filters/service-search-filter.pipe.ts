@@ -46,7 +46,7 @@ export class ServiceSearchFilterPipe implements PipeTransform {
          let locationsArr = [];
          comp.locations.forEach( loc => {
             let servicesArr = loc.services.filter(service => {
-                return service.name.toLowerCase().includes(searchText);
+                return service.service_name.toLowerCase().includes(searchText);
 
              }); // service Ends
 
