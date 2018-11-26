@@ -133,6 +133,7 @@
     </div>
 </div>
 <!-- More Detail Content End -->
+
 <!-- Map Detail Content Start -->
 <div class="m-content">
     <!--Begin::Section-->
@@ -154,6 +155,8 @@
                                             <input type="radio" name="search_criteria" checked="true" (change)="searchByCompany($event)"> Search By Company
                                             <span></span>
                                         </label>
+                                       
+                        
                                         <label class="m-radio m-radio--solid m-radio--brand">
                                             <input type="radio" name="search_criteria" (change)="searchByService($event)"> Search By Service
                                             <span></span>
@@ -476,6 +479,8 @@
          'show':  activeItemTab }">
                 <p *ngIf="!preloaderFetchingCartItems"><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
                 <p *ngIf="preloaderFetchingCartItems" style="text-align: center;">No Orders Found.</p>
+
+               
                 <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderFetchingCartItems"></div>
 
                 <!--<div class="m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25" *ngIf="preloaderNoCartItemsFound"></div>-->
