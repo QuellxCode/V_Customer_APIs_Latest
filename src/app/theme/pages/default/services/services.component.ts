@@ -480,7 +480,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getUserLocation();  // Return User Location Lat lng
         // this.getCompanyServices();
         // this.getCompanies();
-
+        // this.FetchCompanyLocationServicesNew();
         this.application_fee_percentage = JSON.parse(localStorage.getItem('currentUser')).success.application_fee;
              
         // alert(this.application_fee_percentage);
@@ -2013,6 +2013,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     itemTabShow() {
         this.activeScheduleTab = false;
         this.activeItemTab = true;
+        this.isMessageDisplayed = false;
     }
     showConfirmationTab() {
         this.confirmation = false;
