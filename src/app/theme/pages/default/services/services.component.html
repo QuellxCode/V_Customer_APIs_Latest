@@ -302,7 +302,7 @@
                                                                  </span>
                                                              </span>
                                                             <span class="custom-float-right m--font-success">
-                                                                 {{service.price + (service.price*application_fee_percent/100) | currency:'CAD'}}
+                                                                 {{ service.price + (service.price*(this.application_fee_percent/100)) | currency:'CAD'}}
                                                              </span>
                                                         </p>
                                                     <!--</div>-->
@@ -425,7 +425,7 @@
                                                      </span>
                                                  </span>
                                                  <span class="custom-float-right m--font-success">
-                                                     {{service.price + (service.price*application_fee_percent/100) | currency:'CAD'}}
+                                                     {{ service.price | currency:'CAD'}}
                                                  </span>
                                             </p>
                                         </div>

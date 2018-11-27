@@ -29,7 +29,24 @@ export class DemoService {
 
     // Get Companies, Locations & Their Services
     getCompanyAndLocationsAndServicesWithLatLng(lat, lng, radius) {
-        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/locationdata/'+ lat +'/' + lng + '/' + radius, httpOptions);
+        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/locationdata/'+ lat +'/' + lng + '/' + radius, httpOptions).map(
+            (response:any) => {
+                console.log("API RESPONSE WITH MAP IS =>",response.data);
+
+                response.data.forEach(companies => {
+                    companies.locations.forEach(location => {
+                        location.services.forEach(service => {
+                            service['price'] = parseInt(service.price);
+                        });
+                    });
+                });
+
+                console.log(response);
+                return response;
+
+            }
+
+        );
     }
 
     getCompanyLocationServices(rand_id) {

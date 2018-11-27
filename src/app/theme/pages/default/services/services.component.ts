@@ -489,7 +489,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.customer_Id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         this.customer_EmailAddress = JSON.parse(localStorage.getItem('currentUser')).success.email;
         this.application_fee_percent = parseInt(JSON.parse(localStorage.getItem('currentUser')).success.application_fee);
-        console.log("application %age => ",this.application_fee_percent);
+        console.log("application %age => ",typeof (this.application_fee_percent));
 
         console.log(this.customer_Id);
 
@@ -957,6 +957,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.log("This here then ! =>" + this.current_company_location.location[this.selectedIndex].rand_id);
                 console.log(this.services = res.data);
                 // this.preloaderServices = false;
+
             },
             (err) => { console.error(err) },
             () => {
@@ -968,7 +969,11 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
-
+     // showPrice(price) {
+     //        console.log("selected Price is=>", + typeof price);
+     //        return (parseFloat(price) + parseFloat((price*(this.application_fee_percent/100))));
+     //
+     // }
 
     addServicesToCart() {
         let company_id = this.current_company_location.company_name.id;
