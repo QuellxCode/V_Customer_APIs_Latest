@@ -1,5 +1,10 @@
 /* SystemJS module definition */
 declare var module: NodeModule;
+
+//For Stripe and Stripe Elements
+declare var stripe: any;
+declare var elements: any;
+
 interface NodeModule {
     id: string;
 }

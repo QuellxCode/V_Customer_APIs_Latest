@@ -13,7 +13,7 @@ export class AuthenticationService {
     requrl = 'http://www.sharjeelkhan.ca/vease/vease-app/api/v1/register';
 
     // SignIn URL for signing in to server
-    loginurl = 'http://www.sharjeelkhan.ca/vease/vease-app/api/v1/login';
+    loginurl = 'https://www.sharjeelkhan.ca/vease/vease-app/api/v1/login';
 
 
     // loging in function and stroing the returned usertoken to local storage

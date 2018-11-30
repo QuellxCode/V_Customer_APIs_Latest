@@ -14,7 +14,8 @@ import { SidebarModule } from "primeng/primeng";
 import { WizardLeadForm } from "../../../../components/leadFormWizard/leadFormWizard";
 
 import { ServerServices_Services } from "../../../../services/serverServices.services";
-import {SearchFilterPipe} from "../../../../filters/search-filter.pipe";
+import { SearchFilterPipe } from "../../../../filters/search-filter.pipe";
+import { ServiceSearchFilterPipe } from "../../../../filters/service-search-filter.pipe";
 
 const routes: Routes = [
     {
@@ -43,7 +44,7 @@ const routes: Routes = [
         ReactiveFormsModule
     ],
     exports: [NgbModule, HttpModule],
-    declarations: [ServicesComponent, WizardLeadForm,SearchFilterPipe],
+    declarations: [ServicesComponent, WizardLeadForm, SearchFilterPipe, ServiceSearchFilterPipe],
     providers: [ServerServices_Services]
 })
 export class ServiceModule { }

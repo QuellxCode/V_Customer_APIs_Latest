@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Token } from '@angular/compiler';
+import { ServicesComponent } from '../theme/pages/default/services/services.component';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -26,8 +27,38 @@ export class DemoService {
         return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/locations/' + lat + "/" + lng + "/" + radius, httpOptions);
     }
 
+    // Get Companies, Locations & Their Services
+    getCompanyAndLocationsAndServicesWithLatLng(lat, lng, radius) {
+        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/locationdata/'+ lat +'/' + lng + '/' + radius, httpOptions).map(
+            (response:any) => {
+                console.log("API RESPONSE WITH MAP IS =>",response.data);
+
+                response.data.forEach(companies => {
+                    companies.locations.forEach(location => {
+                        location.services.forEach(service => {
+                            service['price'] = parseInt(service.price);
+                        });
+                    });
+                });
+
+                console.log(response);
+                return response;
+
+            }
+
+        );
+    }
+
     getCompanyLocationServices(rand_id) {
-        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/location-service/' + rand_id, httpOptions);
+        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/location-service/' + rand_id, httpOptions).map(
+            (response:any) => {
+                console.log("MAP Response IS =>",response.data);
+                response.data.forEach(service => {
+                    service['price'] = parseInt(service.price);
+                });
+                return response;
+            }
+        );
     }
 
     getCompanyServices() {
@@ -159,6 +190,8 @@ export class DemoService {
         return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/location-staff/' + location_RandId, httpOptions);
     }
 
+
+    
     placeCartOrder(status_id_set, company_id) {
         let status_object = {
             "status": status_id_set
@@ -167,6 +200,8 @@ export class DemoService {
         console.log("http://www.sharjeelkhan.ca/vease/vease-app/api/v1/place-order/" + company_id);
         return this.http.post('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/place-order/' + company_id, status_object, httpOptions)
     }
+
+
 
     proceedCartServices(price, company_id, customer_id) {
         let obj = {
@@ -192,16 +227,31 @@ export class DemoService {
 
     }
 
+    
+
+    createChargesApi(application_fee, amount, company_id,token_id) {
+        let createChargeParams = {
+            "application_fee": application_fee,
+            "amount" : amount,
+            "company_id" : company_id
+        }
+        console.log("Crate Charges Api Params Data ", createChargeParams);
+        return this.http.post('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/strip/create-charges/'+token_id, createChargeParams, httpOptions)
+    }
+
 
     saveOrderInformation(company_id: number, customer_id: number, total_price, servicesPlaceOrder,
-        employee_id, date: string, time: string, company_timings: string, payment) {
+        employee_id,application_fee_price,application_fee_percentage, date: string, time: string, company_timings: string, payment) {
         let array_obj = {
             "data": [{
+
                 "company_id": company_id,
                 "customer_id": customer_id,
                 "total_price": total_price,
                 "services": servicesPlaceOrder,
                 "employee_id": employee_id,
+                "application_fee_price": application_fee_price,
+                "application_fee_percentage": application_fee_percentage,
                 "date": date,
                 "time": time,
                 "company_schedule": company_timings,
@@ -212,6 +262,24 @@ export class DemoService {
         return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/parse', array_obj, httpOptions);
     }
 
+    
+
+    createTransaction(customer_id, transaction_id, order_id, behalf_account, card_id, application_fee, company_id,) {
+
+        let response = JSON.stringify({
+            behalf_account: behalf_account,
+            card_id: card_id,
+            application_fee: application_fee
+        });
+        let createChargeParams = {
+            customer_id: customer_id,
+            transaction_id : transaction_id,
+            order_id : order_id,
+            response : response
+        }
+        console.log("Crate Transaction Api Params Data ", createChargeParams);
+        return this.http.post('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/strip/create-transaction/'+company_id, createChargeParams, httpOptions)
+    }
 
     // this api will use to get lead section api
 

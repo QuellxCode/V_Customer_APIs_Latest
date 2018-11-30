@@ -9,7 +9,7 @@ import {
     AfterViewInit,
     TemplateRef,
     ElementRef,
-    NgZone
+    NgZone, ChangeDetectorRef, OnDestroy
 } from "@angular/core";
 import { FormControl, FormGroup, NgForm, Validators, ReactiveFormsModule } from "@angular/forms";
 import { Helpers } from "../../../../helpers";
@@ -44,8 +44,8 @@ import {
 
 import { ServerServices_Services } from "../../../../services/serverServices.services";
 
-import {NgbCalendar, NgbDatepickerConfig, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {NgbDate} from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-date";
+import { NgbCalendar, NgbDatepickerConfig, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDate } from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-date";
 import { ToastrService } from '../../../../services/toastrService.service';
 
 // serverServices for posting the data to server
@@ -105,7 +105,7 @@ interface data {
     ]
     // encapsulation: ViewEncapsulation.None,
 })
-export class ServicesComponent implements OnInit, AfterViewInit {
+export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild("tref", { read: ElementRef })
     tref: ElementRef;
     @ViewChild("tref1", { read: ElementRef })
@@ -141,6 +141,10 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     };
 
     confirmation = false;
+
+    application_fee_price;
+    application_fee_percentage;
+    total_fee_ammount;
 
 
     /*  currentService= {
@@ -191,6 +195,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     //Right Side Bar variables Start
 
     proceedCounter = 0;
+    hiddenScheduleProcceed = false;
     activePaymentTab = false;
     activeScheduleTab = false;
     activeItemTab = true;
@@ -253,23 +258,28 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         private http: Http,
         private config: NgbDatepickerConfig,
         private calendar: NgbCalendar,
-        private toastrService: ToastrService
+        private toastrService: ToastrService,
+        private cd: ChangeDetectorRef
     ) {
         // this.itemsArray=[{name:"Oil & Oil Filter Change", price: 12.00},
         //                  { name:"Spark Plugs Changing", price: 60.00}];
 
         // customize default values of datepickers used by this component tree
-        this.config.minDate = {year: 2010, month: 1, day: 1};
-        this.config.maxDate = {year: 2050, month: 12, day: 31};
+        // this.config.minDate = { year: 2010, month: 1, day: 1 };
+
+        const currentDate : Date = new Date();
+
+        this.config.minDate = { year:currentDate.getFullYear(), month:currentDate.getMonth()+1, day: currentDate.getDate() };
+        this.config.maxDate = { year: 2050, month: 12, day: 31 };
 
         // days that don't belong to current month are not visible
         // config.outsideDays = 'hidden';
 
         // weekends are disabled
-         this.config.markDisabled = (date: NgbDate) => this.calendar.getWeekday(date) >= 6 || (date.month==11 && date.day == 7);
+        this.config.markDisabled = (date: NgbDate) => this.calendar.getWeekday(date) >= 6 || (date.month == 11 && date.day == 7);
         // const dateDisabled = (date: NgbDate, current: {month: number}) => date.day === 13;
     }
-    
+
 
     reqBeautyCategories: any[];
 
@@ -296,8 +306,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         }
     }
 
+    cooperative : string;
+
     //----- Search String for Search Filter Pipe ------------------------
     searchText;
+    searchServiceText;
 
     services = [];  // This array will have all the services that are returned against a company location
     company_locations = [];
@@ -307,10 +320,13 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     selectedIndex;
     selectedParentIndex;
 
-    total_price = 0;
+    total_price = 0 ;
+
+    
+
 
     staff_book_date;
-    staff_book_time = new Date().getHours()+':' + new Date().getMinutes() + ':'+ new Date().getSeconds();
+    staff_book_time = new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds();
     employee_Id = 0;
     saveStaff;
     proceedService;
@@ -319,7 +335,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     // This has all the cartItems and its services in it
     cartServices = [];
-    locationEmployees= [];
+    locationEmployees = [];
 
     // CartItems Card Index
     agreedCartItemIndex;
@@ -327,12 +343,15 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     //permissions array for services checkboxes which will be disabled if already present in cartItems' as services (smj mujay bhi nai aae but theek hai :p)
     permissions = [];
 
+    // Permissions array for search by service functionality
+    permissions2 =[];
+
     preloader: boolean = true;  // While showing Companies & Locations this loader will trigger until fetched
     preloaderServices: boolean = true; // While showing services this loader will trigger until fetched
 
-    preloaderFetchingCartItems:boolean = true; // While fetching crat Items this loader will trigger until fetched
+    preloaderFetchingCartItems: boolean = true; // While fetching crat Items this loader will trigger until fetched
 
-    preloaderNoCartItemsFound : boolean = true;
+    preloaderNoCartItemsFound: boolean = true;
 
     public company_and_locations = [];
 
@@ -341,11 +360,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     selectedServices;
 
     // List of Markers for companies' locations
-    markers: Array<{ latitude: number, longitude: number }> = [
-        { 'latitude': 33.6844, 'longitude': 73.0479 },
+    markers: Array<{ latitude: number, longitude: number, name: string }> = [
+        { 'latitude': 33.6844, 'longitude': 73.0479, 'name': 'Pre-Filled' },
     ];
 
-    // Temporary Array to store selceted services' ids that are to be added in cart
+    // Temporary Array to store selected services' ids that are to be added in cart
     servicesTobeAddedInCart = [];
     isDisabled = true;
 
@@ -359,11 +378,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     // Payment Details of Place Order
     payment: Array<{}> = [
         {
-            "card_name":"card_number",
-            "card_expiry_month":4,
-            "card_expiry_year":2018,
-            "card_cvv":123,
-            "card_holder_name":"card_holder_name"
+            "card_name": "card_number",
+            "card_expiry_month": 4,
+            "card_expiry_year": 2018,
+            "card_cvv": 123,
+            "card_holder_name": "card_holder_name"
         }
     ]
 
@@ -371,13 +390,18 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     servicesPlaceOrder: Array<{}> = [
 
         /* SAMPLE CODE */
-            // {
-            //     "service_id":"test_Id",
-            //     "service_price":"45",
-            // }
+        // {
+        //     "service_id":"test_Id",
+        //     "service_price":"45",
+        // }
     ]
 
     customer_Id;
+    chargeApiUrl;
+    application_fee_percent;
+    application_fee_amount;
+    customer_EmailAddress;
+
     // Company Id of a Company for which order is being placed
     cartPlaceOrderCompanyId;
 
@@ -389,7 +413,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     confirmationStepCardInfo = {
         company_name: '',
         discount: '',
-        service:[
+        service: [
             {
                 // 'service_id': '',
                 // 'service_price': ''
@@ -420,25 +444,39 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         sub_total_price: '',
         tax: '',
         total_price: ''
-        };
+    };
 
     // The Complete Data of Place Order
-    data: Array <{}> = [
+    data: Array<{}> = [
         {
-            "company_id":this.cartPlaceOrderCompanyId,
-            "customer_id":this.customer_Id,
-            "total_price":this.total_price,
+            "company_id": this.cartPlaceOrderCompanyId,
+            "customer_id": this.customer_Id,
+            "total_price": this.total_price + this.total_price*(parseInt(this.application_fee_percent)/100),
             "services": this.servicesPlaceOrder,
-            "employee_id":this.employee_Id,
-            "date":this.staff_book_date,
-            "time":this.staff_book_time,
-            "company_schedule":"company_timings",
-            "payment" : this.payment
+            "employee_id": this.employee_Id,
+            "application_fee_price": this.application_fee_price,
+            "application_fee_percentage": this.application_fee_percentage,
+            "date": this.staff_book_date,
+            "time": this.staff_book_time,
+            "company_schedule": "company_timings",
+            "payment": this.payment
         }
     ]
 
     // Filtered locations based on user radius selection from front end
     filteredMarkers = [];
+
+
+    // Search By Company and Service variable
+    searchByCompanyView:boolean = true;
+
+    // PAYMENT STRIPE VARIABLES
+
+    @ViewChild('cardInfo') cardInfo: ElementRef;
+
+    card: any;
+    cardHandler = this.onChange.bind(this);
+    error: string;
 
 
     /* ------------------ AWS CODE END ---------------------- */
@@ -448,9 +486,19 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         this.getUserLocation();  // Return User Location Lat lng
         // this.getCompanyServices();
         // this.getCompanies();
+        // this.FetchCompanyLocationServicesNew();
+        this.application_fee_percentage = JSON.parse(localStorage.getItem('currentUser')).success.application_fee;
+             
+        // alert(this.application_fee_percentage);
+        // alert(this.total_price);
 
         this.customer_Id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        this.customer_EmailAddress = JSON.parse(localStorage.getItem('currentUser')).success.email;
+        this.application_fee_percent = parseInt(JSON.parse(localStorage.getItem('currentUser')).success.application_fee);
+        console.log("application %age => ",typeof (this.application_fee_percent));
+
         console.log(this.customer_Id);
+
 
         this.getServicesToCart();
         console.log("cart Items => ", this.cartServices);
@@ -557,6 +605,143 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             "assets/app/js/bootstrap-datepicker.js",
             "assets/app/js/bootstrap-timepicker.js"
         ]);
+
+        this.card = elements.create('card');
+        this.card.mount(this.cardInfo.nativeElement);
+
+        this.card.addEventListener('change', this.cardHandler);
+
+    }
+
+    ngOnDestroy() {
+
+        // In the OnDestroy we clean up by removing the change event listener and destroying the card element.
+        this.card.removeEventListener('change', this.cardHandler);
+        this.card.destroy();
+    }
+
+    //------------------- FOR STRIPE PAYMENT-------------------
+
+    /* We make use of ChangeDetectorRef to manually instruct Angular to run a
+        change detection cycle in the onChange method.
+     */
+    onChange({ error }) {
+        if (error) {
+            this.error = error.message;
+        } else {
+            this.error = null;
+        }
+        this.cd.detectChanges();
+    }
+
+    /* Our form submission method, onSubmit, is an async function that awaits
+        for Stripe’s createToken promise to resolve.
+     */
+    // here is things defined globally...
+    stripe_token_id;
+    application_fee_inCents;
+    transaction_id_for_Transaction;
+    order_id_for_Transaction;
+    behalf_account; 
+    card_id; 
+    application_fee;
+    async onSubmitPayment(form: NgForm) {
+        alert("Cart Hit");
+        const { token, error } = await stripe.createToken(this.card, {
+            email: this.customer_EmailAddress,
+            name: "Jim Carrie"
+        });
+        alert("promise returned");
+        if (error) {
+           
+            console.log('Something is wrong:', error);
+        } else {
+
+
+            
+             // -----------------------------------first api for stripe------------------------------------------------------
+            console.log(this.customer_EmailAddress);
+            console.log('Success!', token);
+            this.stripe_token_id = token.id;
+            console.log("stripe token id",this.stripe_token_id);
+            // ...send the token to the your backend to process the charge
+           
+            
+
+            let status_set_id = 1;
+            let company_id = this.selectedCompany_id;
+            // if(this.current_company_location.company_name.id != undefined) {
+            //     company_id = this.current_company_location.company_name.id;
+            //     console.log("Company ID is", company_id);
+            // }
+
+
+
+            //price calculation system
+            this.application_fee_price = this.total_price*(parseInt(this.application_fee_percentage)/100);
+            alert(this.application_fee_price); 
+
+            this.application_fee_inCents = this.application_fee_price*100;
+            alert("InCents"+this.application_fee_inCents);
+            console.log("total amount bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb => ", this.application_fee_price);
+         
+             // ---------------------------------------second api for carge------------------------------------------------------
+             this._demoService.createChargesApi(
+
+                // "application_fee": application_fee,
+                // "amount" : amount,
+                // "company_id" : company_id
+
+                this.application_fee_inCents, 
+                this.total_price + this.application_fee_price,
+                company_id,
+                this.stripe_token_id
+                
+                ).subscribe(
+                (res: any) => {
+                    console.log("here is the charge api hitted", res);
+                    this.transaction_id_for_Transaction = res.id;
+                    this.behalf_account = res.on_behalf_of;
+                    alert("on behalf" +  this.behalf_account);
+                    this.application_fee = res.application_fee;
+                    alert("Application fee" + this.application_fee);
+                    this.card_id = res.source.id;
+                    alert("card id" +  this.card_id);
+                    console.log("here is the transaction id"+this.transaction_id_for_Transaction);
+
+                    
+             // ---------------------------------------third api for place order-------------------------------------------------
+
+            this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
+                (response: any) => { },
+                (err) => { console.error(err) },
+                () => {
+                    console.log("Status 01 HAS BEEN Posted!");
+                    // New Place Order Api Called Here
+                    this.orderNowCheck = true;
+                    alert(this.transaction_id_for_Transaction);
+                    this.PlaceOrderInformation();
+ 
+            
+
+                }
+            )
+    
+                },
+                (err) => { console.error(err); },
+                () => { console.log("Charge Api Placed Successfully from new API"); 
+                
+
+                
+            }
+                )
+
+
+
+
+           
+        }
+       
     }
 
 
@@ -570,9 +755,17 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                     this.latitude = position.coords.latitude;
                     console.log(`longitude: ${this.longitude} | latitude: ${this.latitude}`);
                     // this.getCompanies();
+
+
+                    // Get Companies, Locations first then gets services when location_rand id is sent
                     this.getCompaniesNew();
                     console.log('user_lat => ' + this.latitude + "| user_lng => " + this.longitude);
+
+                    // Get Companies, Locations and Services
+                    this.getAllCompanyServices();
+
                     this.updateMarkers(event);
+
                 }
             });
         } else {
@@ -585,7 +778,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
         // console.log(typeof(parseInt(event.target.value)));
 
-        this.radiusInKm = parseInt(event.target.value)/1000;
+        this.radiusInKm = parseInt(event.target.value) / 1000;
 
         this.savedMarkers = this.markers;
 
@@ -593,9 +786,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             const center = new google.maps.LatLng(this.latitude, this.longitude);
             this.filteredMarkers = this.savedMarkers.filter(m => {
                 const markerLoc = new google.maps.LatLng(m.latitude, m.longitude);
-                const  distanceInKm = google.maps.geometry.spherical.computeDistanceBetween(markerLoc, center)/ 1000;
+                const distanceInKm = google.maps.geometry.spherical.computeDistanceBetween(markerLoc, center) / 1000;
 
-                if (distanceInKm < this.radiusInKm){
+                if (distanceInKm < this.radiusInKm) {
                     return m;
                 }
             });
@@ -625,8 +818,8 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                 this.company_and_locations.forEach(x => {
                     x["locations"] = rawData.filter(y => {
                         if (y["user_id"] == x["id"]) {
-                            this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
-                            //  console.log(y.lat + " " + y.lng);
+                            this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng), 'name': y.name })
+                             //console.log("Location names are => ",y.name);
                             // console.log(y);
                             return x;
                         }
@@ -655,6 +848,20 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
 
 
+    infoWindowOpened = null;
+
+    clickedMarker(infoWindow) {
+
+        if( this.infoWindowOpened ===  infoWindow)
+            return;
+
+        if(this.infoWindowOpened !== null)
+            this.infoWindowOpened.close();
+
+        this.infoWindowOpened = infoWindow;
+    }
+
+
     //  NEW CODE ON 24th october to fetch companies and locations
     getCompaniesNew() {
 
@@ -667,12 +874,12 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                 // For Pushing Markers in markers Array
                 this.company_and_locations.forEach(x => {
                     x.location.forEach(y => {
-                        this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng) })
+                        this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng), 'name': y.name })
                     })
 
                 });
                 console.log(this.markers);
-                console.log(this.company_and_locations);
+                console.log(" Company & Locations => ",this.company_and_locations);
                 this.preloader = false;
 
 
@@ -682,6 +889,52 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         )
 
     }
+
+    companyLocationServices = [];
+
+    locations_Services = [];
+
+    getAllCompanyServices() {
+        this._demoService.getCompanyAndLocationsAndServicesWithLatLng(this.latitude,this.longitude, this.radiusInKm).subscribe(
+            (response:any) => {
+                this.companyLocationServices = response.data;
+                console.log("All Companies, Locations & Services are => ", this.companyLocationServices);
+
+                // this.permissions2 = [];
+                // this.services.forEach(x => {
+                //     let isExist = false;
+                //     cartServices.forEach(y => {
+                //         if (y['rand_id'] == x['rand_id']) {
+                //             isExist = true;
+                //         }
+                //         console.log("Y Rand Id => ", y['rand_id']);
+                //         console.log("X Rand Id => ", x['rand_id']);
+                //     })
+                //     this.permissions2.push(isExist);
+                // })
+                // console.log('Permissions Array has => ', this.permissions2);
+
+
+            },
+            (err) => { console.error(err); },
+            () => { console.log('Data Fetched.'); }
+        )
+    }
+
+
+    // Search By Company and Service Functions
+
+    searchByCompany(event) {
+        this.searchByCompanyView = true;
+    }
+
+    searchByService(event) {
+        this.searchByCompanyView = false;
+        this.showServices = false;
+    }
+
+
+
 
     //This fetches all the services of the selected location OLD CODE (changed on 24th october to FetchCompaniesLocationSerices())
     FetchCompanyLocationServices() {
@@ -715,6 +968,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
                 console.log("This here then ! =>" + this.current_company_location.location[this.selectedIndex].rand_id);
                 console.log(this.services = res.data);
                 // this.preloaderServices = false;
+
             },
             (err) => { console.error(err) },
             () => {
@@ -726,21 +980,41 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
 
 
+     // showPrice(price) {
+     //        console.log("selected Price is=>", + typeof price);
+     //        return (parseFloat(price) + parseFloat((price*(this.application_fee_percent/100))));
+     //
+     // }
 
-
-    addServicesToCart()
-    {
+    addServicesToCart() {
         let company_id = this.current_company_location.company_name.id;
 
         // rand Ids of services will be added in temporary array
-        let servicesIds =[];
-            this.servicesTobeAddedInCart.forEach( service => {
+        let servicesIds = [];
+        this.servicesTobeAddedInCart.forEach(service => {
             servicesIds.push(service['rand_id']);
         });
-        console.log('Customer =>' + this.customer_Id + ' Services ids => ' + servicesIds + ' Company=> ' + company_id );
+        console.log('Customer =>' + this.customer_Id + ' Services ids => ' + servicesIds + ' Company=> ' + company_id);
         this._demoService.postSevicestoCart(this.customer_Id, servicesIds, company_id)
             .subscribe(
-                (response:any) => {
+            (response: any) => {
+                this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
+            },
+            (err) => { console.error(err) },
+            () => { console.log("Status 200 Posted!") }
+            )
+    }
+
+    addServicesToCart2() {
+
+        let servicesIds = [];
+        this.servicesTobeAddedInCart.forEach(locationSelectedService => {
+            servicesIds.push(locationSelectedService['rand_id']);
+        });
+
+        this._demoService.postSevicestoCart(this.customer_Id, servicesIds, this.companyIdFromSelectedService)
+            .subscribe(
+                (response: any) => {
                     this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
                 },
                 (err) => { console.error(err) },
@@ -748,15 +1022,30 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             )
     }
 
-    getServicesToCart(){
+    getServicesToCart() {
         this.isProceedFirstEnabled = true;
         this.agreedCartItemIndex = undefined;
         this._demoService.getServicesToCart(this.user_id).subscribe(
-            (response:any) => { this.cartServices = response.data; console.log( "this is cart Items response =>" , this.cartServices);
-            console.log(this.total_price);
-            this.preloaderFetchingCartItems = false;
+            (response: any) => {
+                this.cartServices = response.data; console.log("this is cart Items response =>", this.cartServices);
+                console.log(this.total_price);
+
+                /*  This Code will push services' rand_id into permissions2 array
+                    and later will be used as a check for disabling services
+                    checkboxes in SEARCH BY SERVICE section
+                */
+                this.permissions2 = [];
+                this.cartServices.forEach(item => {
+                    item.service.forEach(service => {
+                        this.permissions2.push(service.rand_id);
+                    });
+                });
+
+                console.log("permissions2 => ",this.permissions2);
+                this.preloaderFetchingCartItems = false;
             },
-            err => { console.error(err);
+            err => {
+                console.error(err);
                 this.preloaderNoCartItemsFound = false;
             },
             () => { console.log("Cart Fetching is working") }
@@ -764,29 +1053,33 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         )
     }
 
-    getStaffFromLocation(){
+    getStaffFromLocation() {
         let location_randId = this.current_company_location.location[this.selectedIndex].rand_id;
         this._demoService.getStaffFromLocation(location_randId).subscribe(
-            (response:any) => {this.locationEmployees = response.data; console.log(this.locationEmployees = response.data)},
-            err => { console.error(err)},
+            (response: any) => { this.locationEmployees = response.data; console.log(this.locationEmployees = response.data) },
+            err => { console.error(err) },
             () => { console.log("Get staff from location API Is running. Staff for the location is: .", this.locationEmployees) }
 
         )
     }
 
 
-    proceedCartServices(cartServicesInfo, index, serviceInfoIndex)
-    {
+    proceedCartServices(cartServicesInfo, index, serviceInfoIndex) {
         // weekends are disabled
 
 
         // this.companyNameOnConfirmationStep = cartCompanyName;
         this.confirmationStepCardInfo = cartServicesInfo;
         console.log("this is confirmationStepCardInfo => ", this.confirmationStepCardInfo);
-        console.log('Hellow New => ',this.current_company_location);
-        let company_id = this.current_company_location.company_name.id;
-        console.log("company_id is => ",company_id);
-        console.log("selectedCompany_id => ",this.selectedCompany_id);
+        console.log('Hellow New => ', this.current_company_location);
+        let company_id;
+        if(this.current_company_location) {
+            alert("inside If");
+             company_id = this.current_company_location.company_name.id;
+        }
+
+        console.log("company_id is => ", company_id);
+        console.log("selectedCompany_id => ", this.selectedCompany_id);
         this.cartPlaceOrderCompanyId = this.selectedCompany_id;
         console.log('this is company_id for which item was added to cart ' + company_id + ' and this is the company id for which items in cart have been proceeded against ' + this.selectedCompany_id);
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
@@ -797,13 +1090,14 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         // Fetches The company Schedule
         this.fetchCompanySchedule();
 
-        this._demoService.proceedCartServices(this.total_price, this.selectedCompany_id, customer_id)
+        this._demoService.proceedCartServices(this.total_price + this.total_price*(this.application_fee_percent/100), this.selectedCompany_id, customer_id)
             .subscribe(
-                (response:any) => {this.proceedService = response.data;
-                    console.log("Proceed Cart Service: ",this.proceedService);
-                    },
-                (err) => { console.error(err) },
-                () => { console.log("Proceed Cart Services have been posted", ) }
+            (response: any) => {
+                this.proceedService = response.data;
+                console.log("Proceed Cart Service: ", this.proceedService);
+            },
+            (err) => { console.error(err) },
+            () => { console.log("Proceed Cart Services have been posted", ) }
             )
     }
 
@@ -812,9 +1106,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     dateDisabled;
 
-    locationSchedule : string;
-    startingScheduleHour:number;
-    endingScheduleHour:number;
+    locationSchedule: string;
+    startingScheduleHour: number;
+    endingScheduleHour: number;
 
 
     // Get Schedule for the selected Company
@@ -822,75 +1116,97 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         alert('Company ID is=>' + this.selectedCompany_id);
         alert('Location Rand ID is=>' + this.selectedCompanyLocationId);
         this._demoService.getCompanySchedule(this.selectedCompany_id, this.selectedCompanyLocationId).subscribe(
-            (response:any) => {
-                    console.log("Company Schedule is=> ",response.data);
-                    console.log("Scheduled days is=> ", response.data['0'].company_schedule.day);
-                    if (response.data['0'].company_schedule.day.indexOf("Mon") == -1) {
-                        this.disabledDaysArray.push(1);
-                    }
-                    if (response.data['0'].company_schedule.day.indexOf("Tue") == -1) {
-                        this.disabledDaysArray.push(2);
-                    }
-                    if (response.data['0'].company_schedule.day.indexOf("Wed") == -1) {
-                        this.disabledDaysArray.push(3);
-                    }
-                    if (response.data['0'].company_schedule.day.indexOf("Thu") == -1) {
-                        this.disabledDaysArray.push(4);
-                    }
-                    if (response.data['0'].company_schedule.day.indexOf("Fri") == -1) {
-                        this.disabledDaysArray.push(5);
-                    }
-                    if (response.data['0'].company_schedule.day.indexOf("Sat") == -1) {
-                        this.disabledDaysArray.push(6);
-                    }
-                    if (response.data['0'].company_schedule.day.indexOf("Sun") == -1) {
-                        this.disabledDaysArray.push(7);
-                    }
+            (response: any) => {
+                console.log("Company Schedule is=> ", response.data);
+                console.log("Scheduled days is=> ", response.data['0'].company_schedule.day);
+                if (response.data['0'].company_schedule.day.indexOf("Mon") == -1) {
+                    this.disabledDaysArray.push(1);
+                }
+                if (response.data['0'].company_schedule.day.indexOf("Tue") == -1) {
+                    this.disabledDaysArray.push(2);
+                }
+                if (response.data['0'].company_schedule.day.indexOf("Wed") == -1) {
+                    this.disabledDaysArray.push(3);
+                }
+                if (response.data['0'].company_schedule.day.indexOf("Thu") == -1) {
+                    this.disabledDaysArray.push(4);
+                }
+                if (response.data['0'].company_schedule.day.indexOf("Fri") == -1) {
+                    this.disabledDaysArray.push(5);
+                }
+                if (response.data['0'].company_schedule.day.indexOf("Sat") == -1) {
+                    this.disabledDaysArray.push(6);
+                }
+                if (response.data['0'].company_schedule.day.indexOf("Sun") == -1) {
+                    this.disabledDaysArray.push(7);
+                }
 
-                    console.log("Disabled days are=> ",this.disabledDaysArray);
-                    this.locationSchedule = response.data['0'].company_schedule.from + ' - ' + response.data['0'].company_schedule.to;
-                    this.startingScheduleHour = parseInt(response.data['0'].company_schedule.from.split(':')['0']);
-                    this.endingScheduleHour = parseInt(response.data['0'].company_schedule.to.split(':')['0']);
-                    alert(this.locationSchedule);
-                    //----------- THIS LINE DISABLES THE DAYS THAT ARE NOT RETURNED IN LOCATION SCHEDULE! ----------
-                    this.dateDisabled = (date: NgbDate, current: {month: number}) =>  this.disabledDaysArray.indexOf(this.calendar.getWeekday(date)) != -1;
+                console.log("Disabled days are=> ", this.disabledDaysArray);
+                this.locationSchedule = response.data['0'].company_schedule.from + ' - ' + response.data['0'].company_schedule.to;
+                this.startingScheduleHour = parseInt(response.data['0'].company_schedule.from.split(':')['0']);
+                this.endingScheduleHour = parseInt(response.data['0'].company_schedule.to.split(':')['0']);
+                alert(this.locationSchedule);
+                //----------- THIS LINE DISABLES THE DAYS THAT ARE NOT RETURNED IN LOCATION SCHEDULE! ----------
+                this.dateDisabled = (date: NgbDate, current: { month: number }) => this.disabledDaysArray.indexOf(this.calendar.getWeekday(date)) != -1;
 
-                },
+            },
             (err) => { console.error(err) },
             () => { console.log("Schedule Fetched") }
         )
     }
 
+
+    enableScheduleProceedBtn = false;
+    isMessageDisplayed = false;
+    availableSlotMessage = false;
+
     checkTimeAvailability() {
 
-        alert("Data Passed=>" + 'loc_ID' + this.selectedCompanyLocationId + 'Comp_ID' + this.selectedCompany_id + 'Time' +this.staff_book_time+ 'Date' + this.staff_book_date);
+        alert("Data Passed=> " + 'loc_ID ' + this.selectedCompanyLocationId + 'Comp_ID ' + this.selectedCompany_id + 'Time ' + this.staff_book_time + 'Date ' + this.staff_book_date);
         this._demoService.checkAvailableTime(this.selectedCompanyLocationId, this.selectedCompany_id, this.staff_book_time, this.staff_book_date).subscribe(
-            (res:any)=>{ console.log(" Available Api Response is => ",res.data) },
-            (err)=> { console.error(err) },
-            () =>{ }
+            (res: any) => {
+                console.log(" Available Api Response is => ", res)
+                if (res.success == '1') {
+                    this.enableScheduleProceedBtn = true;
+                    this.isMessageDisplayed = true;
+                    this.availableSlotMessage = true;
+                    this.hiddenScheduleProcceed = true;
+                }
+                else {
+                    this.enableScheduleProceedBtn = false;
+                    this.isMessageDisplayed = true;
+                    this.availableSlotMessage = false;
+                }
+            },
+            (err) => { console.error(err) },
+            () => { }
         )
     }
 
 
     clearPlacedOrder() {
         console.log(this.servicesPlaceOrder, this.data, this.payment);
+        this.activePaymentTab = false;
+        this.isMessageDisplayed = false;
+        this.orderNowCheck = false;
+
     }
 
 
     /* Cart First Screen Variables */
-        // selectedLocationServicePrice = 0;   // AKA  Sub Total Price
-        // discountAmount = 0;
-        // taxAmount = 0;
-        // totalAmount = 0;
+    // selectedLocationServicePrice = 0;   // AKA  Sub Total Price
+    // discountAmount = 0;
+    // taxAmount = 0;
+    // totalAmount = 0;
 
-        selectedCompanyName;
-        selectedServiceName;
-        selectedCompanyLocationId;
+    selectedCompanyName;
+    selectedServiceName;
+    selectedCompanyLocationId;
 
     // Get selected location service and its information on radio button selection
 
 
-    servicesInCartRadiosFirstScreen(company_name,info, event, index, parentIndex) {
+    servicesInCartRadiosFirstScreen(company_name, info, event, index, parentIndex) {
 
         // Check for looking what is selected service parent's index
         this.selectedServiceParentIndex = parentIndex;
@@ -903,9 +1219,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         this.isProceedFirstEnabled = false;
         this.servicesPlaceOrder = [];
         this.servicesPlaceOrder.push({
-                "service_id": info.rand_id,
-                "service_price": info.price
-            }
+            "service_id": info.rand_id,
+            "service_price": info.price
+        }
         );
 
         this.total_price = parseInt(info.price);
@@ -938,7 +1254,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
 
 
-    timeSlotPicker = {hour: 13, minute: 30};
+    timeSlotPicker = { hour: 13, minute: 30 };
     hourStep = 1;
     minuteStep = 15;
 
@@ -951,11 +1267,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             return null;
         }
 
-        if (value.hour < this.startingScheduleHour ) {
-            return {tooEarly: true};
+        if (value.hour < this.startingScheduleHour) {
+            return { tooEarly: true };
         }
-        if (value.hour > this.endingScheduleHour ) {
-            return {tooLate: true};
+        if (value.hour > this.endingScheduleHour) {
+            return { tooLate: true };
         }
 
         return null;
@@ -994,83 +1310,130 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     /* Code which was used to fetch employee Id now hardcoded to 0 */
 
-            // getEmpId(event){
-            //     this.employee_Id = event.target.value;
-            //     console.log("EMPLOYEEE ID: ",this.employee_Id)
-            // }
+    // getEmpId(event){
+    //     this.employee_Id = event.target.value;
+    //     console.log("EMPLOYEEE ID: ",this.employee_Id)
+    // }
 
-    saveStaffSchedule(){
-        let company_id = this.current_company_location.company_name.id;
+    saveStaffSchedule() {
+        // let company_id = this.current_company_location.company_name.id;
 
 
-        console.log("Employe ID: ",this.employee_Id,"Date: ",this.staff_book_date,"Time: ",this.staff_book_time,
-            "Company ID: ",this.cartPlaceOrderCompanyId);
+        console.log("Employe ID: ", this.employee_Id, "Date: ", this.staff_book_date, "Time: ", this.staff_book_time,
+            "Company ID: ", this.cartPlaceOrderCompanyId);
         this._demoService.saveStaffSchedule(this.cartPlaceOrderCompanyId, this.employee_Id, this.staff_book_date, this.staff_book_time)
             .subscribe(
-                (response:any) => {this.saveStaff = response.data},
-                (err) => { console.error(err) },
-                () => { console.log("Staff Schedule has been saved: ", this.saveStaff) }
+            (response: any) => { this.saveStaff = response.data },
+            (err) => { console.error(err) },
+            () => { console.log("Staff Schedule has been saved: ", this.saveStaff) }
             )
     }
 
 
-    placeCartOrder(){
-        let status_set_id = 1;
-        let company_id = this.current_company_location.company_name.id;
-        console.log("Company ID is", company_id);
-        this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
-            (response:any) => { },
-            (err) => { console.error(err) },
-            () => { 
-                console.log("Status 01 HAS BEEN Posted!"); 
-                // New Place Order Api Called Here
-                 this.PlaceOrderInformation();
-            }
-        )
+    // placeCartOrder() {
+    //     let status_set_id = 1;
+    //     let company_id = this.current_company_location.company_name.id;
+    //     console.log("Company ID is", company_id);
+    //     this._demoService.placeCartOrder(status_set_id, company_id).subscribe(
+    //         (response: any) => { },
+    //         (err) => { console.error(err) },
+    //         () => {
+    //             console.log("Status 01 HAS BEEN Posted!");
+    //             // New Place Order Api Called Here
+    //             this.PlaceOrderInformation();
+    //             this.orderNowCheck = true;
+    //         }
+    //     )
 
-    }
+    // }
 
-    placeCartOrder2(){
+    placeCartOrder2() {
         // let status_set_id = 1;
         let company_id = this.current_company_location.company_name.id;
         console.log("Company ID is", company_id);
-        console.log("total Price new button => ",this.total_price);
+        console.log("total Price new button => ", this.total_price);
 
-        console.log("Confirmation Step Card Info Complete => ",this.confirmationStepCardInfo);
+        console.log("Confirmation Step Card Info Complete => ", this.confirmationStepCardInfo);
 
 
     }
 
     //--------------------------------- Save Order Information and Place Order -----------------------------------------
 
-    PlaceOrderInformation(){
+    PlaceOrderInformation() {
         // let company_id = this.current_company_location.company_name.id;
         // let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         let company_timings = "Timings";
 
-        console.log("aja Yaar bhai=> ",this.confirmationStepCardInfo);
+        console.log("aja Yaar bhai=> ", this.confirmationStepCardInfo);
         /* This code pushes services that are being confirmed in cart in the services array for places order request in Final Data Array */
 
         // this.confirmationStepCardInfo.service.forEach(x => {
         //     this.servicesPlaceOrder.push( { 'service_id': x.rand_id, 'service_price': x.price})
         // });
 
+       alert("transaction_id"+this.transaction_id_for_Transaction);
+       
         console.log("services in final Card => ", this.servicesPlaceOrder);
-
+         
+        
         // console.log (this.total_price = this.confirmationStepCardInfo['total_price']);
-        this._demoService.saveOrderInformation(this.cartPlaceOrderCompanyId, this.customer_Id, this.total_price, this.servicesPlaceOrder, this.employee_Id,
-            this.staff_book_date, this.staff_book_time, company_timings, this.payment).subscribe(
-            (res:any) => { console.log("this will be posted as order => ", res.data);
+        this._demoService.saveOrderInformation(
+
+            this.cartPlaceOrderCompanyId, 
+            this.customer_Id, 
+            this.total_price, 
+            this.servicesPlaceOrder, 
+            this.employee_Id,
+            this.application_fee_price,
+            this.application_fee_percentage,
+            this.staff_book_date, 
+            this.staff_book_time, 
+            company_timings, 
+            this.payment
+            
+            ).subscribe(
+            (res: any) => {
+                console.log("this will be posted as order => ", res);
+                this.order_id_for_Transaction = res.order_id;
+                console.log("here is the order id"+this.order_id_for_Transaction);
 
             },
             (err) => { console.error(err); },
-            () => { console.log("Test Order Placed Successfully from new API" );}
-        )
+            () => { console.log("Test Order Placed Successfully from new API"); 
+            
+            
+                      // ---------------------------------------fourth api for place order-------------------------------------
+                
+                      let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+                         let company_id = this.current_company_location.company_name.id;
+                      //let company_id = this.selectedCompany_id;
+                      this._demoService.createTransaction(
+                        customer_id,
+                        this.transaction_id_for_Transaction,
+                        this.order_id_for_Transaction,                         
+                        this.behalf_account, 
+                        this.card_id, 
+                        this.application_fee,
+                        company_id
+                        
+                        ).subscribe(
+                        (res: any) => {
+                            console.log("here is the transaction api hitted");
+            
+                                
+                        },
+                        (err) => { console.error(err); },
+                        () => { console.log(""); }
+                        )  
+            
+        }
+            )
     }
 
 
 
-    getAllCartData(){
+    getAllCartData() {
         let company_id = this.current_company_location.company_name.id;
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         let price = this.total_price;
@@ -1088,7 +1451,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             //     alert(this.showServices);
             // },2000)
             this.isDisabled = true;
-            console.log('isDisabled now must be true => ',this.isDisabled);
+            console.log('isDisabled now must be true => ', this.isDisabled);
             this.selectedIndex = index;
             this.selectedParentIndex = parentIndex;
             console.log(this.current_company_location = location);
@@ -1102,7 +1465,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
             this.showInfo = true;
         }
 
-        console.log('isDisabled now must be true => ',this.isDisabled);
+        console.log('isDisabled now must be true => ', this.isDisabled);
     }
 
     cartCheckBoxComparison() {
@@ -1110,24 +1473,24 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         let company_id = this.current_company_location.company_name.id;
 
         // this line returns cart Item based on company Id after comparing company id of cart item against selected company id
-        let cartItem = this.cartServices.find(x=> x.service[0].company_id == company_id);
+        let cartItem = this.cartServices.find(x => x.service[0].company_id == company_id);
 
         // this line returns services array of company if company Id is matched, otherwise returns empty array
         let cartServices = (cartItem ? cartItem.service : []);
         console.log(" cart Services are=> ", cartServices);
         this.permissions = [];
-        this.services.forEach( x =>{
+        this.services.forEach(x => {
             let isExist = false;
-            cartServices.forEach(y =>{
-                if(y['rand_id'] == x['rand_id']) {
+            cartServices.forEach(y => {
+                if (y['rand_id'] == x['rand_id']) {
                     isExist = true;
                 }
-                console.log("Y Rand Id => ",y['rand_id']);
-                console.log("X Rand Id => ",x['rand_id']);
+                console.log("Y Rand Id => ", y['rand_id']);
+                console.log("X Rand Id => ", x['rand_id']);
             })
             this.permissions.push(isExist);
         })
-        console.log('Permissions Array has => ',this.permissions);
+        console.log('Permissions Array has => ', this.permissions);
     }
 
 
@@ -1207,6 +1570,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     selectService(i) {
         this.currentService = this.services[i];
     }
+
 
     changeView() {
         this.listGridViewContent = false;
@@ -1478,13 +1842,18 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         }
     }
 
-    hideTabs(event: Event, index){
+    hideTabs(event: Event, index) {
         this.proceedCounter--;
         this.hideTermsModal = true;
         this.confirmation = true;
         this.activeItemTab = true;
         this.agreedCartItemIndex = -1;
-        return true;
+        this.hideTermsModal1 = true;
+        if (this.proceedCounter == 0) {
+            return;
+        }
+        this.proceedCounter--;
+        
     }
 
 
@@ -1565,22 +1934,44 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         console.log(event.target.checked);
         console.log(index);
         this.servicesTobeAddedInCart = [];
-        if(event.target.checked) {
+        if (event.target.checked) {
             this.servicesTobeAddedInCart.push(this.services[index]);
-            console.log(this.servicesTobeAddedInCart);
+            console.log("Cart to be added in cart details=> ",this.servicesTobeAddedInCart);
         }
         else {
-           let indexOfObj = this.servicesTobeAddedInCart.indexOf(this.services[index]);
-            this.servicesTobeAddedInCart.splice(indexOfObj,1);
+            let indexOfObj = this.servicesTobeAddedInCart.indexOf(this.services[index]);
+            this.servicesTobeAddedInCart.splice(indexOfObj, 1);
 
         }
-        if(this.servicesTobeAddedInCart.length > 0) {
+        if (this.servicesTobeAddedInCart.length > 0) {
             this.isDisabled = false;
         }
         else {
             this.isDisabled = true;
         }
         console.log(this.servicesTobeAddedInCart);
+    }
+
+    companyIdFromSelectedService;  // Search By Service's Service company_id
+    locationSelectedService = [];
+
+    servicesCheckboxes2(event, index, location_id, services, company_id) {
+        console.log("change service Event =>", services[index]);
+        this.companyIdFromSelectedService = '';
+        this.locationSelectedService = services;
+        alert("location Id=> " + location_id);
+        this.servicesTobeAddedInCart = [];
+        if (event.target.checked) {
+            this.companyIdFromSelectedService = company_id;
+            this.servicesTobeAddedInCart.push(this.locationSelectedService[index]);
+            console.log("Service to be added in cart details=> ",this.servicesTobeAddedInCart);
+        }
+        else {
+            let indexOfObj = this.servicesTobeAddedInCart.indexOf(this.services[index]);
+            this.servicesTobeAddedInCart.splice(indexOfObj, 1);
+
+        }
+        alert(this.servicesTobeAddedInCart);
     }
 
 
@@ -1602,11 +1993,11 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     }
 
     // Checkboxes in Cart of Services
-            // servicesInCartCheckboxes(e, i) {
-            //     console.log('Value are as follows => ');
-            //     console.log(e.target.checked);
-            //     console.log(i);
-            // }
+    // servicesInCartCheckboxes(e, i) {
+    //     console.log('Value are as follows => ');
+    //     console.log(e.target.checked);
+    //     console.log(i);
+    // }
 
     isMoreDetail() {
         this.moreDetailShow = true;
@@ -1632,16 +2023,17 @@ export class ServicesComponent implements OnInit, AfterViewInit {
         this.isGridViewHide = true;
     }
 
-    scheduleTabShow(){
+    scheduleTabShow() {
         this.activeScheduleTab = true;
-        this.activePaymentTab = false;
+        this.activeMoreTab = false;
     }
 
-    itemTabShow(){
+    itemTabShow() {
         this.activeScheduleTab = false;
         this.activeItemTab = true;
+        this.isMessageDisplayed = false;
     }
-    showConfirmationTab(){
+    showConfirmationTab() {
         this.confirmation = false;
     }
 
