@@ -50,7 +50,15 @@ export class DemoService {
     }
 
     getCompanyLocationServices(rand_id) {
-        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/location-service/' + rand_id, httpOptions);
+        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/location-service/' + rand_id, httpOptions).map(
+            (response:any) => {
+                console.log("MAP Response IS =>",response.data);
+                response.data.forEach(service => {
+                    service['price'] = parseInt(service.price);
+                });
+                return response;
+            }
+        );
     }
 
     getCompanyServices() {

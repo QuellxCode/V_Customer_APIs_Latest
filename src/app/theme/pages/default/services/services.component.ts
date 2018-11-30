@@ -265,7 +265,11 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         //                  { name:"Spark Plugs Changing", price: 60.00}];
 
         // customize default values of datepickers used by this component tree
-        this.config.minDate = { year: 2010, month: 1, day: 1 };
+        // this.config.minDate = { year: 2010, month: 1, day: 1 };
+
+        const currentDate : Date = new Date();
+
+        this.config.minDate = { year:currentDate.getFullYear(), month:currentDate.getMonth()+1, day: currentDate.getDate() };
         this.config.maxDate = { year: 2050, month: 12, day: 31 };
 
         // days that don't belong to current month are not visible
@@ -301,6 +305,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             height: 50
         }
     }
+
+    cooperative : string;
 
     //----- Search String for Search Filter Pipe ------------------------
     searchText;
@@ -445,7 +451,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         {
             "company_id": this.cartPlaceOrderCompanyId,
             "customer_id": this.customer_Id,
-            "total_price": this.total_price,
+            "total_price": this.total_price + this.total_price*(parseInt(this.application_fee_percent)/100),
             "services": this.servicesPlaceOrder,
             "employee_id": this.employee_Id,
             "application_fee_price": this.application_fee_price,
@@ -640,12 +646,12 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     card_id; 
     application_fee;
     async onSubmitPayment(form: NgForm) {
-        
+        alert("Cart Hit");
         const { token, error } = await stripe.createToken(this.card, {
             email: this.customer_EmailAddress,
             name: "Jim Carrie"
         });
-
+        alert("promise returned");
         if (error) {
            
             console.log('Something is wrong:', error);
@@ -663,8 +669,13 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             
 
             let status_set_id = 1;
-            let company_id = this.current_company_location.company_name.id;
-            console.log("Company ID is", company_id);
+            let company_id = this.selectedCompany_id;
+            // if(this.current_company_location.company_name.id != undefined) {
+            //     company_id = this.current_company_location.company_name.id;
+            //     console.log("Company ID is", company_id);
+            // }
+
+
 
             //price calculation system
             this.application_fee_price = this.total_price*(parseInt(this.application_fee_percentage)/100);
@@ -682,7 +693,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 // "company_id" : company_id
 
                 this.application_fee_inCents, 
-                this.total_price, 
+                this.total_price + this.application_fee_price,
                 company_id,
                 this.stripe_token_id
                 
@@ -1061,7 +1072,12 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confirmationStepCardInfo = cartServicesInfo;
         console.log("this is confirmationStepCardInfo => ", this.confirmationStepCardInfo);
         console.log('Hellow New => ', this.current_company_location);
-        let company_id = this.current_company_location.company_name.id;
+        let company_id;
+        if(this.current_company_location) {
+            alert("inside If");
+             company_id = this.current_company_location.company_name.id;
+        }
+
         console.log("company_id is => ", company_id);
         console.log("selectedCompany_id => ", this.selectedCompany_id);
         this.cartPlaceOrderCompanyId = this.selectedCompany_id;
@@ -1074,7 +1090,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         // Fetches The company Schedule
         this.fetchCompanySchedule();
 
-        this._demoService.proceedCartServices(this.total_price, this.selectedCompany_id, customer_id)
+        this._demoService.proceedCartServices(this.total_price + this.total_price*(this.application_fee_percent/100), this.selectedCompany_id, customer_id)
             .subscribe(
             (response: any) => {
                 this.proceedService = response.data;
@@ -1300,7 +1316,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     // }
 
     saveStaffSchedule() {
-        let company_id = this.current_company_location.company_name.id;
+        // let company_id = this.current_company_location.company_name.id;
 
 
         console.log("Employe ID: ", this.employee_Id, "Date: ", this.staff_book_date, "Time: ", this.staff_book_time,
@@ -1390,7 +1406,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                       // ---------------------------------------fourth api for place order-------------------------------------
                 
                       let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-                        let company_id = this.current_company_location.company_name.id;
+                         let company_id = this.current_company_location.company_name.id;
+                      //let company_id = this.selectedCompany_id;
                       this._demoService.createTransaction(
                         customer_id,
                         this.transaction_id_for_Transaction,
@@ -1938,10 +1955,11 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     companyIdFromSelectedService;  // Search By Service's Service company_id
     locationSelectedService = [];
 
-    servicesCheckboxes2(event, index, services, company_id) {
+    servicesCheckboxes2(event, index, location_id, services, company_id) {
         console.log("change service Event =>", services[index]);
         this.companyIdFromSelectedService = '';
         this.locationSelectedService = services;
+        alert("location Id=> " + location_id);
         this.servicesTobeAddedInCart = [];
         if (event.target.checked) {
             this.companyIdFromSelectedService = company_id;

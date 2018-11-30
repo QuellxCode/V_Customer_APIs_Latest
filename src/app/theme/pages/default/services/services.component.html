@@ -292,7 +292,7 @@
                                                                      <input type="radio" name="serviceRadioButton"
                                                                             [disabled]="permissions2.indexOf(service.rand_id) > -1"
                                                                             (change)="showBookButtonMap($event);
-                                                                            servicesCheckboxes2($event, indexLocService, loc.services, company.company_name.id);">
+                                                                            servicesCheckboxes2($event, indexLocService, loc.location.rand_id, loc.services, company.company_name.id);">
                                                                      <span></span>
                                                                  </label>
                                                              </span>
@@ -302,7 +302,7 @@
                                                                  </span>
                                                              </span>
                                                             <span class="custom-float-right m--font-success">
-                                                                 {{ service.price + (service.price*(this.application_fee_percent/100)) | currency:'CAD'}}
+                                                                 {{ service.price | currency:'CAD'}}
                                                              </span>
                                                         </p>
                                                     <!--</div>-->
@@ -342,7 +342,7 @@
                                         <input type="number" [(ngModel)]="radiusInMeters" (input)="updateMarkers($event)" />
                                     </div>
                                     <!--<p> {{radiusInMeters}} </p>-->
-                                    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10" >
+                                    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10" gestureHandling="'cooperative'">
                                         <agm-marker [latitude]="latitude" [longitude]="longitude" [iconUrl]="icon">
                                             <agm-info-window>
                                                 You are here
@@ -601,7 +601,9 @@
 
                                                                                                                                     <!--  isProceedFirstEnabled &&  -->
                         <button *ngIf="agreedCartItemIndex == i" type="button" class="btn btn-primary" [disabled]="selectedServiceParentIndex != i || termsAndConditonIndex != i"
-                                (click)="activeTab('schedule'); getStaffFromLocation(); proceedCartServices(cartService, i, serviceInfoIndex)">Proceed S1 <i class="fa fa-chevron-right"></i></button>
+                                (click)="activeTab('schedule'); proceedCartServices(cartService, i, serviceInfoIndex)">Proceed S1 <i class="fa fa-chevron-right"></i>
+                                <!-- getStaffFromLocation(); -->
+                        </button>
 
                     </div>
                    
@@ -862,9 +864,17 @@
                             </tbody>
                         </table>
                         <hr class="custom-hr-style">
+                        <h5 class="text-right m--font-bolder">
+                            <span> Sub Total : </span>
+                            <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price | currency:'CAD'}}</span>
+                        </h5>
+                        <h5 class="text-right m--font-bolder">
+                            <span> Tax &amp; Fee : </span>
+                            <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price*(this.application_fee_percent/100) | currency:'CAD'}}</span>
+                        </h5>
                         <h4 class="text-right" style="font-weight:bold;">
                             <span> Total Price : </span>
-                            <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price | currency:'CAD'}}</span>
+                            <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price + total_price*(this.application_fee_percent/100) | currency:'CAD'}}</span>
                         </h4>
                     </div>
                     <p class="text-right" style="margin-top:15px;">Are your sure to confirm &amp; proceed ?</p>
