@@ -12,9 +12,9 @@ export class ServerServices_Services {
     constructor(private http: Http, private autheticationServices: AuthenticationService) { }
 
     // post request to server for sending data  URl
-    private postURL = 'http://www.sharjeelkhan.ca/vease/vease-app/api/v1/request-bid';
+    private postURL = 'https://www.sharjeelkhan.ca/vease/vease-app/api/v1/request-bid';
 
-    private getURL = ' http://www.sharjeelkhan.ca/vease/vease-app/api/v1/get-service';
+    private getURL = ' https://www.sharjeelkhan.ca/vease/vease-app/api/v1/get-service';
 
 
 

@@ -15,7 +15,7 @@ export class profileService {
 
     getCutomerProfile() {
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/customer-profile/' + customer_id);
+        return this.http.get('https://sharjeelkhan.ca/vease/vease-app/api/v1/customer-profile/' + customer_id);
     }
 
     createProfileApi(firstName, lastName, picture, address, email, phoneNo, date_of_birth, companyName, occupation, city, state, postCode, linkedin, facebook, twitter, instagram) {
@@ -59,7 +59,7 @@ export class profileService {
 
         // console.log("You Passed This =>" + JSON.stringify(c_profile_Info));
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/customer-profile/' + customer_id, c_profile_Info);
+        return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/customer-profile/' + customer_id, c_profile_Info);
     }
 
     passwordApi(oldPass, newPass, confirmPass) {
@@ -70,7 +70,7 @@ export class profileService {
         }
         console.log("You Passed This =>" + JSON.stringify(obj));
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        return this.http.post('http://sharjeelkhan.ca/vease/vease-app/api/v1/customer-profile/' + customer_id, obj, httpOptions);
+        return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/customer-profile/' + customer_id, obj, httpOptions);
     }
 
 

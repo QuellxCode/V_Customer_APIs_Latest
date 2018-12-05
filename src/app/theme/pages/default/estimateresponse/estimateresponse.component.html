@@ -87,98 +87,43 @@
 		<div class="col-xl-3 col-lg-4">
 			<div class="m-portlet m-portlet--full-height">
 				<div class="m-portlet__body">
-					<select class="form-control m-input">
-						<option>
+					<select class="form-control m-input" (change)="showRequestTabs($event.target.value)">
+						<option value="all">
 							All
 						</option>
-						<option>
-							Hair
+						<option value="approved">
+							Approved
 						</option>
-						<option>
-							Health
+						<option value="pending">
+							Pending
 						</option>
-						<option>
-							Shopping
+						<option value="rejected">
+							Rejected
 						</option>
-						<option>
-							Electronics
-						</option>
-						<option>
-							Cleaning
-						</option>
+					
 					</select>
 					<br>
 					<label>
-						Sort By
+						Sort By Category
 					</label>
 					<select class="form-control m-input">
-						<option>
-							Recommendations
+						<option *ngFor="let category of categories" >
+							{{category.name}}
 						</option>
-						<option>
-							Price Low To High
-						</option>
-						<option>
-							Price High To Low
-						</option>
-						<option>
-							Rating
-						</option>
-						<option>
-							Comments
-						</option>
+						
 					</select>
 					<br>
 					<label>
-						Search by Business Name:
+						Search by Service Name:
 					</label>
 					<input class="form-control" type="text">
 					<br>
-					<label>
-						Select The Date:
-					</label>
-					<input class="form-control" type="date">
-					<br>
-					<label>
-						Select The Time:
-					</label>
-					<select class="form-control m-input">
-						<option>Any Time</option>
-						<option>08-09AM</option>
-						<option>09-10AM</option>
-						<option>10-11AM</option>
-						<option>11-12PM</option>
-						<option>12-01PM</option>
-						<option>01-02PM</option>
-						<option>02-03PM</option>
-					</select>
-					<br>
+					
 					<label>
 						Serach by Location
 					</label>
 					<input class="form-control" type="text">
-					<br>
-					<label>
-						Budget
-					</label>
-					<div class="m-radio-list">
-						<label class="m-radio">
-							<input name="example_1" type="radio"> Any
-							<span></span>
-						</label>
-						<label class="m-radio">
-							<input name="example_1" type="radio"> $0 - $30
-							<span></span>
-						</label>
-						<label class="m-radio">
-							<input name="example_1" type="radio"> $30 - $60
-							<span></span>
-						</label>
-						<label class="m-radio">
-							<input name="example_1" type="radio"> $60 - $120
-							<span></span>
-						</label>
-					</div>
+				
 				</div>
 			</div>
 		</div>
@@ -556,7 +501,7 @@
 		<div class="col-xl-9 col-lg-8">
 			<!-- [hidden]="isGridViewHide"-->
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12" *ngIf="approved">
 					<div class="body organ1 serviceCard">
 						<div class="row custom-margin-zero">
 							<div class="card-left col-lg-3" id="">
@@ -585,7 +530,7 @@
 							</div>
 							<div class="card-right col-lg-9">
 								<h6 class="text-muted pull-left">
-									<span class="m-badge  m-badge--success m-badge--wide">Completed</span>
+									<span class="m-badge  m-badge--success m-badge--wide">Approved/Granted</span>
 								</h6>
 								<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
 								<div class="clearfix"></div>
@@ -616,200 +561,46 @@
 												<hr>
 											</div>
 										</div>
+										
+										        
 										<div class="row service-item">
 											<div class="col-md-1">
-                                    <span class="custom-width" (click)="visibleSidebar4 = true">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" (change)="showBookButtonMap($event)">
-                                    <span></span>
-                                    </label>
-                                    </span>
+														<span class="custom-width">
+														<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
+															height: 12px;">
+														<input type="checkbox" value="true" (change)="showBookButtonMap($event)">
+														<span></span>
+														</label>
+														</span>
 											</div>
 											<div class="col-md-5 custom_padding_left">
-												Spark Plugs Changing
-											</div>
-											<div class="col-md-3">
-											</div>
-											<div class="col-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $60.00
-                                    </span>
-											</div>
-											<div class="col-md-12">
-												<hr>
-											</div>
-										</div>
-										<div class="row service-item">
-											<div class="col-md-1">
-                                    <span class="custom-width">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" value="187" (change)="showBookButtonMap($event)">
-                                    <span></span>
-                                    </label>
-                                    </span>
-											</div>
-											<div class="col-md-5 custom_padding_left">
-												Gearbox
-											</div>
-											<div class="col-md-3">
-											</div>
-											<div class="col-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $500.00
-                                    </span>
-											</div>
-											<div class="col-md-12">
-												<hr>
-											</div>
-										</div>
-										<div class="row service-item">
-											<div class="col-md-1">
-                                    <span class="custom-width">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
-                                       height: 12px;">
-                                    <input type="checkbox" value="true" (change)="showBookButtonMap($event)">
-                                    <span></span>
-                                    </label>
-                                    </span>
-											</div>
-											<div class="col-md-5 custom_padding_left">
-												Suspension
+											Suspension
 											</div>
 											<div class="col-md-3 offset-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $200.00
-                                    </span>
+														<span class="m--font-success custom-float-right">
+														$200.00
+														</span>
 											</div>
-											<div class="col-md-12" style="margin-top: 10px;	text-align: right;">
-												<a (click)="visibleSidebar2 = true" class="btn btn-sm btn-primary custom-margin-right-book-button"
-												   [ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Book</a>
+											<div class="col-md-12" style="margin-top: 10px; text-align: right;">
+											<a (click)="visibleSidebar2 = true" class="btn btn-sm btn-primary custom-margin-right-book-button"
+												[ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Book</a>
 											</div>
 										</div>
+
+										
+										
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12">
+				
+				<div class="col-md-12" *ngIf="pending">
 					<div class="body organ1 serviceCard">
 						<div class="row custom-margin-zero">
 							<div class="card-left col-lg-3" id="">
-								<label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
-									<input class="chkboxes" type="checkbox">
-									<span></span>
-								</label>
-								<div class="row onepersonrow">
-									<div class="col-md-12">
-										<img class="personimage" src="./assets/demo/demo3/media/img/hair.png">
-										<p class="personname">Mont Hair</p>
-										<p class="persontype">Hair Saloon</p>
-									</div>
-								</div>
-								<p class="personappartmentno">
-									<i class="fa fa-clock-o"></i> 6:00 - 23:00
-								</p>
-								<p class="personbuildingname">
-									<i class="fa fa-money"></i> $100 - $200
-								</p>
-								<p class="personaddress">
-									<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada
-								</p>
-								<a href="javascript:;" class="btn btn-default chatServiceButton">
-									<i class="la la-comments"></i> Message</a>
-							</div>
-							<div class="card-right col-lg-9">
-								<h6 class="text-muted pull-left">
-									<span class="m-badge m-badge--warning m-badge--wide">In-Progress</span>
-								</h6>
-								<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
-								<div class="clearfix"></div>
-								<div class="row services-categories">
-									<div class="col-md-12 category-list">
-										<h6 class="service-heading">Hair</h6>
-										<div class="row service-item">
-											<div class="col-md-1">
-                                    <span class="custom-width">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" value="187">
-                                    <span></span>
-                                    </label>
-                                    </span>
-											</div>
-											<div class="col-md-5 custom_padding_left">
-												Hair Cutting
-											</div>
-											<div class="col-md-3">
-											</div>
-											<div class="col-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $60.50
-                                    </span>
-											</div>
-											<div class="col-md-12">
-												<hr>
-											</div>
-										</div>
-										<div class="row service-item">
-											<div class="col-md-1">
-                                    <span class="custom-width">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" value="187">
-                                    <span></span>
-                                    </label>
-                                    </span>
-											</div>
-											<div class="col-md-5 custom_padding_left">
-												Fancy Cutting
-											</div>
-											<div class="col-md-3">
-											</div>
-											<div class="col-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $100.00
-                                    </span>
-											</div>
-											<div class="col-md-12">
-												<hr>
-											</div>
-										</div>
-										<div class="row service-item">
-											<div class="col-md-1">
-                                    <span class="custom-width">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" value="187">
-                                    <span></span>
-                                    </label>
-                                    </span>
-											</div>
-											<div class="col-md-5 custom_padding_left">
-												Head Shaving
-											</div>
-											<div class="col-md-3">
-											</div>
-											<div class="col-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $50
-                                    </span>
-											</div>
-											<div class="col-md-12">
-												<hr>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-12">
-					<div class="body organ1 serviceCard">
-						<div class="row custom-margin-zero">
-							<div class="card-left col-lg-3" id="">
-								<label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
-									<input class="chkboxes" type="checkbox">
-									<span></span>
-								</label>
+								
 								<div class="row onepersonrow">
 									<div class="col-md-12">
 										<img class="personimage" src="./assets/demo/demo3/media/img/broom.jpg">
@@ -880,62 +671,19 @@
 												<hr>
 											</div>
 										</div>
-										<div class="row service-item">
-											<div class="col-md-1">
-                                    <span class="custom-width">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" value="187">
-                                    <span></span>
-                                    </label>
-                                    </span>
-											</div>
-											<div class="col-md-5 custom_padding_left">
-												One Room Office with Bath
-											</div>
-											<div class="col-md-3 offset-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $500.00
-                                    </span>
-											</div>
-											<div class="col-md-12">
-												<hr>
-											</div>
-										</div>
-										<div class="row service-item">
-											<div class="col-md-1">
-                                    <span class="custom-width">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" value="187">
-                                    <span></span>
-                                    </label>
-                                    </span>
-											</div>
-											<div class="col-md-5 custom_padding_left">
-												Multi Room Office with Baths
-											</div>
-											<div class="col-md-3 offset-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $800.00
-                                    </span>
-											</div>
-											<div class="col-md-12">
-												<hr>
-											</div>
-										</div>
+										
+										
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12">
+				<div class="col-md-12" *ngIf="rejected">
 					<div class="body organ1 serviceCard">
 						<div class="row custom-margin-zero">
 							<div class="card-left col-lg-3" id="">
-								<label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
-									<input class="chkboxes" type="checkbox">
-									<span></span>
-								</label>
+								
 								<div class="row onepersonrow">
 									<div class="col-md-12">
 										<img class="personimage" src="./assets/demo/demo3/media/img/doctor.jpg">
@@ -957,7 +705,7 @@
 							</div>
 							<div class="card-right col-lg-9">
 								<h6 class="text-muted pull-left">
-									<span class="m-badge  m-badge--danger m-badge--wide">Rejected</span>
+									<span class="m-badge  m-badge--danger m-badge--wide">Rejected/Cancelled</span>
 								</h6>
 								<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
 								<div class="clearfix"></div>
@@ -1006,27 +754,7 @@
 												<hr>
 											</div>
 										</div>
-										<div class="row service-item">
-											<div class="col-md-1">
-                                    <span class="custom-width">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" value="187">
-                                    <span></span>
-                                    </label>
-                                    </span>
-											</div>
-											<div class="col-md-5 custom_padding_left">
-												Overall Body
-											</div>
-											<div class="col-md-3 offset-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $200
-                                    </span>
-											</div>
-											<div class="col-md-12">
-												<hr>
-											</div>
-										</div>
+										
 									</div>
 								</div>
 							</div>
@@ -1518,21 +1246,21 @@
 			</div>
 		</div>
 		<div class="m-portlet__body">
-			<form class="form-group">
+			<form class="form-group"  (ngSubmit)="bidRequest(bR)" #bR="ngForm">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group m-form__group">
 							<label>Service Category</label>
 							<select ngModel required name="category_name" class="form-control m-input m-input--square" (change)="onChange($event.target.value)">
 								<option value="Choose Category" disabled selected="true">Choose Category</option>
-								<option *ngFor="let category of categories" value="{{category.rand_id}}" #categoryName>
+								<option *ngFor="let category of categories" value="{{category.rand_id}}">
 									{{category.name}}
 								</option>
 							</select>
 						</div>
 						<div class="form-group m-form__group">
 							<label>Service Sub-Category:</label>
-							<select  class="form-control m-input m-input--square" [disabled]="disabled" ngModel required name="subcategory_name" #healthSubCategory>
+							<select  class="form-control m-input m-input--square" [disabled]="disabled" ngModel required name="subcategory_name" #healthSubCategory  (change)="subCatService($event.target.value)" >
 								<option value="{{SubCategory.rand_id}}" *ngFor="let SubCategory of subCategories">
 									{{ SubCategory.name }}
 								</option>
@@ -1540,22 +1268,23 @@
 						</div>
 						<div class="form-group m-form__group">
 							<label>
-								Request Name
+								Select Service:
 							</label>
-							<input class="form-control m-input m-input--air" placeholder="Enter Request Name" type="text">
+							<select ngModel required name="service_name" #triggerServiceDD [disabled]="disabledServicesDD"   class="form-control m-input m-input--square">
+								<option value="Choose Service" disabled selected="true"> Choose Service</option>
+								<option value="{{service.rand_id}}" *ngFor="let service of subCatServices"> 
+										{{ service.name }}
+								</option>
+								
+							</select>
 						</div>
 						<div class="form-group m-form__group">
 							<label>
 								Request Description
 							</label>
-							<textarea class="form-control m-input m-input--air" placeholder="Enter Request Description" type="text"></textarea>
+							<textarea ngModel required name="description" class="form-control m-input m-input--air" placeholder="Enter Request Description" type="text"></textarea>
 						</div>
-						<div class="form-group m-form__group">
-							<label>
-								Price
-							</label>
-							<input class="form-control m-input m-input--air" placeholder="Enter Price" type="text">
-						</div>
+					
 						<!-- <div class="form-group m-form__group">
                            <label>
                                Request Details
@@ -1568,7 +1297,7 @@
 							<label>
 								Contact Number
 							</label>
-							<input class="form-control m-input m-input--air" placeholder="Enter Contact Number Here" type="tel">
+							<input ngModel required name="contact" class="form-control m-input m-input--air" placeholder="Enter Contact Number Here" type="tel">
 						</div>
 						<!-- <div class="form-group m-form__group">
                            <label>
@@ -1583,22 +1312,22 @@
                            </label>
                            <input class="form-control m-input m-input--air " id="m_datetimepicker_2" placeholder="Select date &amp; time" type="text">
                            </div> -->
-						<div class="m-form__group form-group row m--padding-left-15">
+					
+						<div class="form-group m-form__group">
 							<label>
-								Publish This Is Request Online?
+								Price
 							</label>
-							<span class="m-switch m-switch--icon m-switch--primary m-switch--sm custom-switch-setting">
-                     <label class="ng-tns-c2-2">
-                     <input class="ng-tns-c2-2" checked="checked" name="" type="checkbox">
-                     <span class="ng-tns-c2-2"></span>
-                     </label>
-                     </span>
+							<input ngModel required name="price" class="form-control m-input m-input--air" placeholder="Enter Price" type="text">
 						</div>
+
 						<br>
 						<div class="row">
 							<div class="col-md-12">
-								<label class="ng-tns-c2-2">Upload Document File</label>
-								<input class="form-control-file" type="file">
+								<!-- <label class="ng-tns-c2-2">Upload Document File</label> -->
+								<input type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput/>
+								<button href="#" class="btn btn-primary" style="border-radius: 30px 0;"  (click)="fileInput.click()" >
+									<i class="fa fa-plus"></i> Upload Document.
+								</button>
 							</div>
 						</div>
 						<button class="btn btn-primary btn-sm custom-float-right" type="submit">

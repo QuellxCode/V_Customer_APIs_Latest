@@ -7,7 +7,7 @@ import {
     TemplateRef,
     ElementRef,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators, NgForm } from "@angular/forms";
 import { Helpers } from "../../../../helpers";
 import { ScriptLoaderService } from "../../../../_services/script-loader.service";
 import { AgmMap } from "@agm/core";
@@ -42,6 +42,7 @@ import { ServerServices_Services } from "../../../../services/serverServices.ser
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { DemoService } from "../../../../services/demo.service";
 import { Http } from "@angular/http";
+import { ToastrService } from "../../../../services/toastrService.service";
 
 // serverServices for posting the data to server
 
@@ -112,6 +113,10 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     visibleSidebar2: boolean;
     visibleSidebar4: boolean;
     formHidden = true;
+    selectedFile: File;
+    approved = true;
+    pending = true;
+    rejected = true;
 
     mainFilterHide = false;
     isListViewHide = false;
@@ -145,7 +150,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         private modal: NgbModal,
         private serverServies_services: ServerServices_Services,
         private _demoService: DemoService,
-        private http: Http
+        private http: Http,
+        private toastrService: ToastrService
 
     ) { }
     reqBeautyCategories: any[];
@@ -159,6 +165,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
             "Pet Services"
         ];
         this.getCat();
+
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
 
         this.serverServies_services.getServices().subscribe(data => {
             this.serData = data.data;
@@ -371,8 +379,11 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     addNewPaymentCardHide = false;
     public categories;
     public subCategories;
+    public subCatServices;
     public serviceLocations;
     disabled = true;
+    disabledServicesDD = true;
+    @ViewChild('triggerServiceDD')triggerServiceDD:ElementRef;
 
 
     getCat() {
@@ -391,6 +402,21 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
             () => {
                 console.log('Done Fetching Sub Categories');
                 this.disabled = false;
+               
+            }
+
+        );
+    }
+
+    subCatService(value) {
+        this._demoService.getSubCategoryServices(value).subscribe(
+            (data: any) => { this.subCatServices = data.data; console.log(data); },
+            err => console.error(err),
+            () => {
+                console.log('Done Fetching Service using subcat rand_id');
+                this.disabledServicesDD = false;
+                this.triggerServiceDD.nativeElement.click();
+            
             }
 
         );
@@ -556,6 +582,71 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
             }
             this.counterBookMap--;
         }
+    }
+
+    
+    bidRequest(form_data: NgForm) 
+    {
+
+        this._demoService.bidRequestApi(
+            //this.customer_id;
+            form_data.value.category_name,
+            form_data.value.subcategory_name,
+            form_data.value.service_name,
+            form_data.value.description,
+            form_data.value.contact,
+            form_data.value.price,
+            this.selectedFile[0]
+        )
+            .subscribe(
+            (data: Response) => {
+                console.log("data", data);
+                this.toastrService.showSuccessMessages("Request Successfully Submitted!");
+              
+                form_data.resetForm();
+
+                return true;
+            },
+            error => {
+                this.toastrService.showErrorMessages("Error in Submiting Request. Error: " + error.message + "<br> Try Resubmitting The Form");
+                console.error("Error in adding Request!");
+            },
+            () => { }
+
+            );
+    }
+
+   
+
+    showRequestTabs(value){
+        if(value == "all"){
+            this.approved = true;
+            this.pending = true;
+            this.rejected = true;
+        }
+        else if(value == "approved"){
+            this.approved = true;
+            this.pending = false;
+            this.rejected = false;
+        }
+        else if(value == "pending"){
+          this.approved = false;
+            this.pending = true;
+            this.rejected = false;
+        }
+
+        else if(value == "rejected"){
+            this.approved = false;
+            this.pending = false;
+            this.rejected = true;
+        }
+       
+    }
+
+
+    onFileSelected(event) {
+        console.log(event);
+        this.selectedFile = <File>event.target.files;
     }
 
 
