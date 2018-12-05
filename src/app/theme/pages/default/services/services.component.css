@@ -700,6 +700,33 @@ textarea.ng-invalid.ng-touched {
   background-color: #eeeeeed1;
 }
 
+/*BEGIN:: Custom Scroll Bar*/
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5867dd;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #384ad7;
+}
+
+/*END:: Custom Scroll bar End*/
+
 /* Stripe Checkout Form Design */
 
 form.checkout {

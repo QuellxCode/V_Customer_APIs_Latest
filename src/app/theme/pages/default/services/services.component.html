@@ -147,7 +147,7 @@
                         <!--<div class="col-sm-12" style="padding-right: 0px">-->
                             <div class="row" style="display: flex;">
                                 <!-- All Service show Here -->
-                                <div class="col-sm-3" style="padding: 0px; overflow-y: auto; overflow-x: hidden; height: calc(100%);">
+                                <div class="col-sm-3" style="padding: 0px; overflow-y: auto; overflow-x: hidden; height: 100vh;">
 
                                     <!-- BEGIN SEARCH CRITERIA RADIOS -->
                                     <div class="m-radio-inline">
@@ -199,7 +199,7 @@
                                             <!--<p class="custom-margin-bottom-zero">-->
                                             <!--{{company.email}}-->
                                             <!--</p>-->
-                                            <h6 class="m--font-brand m--font-bolder m--margin-top-15"> <i class="fa fa-map-marker" style="color: red; margin-left: 3px;"></i> LOCATIONS </h6>
+                                            <h6 class="m--font-brand m--font-bolder m--margin-top-15"> <i class="fa fa-map-marker" style="color: red; margin-left: 3px;"></i> LOCATION(S) </h6>
                                             <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 row" style="padding-bottom: 0px !important;;"
                                                  *ngFor="let loc of company.location; let indexLocation = index;"
                                                  [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'">
@@ -342,7 +342,7 @@
                                         <input type="number" [(ngModel)]="radiusInMeters" (input)="updateMarkers($event)" />
                                     </div>
                                     <!--<p> {{radiusInMeters}} </p>-->
-                                    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10" gestureHandling="'cooperative'">
+                                    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10" [scrollwheel]="null">
                                         <agm-marker [latitude]="latitude" [longitude]="longitude" [iconUrl]="icon">
                                             <agm-info-window>
                                                 You are here
