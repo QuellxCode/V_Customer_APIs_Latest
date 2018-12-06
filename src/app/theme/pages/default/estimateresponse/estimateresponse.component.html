@@ -1270,13 +1270,16 @@
 							<label>
 								Select Service:
 							</label>
-							<select ngModel required name="service_name" #triggerServiceDD [disabled]="disabledServicesDD"   class="form-control m-input m-input--square">
+						
+							<input ngModel required name="service_name" class="form-control m-input m-input--air" placeholder="Service Name" type="text">
+
+							<!-- <select ngModel required name="service_name" #triggerServiceDD [disabled]="disabledServicesDD"   class="form-control m-input m-input--square">
 								<option value="Choose Service" disabled selected="true"> Choose Service</option>
 								<option value="{{service.rand_id}}" *ngFor="let service of subCatServices"> 
 										{{ service.name }}
 								</option>
 								
-							</select>
+							</select> -->
 						</div>
 						<div class="form-group m-form__group">
 							<label>
