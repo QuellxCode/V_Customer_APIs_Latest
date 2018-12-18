@@ -12,11 +12,19 @@
 			<input type="text" class="custom-main-filter custom-main-filter-focus" *ngIf="mainFilterHide">
 		</div>
 		<div class="custom-padding-right-zero">
-			<button class="btn btn-link pull-right" (click)="formHidden=!formHidden;">
+			<button class="btn btn-link pull-right" (click)="formHidden=!formHidden; ">
 				<a href="" class="m-nav__link" >
 					<i class="m-nav__link-icon fa fa-plus"></i>
 					<span class="m-nav__link-text">
          Request Services
+         </span>
+				</a>
+			</button>
+			<button class="btn btn-link pull-right" (click)="showQuoted()">
+				<a href="" class="m-nav__link" >
+					<i class="m-nav__link-icon fa fa-align-right"></i>
+					<span class="m-nav__link-text">
+         Quoted Services
          </span>
 				</a>
 			</button>
@@ -83,10 +91,15 @@
 <!-- END: Subheader -->
 <!-- start Content -->
 <div class="m-content" [hidden]="!formHidden">
+
 	<div class="row" [hidden]="isDisplayDetail">
-		<div class="col-xl-3 col-lg-4">
+		<div class="col-xl-3 col-lg-4" style="min-height: 400px; max-height: 100%;">
+				
 			<div class="m-portlet m-portlet--full-height">
-				<div class="m-portlet__body">
+					
+				<div class="m-portlet__body ">
+						<button class="btn btn-link personMoreDetailsButton custom-padding-zero" style="padding-bottom: 10px;"  *ngIf="bidPricesRequests" (click)="showAllTabs()"><i class="fa fa-chevron-left"></i>Go Back</button>
+					
 					<select class="form-control m-input" (change)="showRequestTabs($event.target.value)">
 						<option value="all">
 							All
@@ -498,7 +511,7 @@
 		<!--			</div>
            </div>
            </div> -->
-		<div class="col-xl-9 col-lg-8">
+		<div class="col-xl-9 col-lg-8" *ngIf="allRequestsTabs">
 			<!-- [hidden]="isGridViewHide"-->
 			<div class="row">
 				<div class="col-md-12" *ngIf="approved">
@@ -596,16 +609,17 @@
 					</div>
 				</div>
 				
-				<div class="col-md-12" *ngIf="pending">
-					<div class="body organ1 serviceCard">
-						<div class="row custom-margin-zero">
+				<!-- <div class="col-md-12" *ngIf="pending" >
+					<div *ngFor="let requests of requestBidResponse">
+					<div class="body organ1 serviceCard" >
+						<div class="row custom-margin-zero" >
 							<div class="card-left col-lg-3" id="">
 								
 								<div class="row onepersonrow">
-									<div class="col-md-12">
-										<img class="personimage" src="./assets/demo/demo3/media/img/broom.jpg">
-										<p class="personname">Chris Shining</p>
-										<p class="persontype">Cleaning</p>
+									<div class="col-md-12" style="padding: 5px;">
+										<img class="personimage" src="{{imageUrl+requests.image}}">
+										<p class="personname">{{requests.company_name}}</p>
+										<p class="persontype">{{requests.category_name}}</p>
 									</div>
 								</div>
 								<p class="personappartmentno">
@@ -615,7 +629,7 @@
 									<i class="fa fa-money"></i> $120 - $160
 								</p>
 								<p class="personaddress">
-									<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada
+									<i class="fa fa-map-marker"></i> {{requests.company_location_name}}
 								</p>
 								<a class="btn btn-default chatServiceButton" href="javascript:;">
 									<i class="la la-comments"></i> Message</a>
@@ -628,49 +642,33 @@
 								<div class="clearfix"></div>
 								<div class="row services-categories">
 									<div class="col-md-12 category-list">
-										<h6 class="service-heading">Room Cleaning</h6>
+										<h6 class="service-heading">{{requests.sub_category_name}}</h6>
 										<div class="row service-item">
 											<div class="col-md-1">
                                     <span class="custom-width">
                                     <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" value="187">
+                                    <input type="checkbox" value="187" (change)="showBookButtonMap($event)">
                                     <span></span>
                                     </label>
                                     </span>
 											</div>
 											<div class="col-md-5 custom_padding_left">
-												One Room With Bath
+													{{requests.service_name}}
 											</div>
 											<div class="col-md-3 offset-md-3">
                                     <span class="m--font-success custom-float-right">
-                                    $120.00
+											{{requests.price}}
                                     </span>
 											</div>
 											<div class="col-md-12">
 												<hr>
 											</div>
+											<div class="col-md-12" style="margin-top: 10px; text-align: right;">
+													<a (click)="visibleSidebar2 = true" class="btn btn-sm btn-primary custom-margin-right-book-button"
+														[ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Book</a>
+													</div>
 										</div>
-										<div class="row service-item">
-											<div class="col-md-1">
-                                    <span class="custom-width">
-                                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-                                    <input type="checkbox" value="187">
-                                    <span></span>
-                                    </label>
-                                    </span>
-											</div>
-											<div class="col-md-5 custom_padding_left">
-												Multiple Rooms With Baths
-											</div>
-											<div class="col-md-3 offset-md-3">
-                                    <span class="m--font-success custom-float-right">
-                                    $260
-                                    </span>
-											</div>
-											<div class="col-md-12">
-												<hr>
-											</div>
-										</div>
+										
 										
 										
 									</div>
@@ -679,6 +677,7 @@
 						</div>
 					</div>
 				</div>
+				</div> -->
 				<div class="col-md-12" *ngIf="rejected">
 					<div class="body organ1 serviceCard">
 						<div class="row custom-margin-zero">
@@ -763,6 +762,72 @@
 				</div>
 			</div>
 		</div>
+
+		<!------------------ quoted prices tab by company  ------------------>
+
+		<div class="col-xl-9 col-lg-8" *ngIf="bidPricesRequests">
+				<!-- [hidden]="isGridViewHide"-->
+				
+				<div class="row">
+						
+					<!-- <div *ngFor="let requests of requestBidResponse"> -->
+						<div class="col-md-6" *ngFor="let requests of requestBidResponse; let i = index;">
+						<div class="body organ1 serviceCard">
+							<div class="row custom-margin-zero">
+							 
+								<div class="card-right col-lg-12">
+										<label class="m-checkbox m-checkbox--solid m-checkbox--single pull-left m-checkbox--brand">
+												<input class="chkboxes" type="radio" name="parentCheck" (click)="approvedBtn($event, i);">
+												<span></span>
+												</label> 
+									<h6 class="text-muted pull-left">
+										<span class="m-badge m-badge--accent m-badge--wide">Quoted Prices Of Service</span>
+									</h6>
+									
+									<div class="clearfix"></div>
+									<div class="row services-categories">
+										<div class="col-md-12 category-list">
+											<h6 class="service-heading">{{requests.services.service_name}}</h6>
+											<div class="row service-item" *ngFor="let company of requests.company; let serviceInfoIndex = index">
+												<div class="col-md-2">
+										<span class="custom-width">
+										<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+										<input type="radio" name="companyRadioBtn" value="187"  (click)="servicesInCartRadiosFirstScreen($event, serviceInfoIndex, i);">
+										<span></span>
+										</label> 
+										</span>
+												</div> &nbsp;
+												<div class="col-md-6 custom_padding_left">
+													{{company.company_location_name}}
+												</div>
+												<div class="col-md-3 offset-md-1">
+										<span class="m--font-success custom-float-right">
+											{{company.price | currency:'CAD'}}
+										</span>
+												</div>
+												<div class="col-md-12">
+													<hr>
+												</div>
+											</div>
+											
+										
+										
+											<div class="col-md-12" *ngIf="agreedCartItemIndex == i" style="margin-top: 10px; text-align: right;">
+													<button  type="button" class="btn btn-primary" [disabled]="selectedServiceParentIndex != i || termsAndConditonIndex != i" (click)="showAlert(); visibleSidebar2 = true" >Approve & Add to Cart
+													<!-- getStaffFromLocation(); -->
+											</button>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<!-- </div> -->
+				</div>
+			</div>
+
 	</div>
 </div>
 <!-- End Content -->
@@ -1260,7 +1325,7 @@
 						</div>
 						<div class="form-group m-form__group">
 							<label>Service Sub-Category:</label>
-							<select  class="form-control m-input m-input--square" [disabled]="disabled" ngModel required name="subcategory_name" #healthSubCategory  (change)="subCatService($event.target.value)" >
+							<select  class="form-control m-input m-input--square" [disabled]="disabled" ngModel required name="subcategory_name" #healthSubCategory   >
 								<option value="{{SubCategory.rand_id}}" *ngFor="let SubCategory of subCategories">
 									{{ SubCategory.name }}
 								</option>
@@ -1333,13 +1398,21 @@
 								</button>
 							</div>
 						</div>
-						<button class="btn btn-primary btn-sm custom-float-right" type="submit">
-							Submit
-						</button>
-						<button class="btn btn-secondary btn-sm custom-float-right margin-right-3" type="button" (click)="formHidden=true">
-							Cancel
-						</button>
+						<br><br>
+						<div class="row">
+								<div class="col-md-12" style="margin-top: 30px;">
+										<button class="btn btn-primary  custom-float-right" type="submit">
+												Submit
+											</button>
+											<button class="btn btn-secondary  custom-float-right margin-right-3" type="button" (click)="formHidden=true">
+												Cancel
+											</button>
+								</div>
+								
+							</div>
 					</div>
+					
+					
 				</div>
 			</form>
 		</div>
@@ -1348,400 +1421,7 @@
 <!-- Request Service Content End -->
 <!-- Right side bar Modal  Start-->
 <p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000" >
-	<div>
-		<ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" id="m_quick_sidebar_tabs" role="tablist">
-			<li class="nav-item m-tabs__item">
-				<a class="nav-link m-tabs__link active show custom-font-size" data-toggle="tab" href=""
-				   aria-selected="true" [ngClass]="{ 'active' : activeItemTab}" (click)="activeTab('items')" >
-					Items-List
-				</a>
-			</li>
-			<li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
-				<a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('schedule')"  [ngClass]="{ 'active' : activeScheduleTab}" >
-					Schedule
-				</a>
-			</li>
-			<li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
-				<a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('payment')"  [ngClass]="{ 'active' : activePaymentTab}" >
-					Payment
-				</a>
-			</li>
-			<li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 ">
-				<a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href="" ng-reflect-href="#m_tabs_5_3" aria-selected="false" (click)="activeTab('more')" [ngClass]="{ 'active' : activeMoreTab}">
-					Confirmation
-				</a>
-			</li>
-		</ul>
-		<div class="tab-content">
-			<!-- Items Tab Start Here -->
-			<div class="tab-pane active show" id="m_tabs_5_1" role="tabpanel"  [ngClass]="{ 'active' : activeItemTab,
-         'show':  activeItemTab }">
-				<p><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
-				<div class="custom-card-shadow">
-					<h4 style="color:#716aca">Handy Autos
-						<br class="add-line-break">
-						<span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
-						<label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
-							<input type="checkbox" (click)="showProceedButton1($event)">
-							<span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal"></span>
-							<span class="custom-check-box-setting " [hidden]="hideTermsModal"></span>
-						</label>
-					</h4>
-					<table class="table table-hover">
-						<thead>
-						<tr>
-							<th scope="col" class="text-center"></th>
-							<th scope="col"  class="col-md-6">Items</th>
-							<th scope="col" >Price</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr *ngFor="let item of itemsArray; let i= index">
-							<ng-container *ngIf="deleted">
-								<td class="text-center custom-pointer">
-									<a (click)="onDelete(i)">
-										<i class="fa fa-trash" style="color: #f5516c;"></i>
-									</a>
-								</td>
-								<th scope="row" >{{item.name}}</th>
-								<td >${{item.price}}</td>
-							</ng-container>
-						</tr>
-						</tbody>
-					</table>
-					<hr class="custom-hr-style">
-					<p class="custom-first-paragraph">
-						<input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon1check">
-						<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = false" *ngIf="coupon1check">Apply</button>
-						<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = true" *ngIf="!coupon1check" style="margin-top: 20px;">Coupon</button>
-						<span class="text-muted" style="margin-right: 32px;"> Sub Total</span>
-						<span class="text-muted" style="margin-right: 8px;"> : $72.00</span>
-					</p>
-					<p class="custom-p2-setting" style="margin-bottom: 20px;">
-						<span class="text-muted" style="margin-right: 3px;">Discount(40%)</span>
-						<span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $40</span>
-					</p>
-					<p style="    text-align: right;
-               font-weight: 500;
-               margin-top: -15px;">
-						<span class="text-muted" style="margin-right: 34px;"> Tax(10%) </span>
-						<span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $10</span>
-					</p>
-					<p style="text-align: right; font-weight: bold;">
-						<span style=" margin-right: 4.4rem;" > Total</span>
-						<span class="custom-theme-default" style="margin-right:12px;"> : $47.7</span>
-					</p>
-					<div class="col text-right">
-						<button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
-								(click)="activeTab('schedule')">Proceed</button>
-					</div>
-				</div>
-				<div class="custom-card-shadow" style ="margin-top: 10px;">
-					<h4 style="color:#716aca;">Mont Hair
-						<br class="add-line-break">
-						<span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
-						<label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
-							<input type="checkbox" (click)="showProceedButton($event)">
-							<span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal1"></span>
-							<span class="custom-check-box-setting " [hidden]="hideTermsModal1"></span>
-						</label>
-					</h4>
-					<table class="table table-hover">
-						<thead>
-						<tr>
-							<th scope="col" class="text-center"></th>
-							<th scope="col" class="col-md-6">Items</th>
-							<th scope="col">Price</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr *ngFor="let item of itemsArray2; let i= index">
-							<ng-container *ngIf="deleted">
-								<td class="text-center custom-pointer">
-									<a (click)="onDelete(i)">
-										<i class="fa fa-trash" style="color: #f5516c;"></i>
-									</a>
-								</td>
-								<th scope="row" >{{item.name}}</th>
-								<td>${{item.price}}</td>
-							</ng-container>
-						</tr>
-						</tbody>
-					</table>
-					<hr class="custom-hr-style">
-					<p class="custom-first-paragraph">
-						<input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon2check">
-						<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon2check = false" *ngIf="coupon2check">Apply</button>
-						<button class="btn btn-link btn-sm custom-apply-link" style="margin-top: 20px;"(click)="coupon2check = true" *ngIf="!coupon2check">Coupon</button>
-						<span class="text-muted" style="margin-right: 32px;"> Sub Total</span>
-						<span class="text-muted" style="margin-right: 8px;"> : $150.0</span>
-					</p>
-					<p class="custom-p2-setting" style="margin-bottom: 20px;">
-						<span class="text-muted" style="margin-right: 3px;">Discount(40%)</span>
-						<span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $40</span>
-					</p>
-					<p style="    text-align: right;
-               font-weight: 500;
-               margin-top: -15px;">
-						<span class="text-muted" style="margin-right: 34px;"> Tax(10%) </span>
-						<span class="custom-theme-default text-muted" style="margin-right: 25px;"> : $10</span>
-					</p>
-					<p style="text-align: right; font-weight: bold;">
-						<span style=" margin-right: 4.4rem;" > Total</span>
-						<span class="custom-theme-default" style="margin-right:12px;"> : $54.7</span>
-					</p>
-				</div>
-				<div style="margin-top: 10px;  padding:10px;">
-					<h4 style="color:#716aca;">Total:</h4>
-					<p class="custom-first-paragraph">
-						<input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon3check">
-						<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon3check = false" *ngIf="coupon3check">Apply</button>
-						<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon3check = true" *ngIf="!coupon3check">Coupon</button>
-						<span style="margin-right: 20px;font-weight: bold;"> Total Price </span>
-						<span class="custom-theme-default" style="font-weight: bold;"> : $102.4</span>
-					</p>
-					<p class="custom-p2-setting" style="font-weight: bold;">
-						<span style="margin-right: -2px">Total Discount </span>
-						<span class="custom-theme-default" style="margin-right: 16px;"> : 64%</span>
-					</p>
-					<!-- <div class="col text-right">
-                       <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
-                           (click)="activeTab('payment')">Proceed</button>
-                       </div> -->
-				</div>
-			</div>
-			<!-- Items Tab End Here -->
-			<!-- Payment Tab Start Here -->
-			<div class="tab-pane" [ngClass]="{ 'active' : activePaymentTab,
-         'show':  activePaymentTab }"
-				 id="m_tabs_5_2" role="tabpanel">
-				<div class="row">
-					<div class="col-md-6">
-						<button class="btn btn-link pull-left custom-padding-left-top-zero" (click)="addNewPaymentCardHide = false" *ngIf="addNewPaymentCardHide">
-							<i class="fa fa-angle-left m--padding-right-5" style=" padding-bottom: 3px;"></i>BACK
-						</button>
-					</div>
-					<div class="col-md-6">
-						<button class="btn btn-link pull-right" style="padding-top:0px;" (click)="addNewPaymentCardHide = true">
-							<i class="fa fa-plus"></i> Add new Card
-						</button>
-					</div>
-				</div>
-				<!-- Payment Cards -->
-				<div class="m-demo__preview" *ngIf="!addNewPaymentCardHide">
-					<div class="m-stack m-stack--hor m-stack--general m-stack--demo" style="height: 400px">
-						<div class="m-stack__item">
-							<div class="m-stack__demo-item custom-card-design custom-h-class" (click)="paymentCheckTickHide = true">
-								<div class="row">
-									<div class="col-md-8">
-										<img src="./assets/demo/demo3/media/img/americanexpress.png">
-										<span class="m--padding-left-15">American Express</span>
-									</div>
-									<div class="col-md-4 custom-color m--padding-top-15">
-										<i class="fa fa-check" *ngIf="paymentCheckTickHide"></i>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12" style="text-align: right;">
-										<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
-										<span class="custom-card-owner-setting">
-                           Niaz Khan Card
-                           </span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="m-stack__item">
-							<div class="m-stack__demo-item custom-card-design custom-h-class">
-								<div class="row">
-									<div class="col-md-8">
-										<img src="./assets/demo/demo3/media/img/mastercard.png">
-										<span class="m--padding-left-15">Master-Card</span>
-									</div>
-									<div class="col-md-4" style="text-align: right;">
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12" style="text-align: right;">
-										<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
-										<span class="custom-card-owner-setting">
-                           Niaz Khan Card
-                           </span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="m-stack__item">
-							<div class="m-stack__demo-item custom-card-design custom-h-class">
-								<div class="row">
-									<div class="col-md-8">
-										<img src="./assets/demo/demo3/media/img/paypal.png">
-										<span class="m--padding-left-15">Paypal</span>
-									</div>
-									<div class="col-md-4" style="text-align: right;">
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12" style="text-align: right;">
-										<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men2.jpg">
-										<span class="custom-card-owner-setting">
-                           Sharjeel khan Card
-                           </span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="m-stack__item">
-							<div class="m-stack__demo-item custom-card-design custom-h-class">
-								<div class="row">
-									<div class="col-md-8">
-										<img src="./assets/demo/demo3/media/img/visa.png">
-										<span class="m--padding-left-15">Visa</span>
-									</div>
-									<div class="col-md-4" style="text-align: right;">
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12" style="text-align: right;">
-										<img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
-										<span class="custom-card-owner-setting">
-                           Niaz Khan Card
-                           </span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('more')">Proceed</button>
-				</div>
-				<!-- Add new Payment Methonds -->
-				<form *ngIf="addNewPaymentCardHide">
-					<div class="form-group m-form__group">
-						<label>
-               <span>
-               Card Number
-               </span>
-						</label>
-						<input class="form-control m-input m-input--square" placeholder="Enter Card Number" type="text">
-					</div>
-					<div class="form-group m-form__group">
-						<label>
-							Start Date
-						</label>
-						<input class="form-control m-input m-input--square" placeholder="Enter Start Date" type="date">
-					</div>
-					<div class="form-group m-form__group">
-						<label>
-							Expire Date
-						</label>
-						<input class="form-control m-input m-input--square" placeholder="Enter Expire Date" type="date">
-					</div>
-					<div class="form-group m-form__group">
-						<label>
-							CVV
-						</label>
-						<input class="form-control m-input m-input--square" placeholder="Enter Expire Date" type="date">
-					</div>
-					<button class="btn btn-primary custom-float-right ">Submit</button>
-				</form>
-			</div>
-			<!-- Payment Tab End Here -->
-			<!-- Conformation Tab Start Here -->
-			<div class="tab-pane" id="m_tabs_5_3" role="tabpanel" [ngClass]="{ 'active' : activeMoreTab,
-         'show':  activeMoreTab }">
-				<div class="col" *ngIf="!orderNowCheck">
-					<h4>Confirmation</h4>
-					<div class="custom-card-shadow">
-						<h4 style="color:#716aca">Handy Autos
-							<br class="add-line-break">
-						</h4>
-						<table class="table table-hover">
-							<thead>
-							<tr>
-								<th scope="col"  class="col-md-6">Items</th>
-								<th scope="col" >Price</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr *ngFor="let item of itemsArray; let i= index">
-								<th scope="row" >{{item.name}}</th>
-								<td >${{item.price}}</td>
-							</tr>
-							</tbody>
-						</table>
-						<hr class="custom-hr-style">
-						<p class="text-right" style="font-weight:bold;">
-							<span> Total Price : </span>
-							<span class="custom-theme-default" style="margin-right: 8px;"> $72.00</span>
-						</p>
-					</div>
-					<p class="text-right" style="margin-top:15px;">Are your sure to place order ?</p>
-					<button class="btn btn-primary custom-float-right" (click)="orderNowCheck = true">Order Now</button>
-					<button class="btn btn-danger custom-float-right" (click)="visibleSidebar2 = false" style="    margin-right: 5px;">Cancel</button>
-				</div>
-				<div class="col text-center" *ngIf="orderNowCheck">
-					<h4>Congratulations</h4>
-					<div class="text-center">
-						<img src="./assets/demo/demo3/media/img/confetti.png" class="rounded" alt="..." style="width:15%;">
-					</div>
-					<p>Your Order Has Been Successfully Placed</p>
-					<button class="btn btn-primary" (click)="thanksUpdate()" >Return</button>
-				</div>
-			</div>
-			<!-- Conformation Tab end Here -->
-			<!-- schedule Tab Start Here -->
-			<div class="tab-pane" id="m_tabs_5_4 " role="tabpanel"  [ngClass]="{ 'active' : activeScheduleTab,
-         'show':  activeScheduleTab }">
-				<form>
-					<div class="form-group">
-						<label for="sel1" style="font-weight: bold;">Select Employee</label>
-						<select class="form-control" id="sel1">
-							<option>No Preferences </option>
-							<option>John Smith </option>
-							<option>David Luiz</option>
-						</select>
-					</div>
-					<div class="form-group m-form__group">
-						<label>
-							<strong>Select Date</strong>
-						</label>
-						<br>
-						<div>
-							<div class="input-group date">
-								<input class="form-control m-input " id="m_datepicker_2_validate" placeholder="Select Date" readonly="" type="text">
-								<div class="input-group-append">
-                        <span class="input-group-text">
-                        <i class="la la-calendar-check-o glyphicon-th"></i>
-                        </span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="form-group m-form__group">
-						<label>
-							<strong> Select Time Slot </strong>
-						</label>
-						<br>
-						<div>
-							<div class="input-group date">
-								<input class="form-control m-input timepicker" id="m_timepicker_2_validate" placeholder="Select Time " readonly="" type="text">
-								<div class="input-group-append">
-                        <span class="input-group-text">
-                        <i class="la la-calendar-check-o glyphicon-th"></i>
-                        </span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</form>
-				<div class="col text-right">
-					<button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary"
-							(click)="activeTab('payment')">Proceed</button>
-				</div>
-			</div>
-			<!-- schedule Tab Start Here -->
-		</div>
-	</div>
+	<app-cart></app-cart>
 </p-sidebar>
 <!-- Right side bar Modal  End-->
 <!-- Terms and Condition Modal Start -->

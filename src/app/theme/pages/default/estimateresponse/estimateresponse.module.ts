@@ -14,6 +14,7 @@ import { SidebarModule } from "primeng/primeng";
 import { WizardLeadForm } from "../../../../components/leadFormWizard/leadFormWizard";
 
 import { ServerServices_Services } from "../../../../services/serverServices.services";
+import { CustomSharedModule } from "../../custom-shared/custom-shared.module";
 
 const routes: Routes = [
     {
@@ -34,6 +35,7 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         CalendarModule.forRoot(),
         LayoutModule,
+        CustomSharedModule,
         AgmCoreModule.forRoot({
             apiKey: "AIzaSyABAXCmYooxcSc5GajYQIDIGgM9U2n6vyg"
         }),

@@ -1,0 +1,532 @@
+<div>
+    <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" id="m_quick_sidebar_tabs" role="tablist">
+        <li class="nav-item m-tabs__item" style="pointer-events: none">
+            <a class="nav-link m-tabs__link active show custom-font-size" data-toggle="tab" href=""
+               aria-selected="true" [ngClass]="{ 'active' : activeItemTab}" (click)="activeTab('items')" >
+                Items-List
+            </a>
+        </li>
+        <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 " style="pointer-events: none">
+            <a class="nav-link m-tabs__link custom-font-size" disabled data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('schedule')"  [ngClass]="{ 'active' : activeScheduleTab}" >
+                Schedule
+            </a>
+        </li>
+        <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 " style="pointer-events: none">
+            <a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href="" ng-reflect-href="#m_tabs_5_3" aria-selected="false" (click)="activeTab('more')" [ngClass]="{ 'active' : activeMoreTab}">
+                Confirmation
+            </a>
+        </li>
+        <li class="nav-item m-tabs__item" *ngIf="proceedCounter > 0 " style="pointer-events: none">
+            <a class="nav-link m-tabs__link custom-font-size" data-toggle="tab" href=""  aria-selected="false" (click)="activeTab('payment')"  [ngClass]="{ 'active' : activePaymentTab}" >
+                Pay &amp; Place Order
+            </a>
+        </li>
+
+    </ul>
+    <div class="tab-content">
+        <!-- Items Tab Start Here -->
+        <div class="tab-pane active show" id="m_tabs_5_1" role="tabpanel"  [ngClass]="{ 'active' : activeItemTab,
+     'show':  activeItemTab }">
+            <p *ngIf="!preloaderFetchingCartItems"><span style="color: red;">Note:</span> To proceed to next step you must accept terms and conditions</p>
+            <p *ngIf="preloaderFetchingCartItems" style="text-align: center;">No Orders Found.</p>
+
+           
+            <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderFetchingCartItems"></div>
+
+            <!--<div class="m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25" *ngIf="preloaderNoCartItemsFound"></div>-->
+            <!--<h3 class="text-center text-dark text-capitalize m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25"-->
+                 <!--*ngIf="preloaderFetchingCartItems == true && !preloaderNoCartItemsFound">-->
+                <!--No items inside your cart..-->
+            <!--</h3>-->
+            <div class="custom-card-shadow m--margin-bottom-15" *ngFor="let cartService of cartServices; let i = index;">
+                <h4 style="color:#716aca">{{cartService.company_name}}
+                    <br class="add-line-break">
+                    <span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
+                    <label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
+                        <input type="radio" name="cartItemTermsCheckbox" (click)="showProceedButton1($event, i);">
+                        <span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal"></span>
+                        <span class="custom-check-box-setting " [hidden]="hideTermsModal"></span>
+                    </label>
+                </h4>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+
+                        <th scope="col" class="text-left c--width-30px"> Pick </th>
+                        <th scope="col" class="text-left">Location Name</th>
+                        <th scope="col"  class="text-left">Items</th>
+                        <th scope="col" class="text-left c--width-30px">Price</th>
+                        <th scope="col" class="text-left"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let serviceInfo of cartService.service; let serviceInfoIndex = index">
+                        <!-- *ngFor="let i= index"-->
+                        <ng-container *ngIf="deleted">
+
+                            <td>
+                                <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom m--margin-right-10" style="height: 12px;">
+
+                                <input type="radio" name="cartServicesRadioBtn" (click)="servicesInCartRadiosFirstScreen(cartService.company_name, serviceInfo ,$event, serviceInfoIndex, i);">
+
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td>
+                                {{serviceInfo.company_location_name}}
+                            </td>
+                            <td scope="row" >{{serviceInfo.name}}</td>
+                            <td>{{serviceInfo.price | currency:'CAD'}}</td>
+                            <td class="text-center custom-pointer">
+                                <a (click)="onDelete(i)">
+                                    <i class="fa fa-trash" style="color: #f5516c;"></i>
+                                </a>
+                            </td>
+                            <!-- <td >${{cartService.price}}</td> -->
+                        </ng-container>
+                    </tr>
+                    </tbody>
+                </table>
+                <hr class="custom-hr-style" *ngIf="agreedCartItemIndex == i">  <!-- proceedCounter > 0 -->
+                <!--<p class="custom-first-paragraph">-->
+                    <!--<input type="text" placeholder="Enter Coupon For Items" class="custom-coupon-setting" *ngIf="coupon1check">-->
+                    <!--<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = false" *ngIf="coupon1check">Apply</button>-->
+                    <!--<button class="btn btn-link btn-sm custom-apply-link" (click)="coupon1check = true" *ngIf="!coupon1check" style="margin-top: 20px;">Coupon</button>-->
+
+                        <!--SUB TOTAL START-->
+                            <!--<span class="text-muted m&#45;&#45;margin-right-35"> Sub Total :</span>-->
+                                <!--OLD CODE Price-->
+                                <!--<span class="text-muted m&#45;&#45;margin-right-10">  {{cartService.sub_total_price}}</span>-->
+
+                                <!--NEW CODE PRICE-->
+                                <!--<span class="text-muted m&#45;&#45;margin-right-10">  {{selectedLocationServicePrice}}</span>-->
+                        <!--SUB TOTAL END-->
+
+                <!--</p>-->
+
+                <!-- DISCOUNT START-->
+                        <!--<p class="custom-p2-setting m&#45;&#45;margin-bottom-20">-->
+                            <!--<span class="text-muted m&#45;&#45;margin-right-30">Discount(40%) :</span>-->
+                            <!--OLD CODE Price-->
+                            <!--<span class="custom-theme-default text-muted m&#45;&#45;margin-right-10">  {{ cartService.discount }}</span>-->
+
+                            <!--OLD CODE Price-->
+                            <!--<span class="text-muted m&#45;&#45;margin-right-10">  {{discountAmount}}</span>-->
+                        <!--</p>-->
+                <!-- DISCOUNT END -->
+
+                <!-- TAX START -->
+                        <!--<p style="text-align: right; font-weight: 500; margin-top: -15px;">-->
+                            <!--<span class="text-muted m&#45;&#45;margin-right-30"> Tax(10%) : </span>-->
+                                <!--OLD CODE Price-->
+                                <!--<span class="custom-theme-default text-muted m&#45;&#45;margin-right-10">  {{ cartService.tax }} </span>-->
+
+                                <!--OLD CODE Price-->
+                                <!--<span class="text-muted m&#45;&#45;margin-right-10">  {{taxAmount}}</span>-->
+                        <!--</p>-->
+                <!-- TAX END -->
+
+                <!--TOTAL START-->
+                        <!--<h4 style="text-align: right; font-weight: bold;">-->
+                            <!--<span class="m&#45;&#45;margin-right-15"> Total :</span>-->
+                            <!-- OLD PRICE CODE-->
+                            <!--<span class="custom-theme-default m&#45;&#45;margin-right-10">   {{ cartService.total_price | currency:'CAD' }}</span>-->
+
+                            <!--NEW PRICE CODE-->
+                            <!--<span class="custom-theme-default m&#45;&#45;margin-right-10">   {{ totalAmount | currency:'CAD' }}</span>-->
+                        <!--</h4>-->
+                <!--TOTAL END-->
+                           
+                <div class="col text-right">
+
+                                                                                                                                <!--  isProceedFirstEnabled &&  -->
+                    <button *ngIf="agreedCartItemIndex == i" type="button" class="btn btn-primary" [disabled]="selectedServiceParentIndex != i || termsAndConditonIndex != i"
+                            (click)="activeTab('schedule'); proceedCartServices(cartService, i, serviceInfoIndex)">Proceed S1 <i class="fa fa-chevron-right"></i>
+                            <!-- getStaffFromLocation(); -->
+                    </button>
+
+                </div>
+               
+            </div>
+            <!--Start: Comment Location 10-->
+            <!--End: Comment Location 10-->
+        </div>
+        <!-- Items Tab End Here -->
+        <!-- Payment Tab Start Here -->
+        <div class="tab-pane" [ngClass]="{ 'active' : activePaymentTab,
+     'show':  activePaymentTab }"
+             id="m_tabs_5_2" role="tabpanel">
+
+            <div class="col" *ngIf="!orderNowCheck">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <form #checkout="ngForm" (ngSubmit)="onSubmitPayment(checkout)" class="checkout">
+                            <div class="form-row">
+                                <label for="card-info">Card Info</label>
+                                <div id="card-info" #cardInfo></div>
+
+                                <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
+                            </div>
+
+                            <button type="submit" #payNowBtn style="display: none;">Pay  {{total_price | currency:'CAD'}}</button>
+
+                        </form>
+                    </div>
+                </div>
+
+                <!-- <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-link pull-left custom-padding-left-top-zero" (click)="addNewPaymentCardHide = false" *ngIf="addNewPaymentCardHide">
+                            <i class="fa fa-angle-left m--padding-right-5" style=" padding-bottom: 3px;"></i>BACK
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-link pull-right" style="padding-top:0px;" (click)="addNewPaymentCardHide = true">
+                            <i class="fa fa-plus"></i> Add new Card
+                        </button>
+                    </div>
+                </div> -->
+                <!-- Payment Cards -->
+                <div class="m-demo__preview" *ngIf="!addNewPaymentCardHide">
+                    <!-- <div class="m-stack m-stack--hor m-stack--general m-stack--demo" style="height: 400px">
+                        <div class="m-stack__item">
+                            <div class="m-stack__demo-item custom-card-design custom-h-class" (click)="paymentCheckTickHide = true">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <img src="./assets/demo/demo3/media/img/americanexpress.png">
+                                        <span class="m--padding-left-15">American Express</span>
+                                    </div>
+                                    <div class="col-md-4 custom-color m--padding-top-5">
+                                        <i class="fa fa-check" *ngIf="paymentCheckTickHide"></i>
+                                        <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                            <input type="radio" name="paymentCard">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="m--font-thin">
+                                            Number :
+                                        </label>
+                                        <span> 3706 732443 18610</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="m--font-thin">
+                                            Expiry (MM/YY) :
+                                        </label>
+                                        <span> 04/20</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="m--font-thin">
+                                            CVV :
+                                        </label>
+                                        <span> 123</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: right;">
+                                        <img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
+                                        <span class="custom-card-owner-setting">
+                                       Niaz Khan Card
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-stack__item">
+                            <div class="m-stack__demo-item custom-card-design custom-h-class">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <img src="./assets/demo/demo3/media/img/mastercard.png">
+                                        <span class="m--padding-left-15">Master-Card</span>
+                                    </div>
+                                    <div class="col-md-4" style="text-align: right;">
+                                        <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                            <input type="radio" name="paymentCard">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: right;">
+                                        <img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
+                                        <span class="custom-card-owner-setting">
+                       Niaz Khan Card
+                       </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-stack__item">
+                            <div class="m-stack__demo-item custom-card-design custom-h-class">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <img src="./assets/demo/demo3/media/img/paypal.png">
+                                        <span class="m--padding-left-15">Paypal</span>
+                                    </div>
+                                    <div class="col-md-4" style="text-align: right;">
+                                        <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                            <input type="radio" name="paymentCard">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: right;">
+                                        <img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men2.jpg">
+                                        <span class="custom-card-owner-setting">
+                       Sharjeel khan Card
+                       </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-stack__item">
+                            <div class="m-stack__demo-item custom-card-design custom-h-class">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <img src="./assets/demo/demo3/media/img/visa.png">
+                                        <span class="m--padding-left-15">Visa</span>
+                                    </div>
+                                    <div class="col-md-4" style="text-align: right;">
+                                        <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                            <input type="radio" name="paymentCard">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: right;">
+                                        <img class=" personimage custom-border-radius" src="./assets/demo/demo3/media/img/men1.jpg">
+                                        <span class="custom-card-owner-setting">
+                       Niaz Khan Card
+                       </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-danger custom-float-left" (click)="payment=[]; data =[]; servicesPlaceOrder = []; clearPlacedOrder(); visibleSidebar2 = false; hideTabs($event, i);" style="margin-right: 5px;">Cancel</button>
+                        </div>
+                        <div class="col text-right">
+                            <!--<button class="btn btn-primary custom-float-right m&#45;&#45;margin-top-10" (click)="activeTab('payment'); showConfirmationTab();">Proceed S3 <i class="fa fa-chevron-right"></i></button>-->
+                            <!-- <button class="btn btn-primary custom-float-right" (click)="placeCartOrder2()">Order Now New</button> -->
+                            <!-- <button type="submit">Pay  {{total_price | currency:'CAD'}}</button>  -->
+                            <button class="btn btn-primary custom-float-right" (click)="payNowBtn.click()">Order Now <i class="fa fa-check"></i></button>
+                           
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- Add new Payment Methonds -->
+                <form *ngIf="addNewPaymentCardHide">
+                    <div class="form-group m-form__group">
+                        <label>
+           <span>
+           Card Number
+           </span>
+                        </label>
+                        <input class="form-control m-input m-input--square" placeholder="Enter Card Number" type="text">
+                    </div>
+                    <div class="form-group m-form__group">
+                        <label>
+                            Start Date
+                        </label>
+                        <input class="form-control m-input m-input--square" placeholder="Enter Start Date" type="date">
+                    </div>
+                    <div class="form-group m-form__group">
+                        <label>
+                            Expire Date
+                        </label>
+                        <input class="form-control m-input m-input--square" placeholder="Enter Expire Date" type="date">
+                    </div>
+                    <div class="form-group m-form__group">
+                        <label>
+                            CVV
+                        </label>
+                        <input class="form-control m-input m-input--square" placeholder="Enter Expire Date" type="date">
+                    </div>
+                    <button class="btn btn-primary custom-float-right ">Submit</button>
+                </form>
+
+            </div>
+
+            <div class="col text-center" *ngIf="orderNowCheck">
+                <h4>Congratulations</h4>
+                <div class="text-center">
+                    <img src="./assets/demo/demo3/media/img/confetti.png" class="rounded" alt="..." style="width:15%;">
+                </div>
+                <p>Your Order Has Been Successfully Placed</p>
+                <button class="btn btn-primary" (click)="thanksUpdate()" >Return</button>
+            </div>
+
+        </div>
+        <!-- Payment Tab End Here -->
+        <!-- Conformation Tab Start Here -->
+        <div class="tab-pane" id="m_tabs_5_3" role="tabpanel" [ngClass]="{ 'active' : activeMoreTab,
+     'show':  activeMoreTab }">   <!-- [hidden]="confirmation" -->
+
+            <div class="col">
+                <h4>Confirmation</h4>
+                <div class="custom-card-shadow">
+                        <!--OLD CODE-->
+                            <!--<h4 style="color:#716aca">{{confirmationStepCardInfo.company_name}}-->
+
+                        <!--NEW CODE-->
+                            <h4 style="color:#716aca">{{selectedCompanyName}}
+                        <br class="add-line-break">
+                    </h4>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col"  class="col-md-6">Items</th>
+                            <th scope="col" >Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <!--OLD CODE-->
+                                <!--<tr *ngFor="let service of confirmationStepCardInfo.service; let i= index">-->
+                                    <!--<th scope="row" >{{service.name}}</th>-->
+                                    <!--<td >{{service.price | currency:'CAD'}}</td>-->
+                                <!--</tr>-->
+
+                            <!--NEW CODE-->
+                            <tr>
+                                <th scope="row" >{{selectedServiceName}}</th>
+                                <td >{{total_price | currency:'CAD'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr class="custom-hr-style">
+                    <h5 class="text-right m--font-bolder">
+                        <span> Sub Total : </span>
+                        <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price | currency:'CAD'}}</span>
+                    </h5>
+                    <h5 class="text-right m--font-bolder">
+                        <span> Tax &amp; Fee : </span>
+                        <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price*(this.application_fee_percent/100) | currency:'CAD'}}</span>
+                    </h5>
+                    <h4 class="text-right" style="font-weight:bold;">
+                        <span> Total Price : </span>
+                        <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price + total_price*(this.application_fee_percent/100) | currency:'CAD'}}</span>
+                    </h4>
+                </div>
+                <p class="text-right" style="margin-top:15px;">Are your sure to confirm &amp; proceed ?</p>
+
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-default custom-float-left" style="margin-top: 10px;"  (click)=" scheduleTabShow(); "><i class="fa fa-chevron-left"></i> Back</button>
+                    </div>
+                    <div class="col text-right">
+                        <button class="btn btn-primary custom-float-right m--margin-top-10" (click)="activeTab('payment'); showConfirmationTab();">Confirm &amp; Proceed S3 <i class="fa fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+        <!-- Conformation Tab end Here -->
+        <!-- schedule Tab Start Here -->
+        <div class="tab-pane" id="m_tabs_5_4 " role="tabpanel"  [ngClass]="{ 'active' : activeScheduleTab,
+     'show':  activeScheduleTab }">
+            <form>
+                <!--<div class="form-group">-->
+                    <!--<label for="sel1" style="font-weight: bold;">Select Employee</label>-->
+                    <!--<select class="form-control" id="sel1" name="noPreferences" [ngModel]="'0'" (change)=getEmpId($event) > &lt;!&ndash; #empRefVar (was using previously now 0 is hardcoded) &ndash;&gt;-->
+                        <!--<option value="0">No Preferences </option>-->
+                        <!--<option  *ngFor="let employee of locationEmployees; let empIndex = index;" value={{employee.staff_id}} #empId>{{employee.name}} </option>-->
+                    <!--</select>-->
+                <!--</div>-->
+
+                <div class="form-group m-form__group">
+                    <h5> <strong>NOTE:</strong> Choose preferred date &amp; time for availing service</h5>
+                    <label>
+                        <strong>Select Date</strong>
+                    </label>
+                    <br>
+                    <ngb-datepicker (select)="changeDateFunc2($event);" name="datepickerSchedule" ngModel style="width: 100%;" #dateRefVar
+                                    [minDate]
+                                    [maxDate]
+                                    [markDisabled]="dateDisabled">
+                    </ngb-datepicker>
+
+                    <!--<div>-->
+                        <!--<div class="input-group date">-->
+                            <!--&lt;!&ndash; <input [(ngModel)]="staff_book_date" class="form-control m-input " id="m_datepicker_2_validate" placeholder="Select Date" type="date"> &ndash;&gt;-->
+                            <!--<div class="input-group-append">-->
+                                <!--<input  class="form-control m-input" (change)="changeDateFunc($event);"  #dateRefVar  placeholder="Select Date" type="date">-->
+                                <!--<span class="input-group-text">-->
+                    <!--<i class="la la-calendar-check-o glyphicon-th"></i>-->
+                    <!--</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group m-form__group">
+                            <label>
+                                <strong> Select Time Slot <span class="text-success">{{locationSchedule}}</span> </strong>
+                            </label>
+                            <ngb-timepicker [(ngModel)]="timeSlotPicker" [formControl]="ctrl" [hourStep]="hourStep" [minuteStep]="minuteStep"
+                                            (change)="changeTimeFunc2($event);" name="timeSlotPicer">
+                            </ngb-timepicker>
+                            <b *ngIf="locationSchedule != ''">Choose time between <span class="text-success">{{locationSchedule}}</span></b>
+                            <br>
+                            <div *ngIf="ctrl.valid" class="small form-text text-success">Great choice</div>
+                            <div class="small form-text text-danger" *ngIf="!ctrl.valid">
+                                <div *ngIf="ctrl.errors['required']">Select some time during Schedule</div>
+                                <div *ngIf="ctrl.errors['tooLate']">Oh no, it's way too late</div>
+                                <div *ngIf="ctrl.errors['tooEarly']">It's a bit too early</div>
+                            </div>
+
+                            <pre>Selected time: {{timeSlotPicker | json}}</pre>
+
+                            <!-- OLD CODE TIME PICKER -->
+                            <!--<div>-->
+                                <!--<div class="input-group date">-->
+                                    <!--<input class="form-control m-input timepicker" #timeRefvar placeholder="Select Time" [value]="staff_book_time" (change)="changeTimeFunc($event);" id="m_timepicker_2_validate" placeholder="Select Time " type="time">-->
+                                    <!--<div class="input-group-append">-->
+                                        <!--<span class="input-group-text">-->
+                                        <!--<i class="la la-calendar-check-o glyphicon-th"></i>-->
+                                        <!--</span>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="text-align:center;">
+                        <hr>
+                        <button class="btn btn-link" (click)="checkTimeAvailability();">
+                            Check Availability
+                        </button>
+                        <hr>
+                    </div>
+                    <div class="col-md-12" *ngIf="isMessageDisplayed" style="text-align:center;">
+                        <h4 class="text-success" *ngIf="availableSlotMessage"> Selected time is available! You may proceed.</h4>
+                        <h4 class="text-danger" *ngIf="!availableSlotMessage"> Sorry no employee available, try again later!</h4>
+                    </div>
+                </div>
+
+            </form>
+            <div class="row">
+                    <div class="col">
+                           <button  class="btn btn-default custom-float-left"  (click)="itemTabShow(); "><i class="fa fa-chevron-left"></i> Back</button>
+                    </div>            
+                    <div class="col text-right">
+                        <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="!ctrl.valid || !enableScheduleProceedBtn"
+                                (click)="activeTab('more'); getTimeAndDate(); saveStaffSchedule(); orderNowCheck = false;">Proceed S2</button>
+                    </div>
+            </div>
+           
+
+        </div>
+        <!-- schedule Tab Start Here -->
+    </div>
+</div>

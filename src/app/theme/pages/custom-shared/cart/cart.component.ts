@@ -11,8 +11,9 @@ import {
     ElementRef,
     NgZone, ChangeDetectorRef, OnDestroy
 } from "@angular/core";
-import { FormControl, FormGroup, NgForm, Validators, ReactiveFormsModule } from "@angular/forms";
-import { Helpers } from "../../../../helpers";
+
+import { FormControl, FormGroup, NgForm, Validators, ReactiveFormsModule,FormsModule } from "@angular/forms";
+import { Helpers } from "./../../../../helpers";
 import { ScriptLoaderService } from "../../../../_services/script-loader.service";
 import { } from "googlemaps";
 import { AgmMap, MapsAPILoader } from "@agm/core";
@@ -48,6 +49,8 @@ import { NgbCalendar, NgbDatepickerConfig, NgbModal } from "@ng-bootstrap/ng-boo
 import { NgbDate } from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-date";
 import { ToastrService } from '../../../../services/toastrService.service';
 
+
+
 // serverServices for posting the data to server
 
 const colors: any = {
@@ -82,10 +85,11 @@ interface data {
     updated_at: string;
 }
 
+
 @Component({
-    selector: "app-services",
-    templateUrl: "./services.component.html",
-    styleUrls: ["./services.component.css"],
+    selector: 'app-cart',
+    templateUrl: './cart.component.html',
+    styleUrls: ["./cart.component.css"],
     animations: [
         trigger("fade", [
             state(
@@ -105,7 +109,9 @@ interface data {
     ]
     // encapsulation: ViewEncapsulation.None,
 })
-export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
+
+export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
+  
     @ViewChild("tref", { read: ElementRef })
     tref: ElementRef;
     @ViewChild("tref1", { read: ElementRef })
@@ -609,15 +615,15 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.card = elements.create('card');
         this.card.mount(this.cardInfo.nativeElement);
 
-        //this.card.addEventListener('change', this.cardHandler);
+        this.card.addEventListener('change', this.cardHandler);
 
     }
 
     ngOnDestroy() {
 
         // In the OnDestroy we clean up by removing the change event listener and destroying the card element.
-        //this.card.removeEventListener('change', this.cardHandler);
-        //this.card.destroy();
+        this.card.removeEventListener('change', this.cardHandler);
+        this.card.destroy();
     }
 
     //------------------- FOR STRIPE PAYMENT-------------------
@@ -1406,8 +1412,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                       // ---------------------------------------fourth api for place order-------------------------------------
                 
                       let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-                         let company_id = this.current_company_location.company_name.id;
-                      //let company_id = this.selectedCompany_id;
+                         //let company_id = this.current_company_location.company_name.id;
+                      let company_id = this.selectedCompany_id;
                       this._demoService.createTransaction(
                         customer_id,
                         this.transaction_id_for_Transaction,

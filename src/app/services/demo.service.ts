@@ -264,11 +264,12 @@ export class DemoService {
 
     
 
-    bidRequestApi(category, subcategory, service, description,contact, price, file) {
+    bidRequestApi(category, subcategory, serviceName, description,contact, price, file) {
         const bR = new FormData();
         bR.append('category_id', category);
         bR.append('subcategory_id', subcategory);
-        bR.append('service_id', service);
+        bR.append('service_id', "customService");
+        bR.append('service_name', serviceName);
         bR.append('description', description);
         bR.append('contact_no', contact);
         bR.append('price', price);
@@ -283,7 +284,7 @@ export class DemoService {
         //     file : file
         // }
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        return this.http.post('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/request-bid/'+customer_id, bR);
+        return this.http.post('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/request-bid/'+customer_id, bR);
     }
 
     
@@ -322,11 +323,14 @@ export class DemoService {
     }
 
     getSubCategoryServices(rand_id) {
-        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/category-service/' + rand_id)
+        return this.http.get('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/category-service/' + rand_id)
     }
 
 
-
+    getBidResponseApi() {
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/requests-response/' + customer_id, httpOptions);
+    }
 
     // getIndividualServices() {
     //   return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/get-service/', httpOptions)

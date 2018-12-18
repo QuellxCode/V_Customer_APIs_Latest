@@ -16,6 +16,7 @@ import { WizardLeadForm } from "../../../../components/leadFormWizard/leadFormWi
 import { ServerServices_Services } from "../../../../services/serverServices.services";
 import { SearchFilterPipe } from "../../../../filters/search-filter.pipe";
 import { ServiceSearchFilterPipe } from "../../../../filters/service-search-filter.pipe";
+import { CustomSharedModule } from "../../custom-shared/custom-shared.module";
 
 const routes: Routes = [
     {
@@ -36,6 +37,7 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         CalendarModule.forRoot(),
         LayoutModule,
+        CustomSharedModule,
         AgmCoreModule.forRoot({
             apiKey: "AIzaSyCQlMMVsJXt25cmmii1rx_Ghn0bjRRNdtc"
         }),

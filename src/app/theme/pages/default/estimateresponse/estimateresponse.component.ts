@@ -117,10 +117,15 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     approved = true;
     pending = true;
     rejected = true;
+    bidPricesRequests = false;
+    allRequestsTabs = true;
 
     mainFilterHide = false;
     isListViewHide = false;
     isGridViewHide = true;
+
+     // This check if service in cart is checked or not
+     isServiceInCartChecked = false;
 
     @ViewChild("tref", { read: ElementRef })
     tref: ElementRef;
@@ -165,6 +170,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
             "Pet Services"
         ];
         this.getCat();
+        this.getRequestBidResponse();
 
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
 
@@ -322,6 +328,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     counterBookMap = 0;
     disabledBookMap = true;
     activeBookMap = false;
+    disabledApproveBtn = true;
+    activeApproveBtn = false;
     //Map button End
 
     //side pop-up
@@ -379,11 +387,13 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     addNewPaymentCardHide = false;
     public categories;
     public subCategories;
+    public requestBidResponse;
+    public serviceGlobe;
     public subCatServices;
     public serviceLocations;
     disabled = true;
     disabledServicesDD = true;
-    @ViewChild('triggerServiceDD')triggerServiceDD:ElementRef;
+    //@ViewChild('triggerServiceDD')triggerServiceDD:ElementRef;
 
 
     getCat() {
@@ -415,7 +425,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
             () => {
                 console.log('Done Fetching Service using subcat rand_id');
                 this.disabledServicesDD = false;
-                this.triggerServiceDD.nativeElement.click();
+               // this.triggerServiceDD.nativeElement.click();
             
             }
 
@@ -584,6 +594,37 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         }
     }
 
+
+    approveBig(event: Event) {
+        if ((<HTMLInputElement>event.target).checked) {
+
+            this.activeApproveBtn = true;
+            this.disabledApproveBtn = false;
+        
+        } else {
+           
+                this.activeApproveBtn = false;
+                this.disabledApproveBtn = true;
+          
+          
+        }
+    }
+
+    public imageUrl = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
+
+
+    getRequestBidResponse() {
+        this._demoService.getBidResponseApi().subscribe(
+            (data: any) => {
+                 this.requestBidResponse = data.data; 
+                 console.log('Bid Response is here  = ', this.requestBidResponse)
+                 },
+            err => console.error(err),
+            () => console.log('Done Fetching requestBidResponse')
+
+        );
+    }
+
     
     bidRequest(form_data: NgForm) 
     {
@@ -649,7 +690,73 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         this.selectedFile = <File>event.target.files;
     }
 
+    showQuoted() {
+        this.bidPricesRequests = true;
+        this.allRequestsTabs = false;
+        this.formHidden = true;
+    }
 
+
+    showAllTabs(){
+        this.bidPricesRequests = false;
+        this.allRequestsTabs = true;
+    }
+
+
+    
+    // Cart Item Index
+    termsAndConditonIndex;
+
+    //Cart Items' service index
+    selectedServiceParentIndex;
+
+     // CartItems Card Index
+     agreedCartItemIndex;
+     approveBtnHide = false;
+    approvedBtn(event: Event, index) {
+        this.approveBtnHide = true;
+        this.termsAndConditonIndex = index;
+        console.log("Terms Index is =>", this.termsAndConditonIndex);
+
+        // this.selectedServiceParentIndex = index;
+        console.log("Service Index is =>", this.selectedServiceParentIndex);
+
+        this.isServiceInCartChecked = false;
+        if ((<HTMLInputElement>event.target).checked) {
+            this.proceedCounter++;
+            this.hideTermsModal = false;
+            this.agreedCartItemIndex = index;
+        } else {
+            this.hideTermsModal = true;
+            this.agreedCartItemIndex = -1;
+            if (this.proceedCounter == 0) {
+                this.approveBtnHide = false;
+                return;
+            }
+            this.proceedCounter--;
+        }
+    }
+
+    
+    servicesInCartRadiosFirstScreen( event, index, parentIndex) {
+
+          // Check for looking what is selected service parent's index
+          this.selectedServiceParentIndex = parentIndex;
+
+    
+        this.isServiceInCartChecked = event.target.checked;
+        
+
+        console.log('event is => ', event.target.checked);
+        console.log('index is => ', index);
+        
+
+
+    }
+
+    showAlert(){
+        alert("Approved");
+    }
 
 }
 
