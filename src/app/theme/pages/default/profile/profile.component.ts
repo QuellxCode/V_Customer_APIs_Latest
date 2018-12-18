@@ -20,7 +20,22 @@ export class ProfileComponent implements OnInit {
     // CustomerProfile;
 
     public CustomerProfile = {
-        first_name: ''
+        first_name: '',
+        last_name: '',
+        email: '',
+        picture: '',
+        address: '',
+        phone: '',
+        date_of_birth: '',
+        company_name: '',
+        occupation: '',
+        city: '',
+        state: '',
+        postcode: '',
+        linkedin: '',
+        facebook: '',
+        twitter: '',
+        instagram: ''
 
     };
 

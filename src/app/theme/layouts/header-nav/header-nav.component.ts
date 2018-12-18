@@ -15,7 +15,10 @@ export class HeaderNavComponent implements OnInit, AfterViewInit {
 
     public CustomerProfile = {
         first_name: '',
-        last_name: ''
+        last_name: '',
+        email: '',
+        picture: ''
+
 
     };
 

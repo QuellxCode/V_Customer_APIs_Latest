@@ -489,8 +489,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.FetchCompanyLocationServicesNew();
         this.application_fee_percentage = JSON.parse(localStorage.getItem('currentUser')).success.application_fee;
              
-        // alert(this.application_fee_percentage);
-        // alert(this.total_price);
+        // console.log(this.application_fee_percentage);
+        // console.log(this.total_price);
 
         this.customer_Id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         this.customer_EmailAddress = JSON.parse(localStorage.getItem('currentUser')).success.email;
@@ -646,12 +646,12 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     card_id; 
     application_fee;
     async onSubmitPayment(form: NgForm) {
-        alert("Cart Hit");
+        console.log("Cart Hit");
         const { token, error } = await stripe.createToken(this.card, {
             email: this.customer_EmailAddress,
             name: "Jim Carrie"
         });
-        alert("promise returned");
+        console.log("promise returned");
         if (error) {
            
             console.log('Something is wrong:', error);
@@ -679,10 +679,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
             //price calculation system
             this.application_fee_price = this.total_price*(parseInt(this.application_fee_percentage)/100);
-            alert(this.application_fee_price); 
+            console.log(this.application_fee_price); 
 
             this.application_fee_inCents = this.application_fee_price*100;
-            alert("InCents"+this.application_fee_inCents);
+            console.log("InCents"+this.application_fee_inCents);
             console.log("total amount bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb => ", this.application_fee_price);
          
              // ---------------------------------------second api for carge------------------------------------------------------
@@ -702,11 +702,11 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                     console.log("here is the charge api hitted", res);
                     this.transaction_id_for_Transaction = res.id;
                     this.behalf_account = res.on_behalf_of;
-                    alert("on behalf" +  this.behalf_account);
+                    console.log("on behalf" +  this.behalf_account);
                     this.application_fee = res.application_fee;
-                    alert("Application fee" + this.application_fee);
+                    console.log("Application fee" + this.application_fee);
                     this.card_id = res.source.id;
-                    alert("card id" +  this.card_id);
+                    console.log("card id" +  this.card_id);
                     console.log("here is the transaction id"+this.transaction_id_for_Transaction);
 
                     
@@ -719,7 +719,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                     console.log("Status 01 HAS BEEN Posted!");
                     // New Place Order Api Called Here
                     this.orderNowCheck = true;
-                    alert(this.transaction_id_for_Transaction);
+                    console.log(this.transaction_id_for_Transaction);
                     this.PlaceOrderInformation();
  
             
@@ -1074,7 +1074,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('Hellow New => ', this.current_company_location);
         let company_id;
         if(this.current_company_location) {
-            alert("inside If");
+            console.log("inside If");
              company_id = this.current_company_location.company_name.id;
         }
 
@@ -1115,8 +1115,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Get Schedule for the selected Company
     fetchCompanySchedule() {
-        alert('Company ID is=>' + this.selectedCompany_id);
-        alert('Location Rand ID is=>' + this.selectedCompanyLocationId);
+        console.log('Company ID is=>' + this.selectedCompany_id);
+        console.log('Location Rand ID is=>' + this.selectedCompanyLocationId);
         this._demoService.getCompanySchedule(this.selectedCompany_id, this.selectedCompanyLocationId).subscribe(
             (response: any) => {
                 console.log("Company Schedule is=> ", response.data);
@@ -1151,6 +1151,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.endingScheduleMin = parseInt(response.data['0'].company_schedule.to.split(':')['1']);
                 console.log(this.startingScheduleMin + ' & ' + this.endingScheduleMin);
                 alert(this.locationSchedule);
+
                 //----------- THIS LINE DISABLES THE DAYS THAT ARE NOT RETURNED IN LOCATION SCHEDULE! ----------
                 this.dateDisabled = (date: NgbDate, current: { month: number }) => this.disabledDaysArray.indexOf(this.calendar.getWeekday(date)) != -1;
 
@@ -1167,7 +1168,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     checkTimeAvailability() {
 
-        alert("Data Passed=> " + 'loc_ID ' + this.selectedCompanyLocationId + 'Comp_ID ' + this.selectedCompany_id + 'Time ' + this.staff_book_time + 'Date ' + this.staff_book_date);
+        console.log("Data Passed=> " + 'loc_ID ' + this.selectedCompanyLocationId + 'Comp_ID ' + this.selectedCompany_id + 'Time ' + this.staff_book_time + 'Date ' + this.staff_book_date);
         this._demoService.checkAvailableTime(this.selectedCompanyLocationId, this.selectedCompany_id, this.staff_book_time, this.staff_book_date).subscribe(
             (res: any) => {
                 console.log(" Available Api Response is => ", res)
@@ -1377,7 +1378,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         //     this.servicesPlaceOrder.push( { 'service_id': x.rand_id, 'service_price': x.price})
         // });
 
-       alert("transaction_id"+this.transaction_id_for_Transaction);
+       console.log("transaction_id"+this.transaction_id_for_Transaction);
        
         console.log("services in final Card => ", this.servicesPlaceOrder);
          
@@ -1449,11 +1450,11 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     sideInfoPop(value: string, location, index: number, parentIndex: number) {
         if (value == "service") {
-            // alert(this.showServices);
+            // console.log(this.showServices);
             this.showServices = true;
-            // alert(this.showServices);
+            // console.log(this.showServices);
             // setTimeout(()=> {
-            //     alert(this.showServices);
+            //     console.log(this.showServices);
             // },2000)
             this.isDisabled = true;
             console.log('isDisabled now must be true => ', this.isDisabled);
@@ -1464,7 +1465,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             this.FetchCompanyLocationServicesNew();
 
         } else {
-            alert('in else');
+            console.log('in else');
             this.showServices = false;
             this.showOrderHistory = false;
             this.showInfo = true;
@@ -1964,7 +1965,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log("change service Event =>", services[index]);
         this.companyIdFromSelectedService = '';
         this.locationSelectedService = services;
-        alert("location Id=> " + location_id);
+        console.log("location Id=> " + location_id);
         this.servicesTobeAddedInCart = [];
         if (event.target.checked) {
             this.companyIdFromSelectedService = company_id;
@@ -1976,7 +1977,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             this.servicesTobeAddedInCart.splice(indexOfObj, 1);
 
         }
-        alert(this.servicesTobeAddedInCart);
+        console.log(this.servicesTobeAddedInCart);
     }
 
 
