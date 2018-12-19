@@ -401,7 +401,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         //     "service_price":"45",
         // }
     ]
-
+    selectedCompanyLocationId;
     customer_Id;
     chargeApiUrl;
     application_fee_percent;
@@ -460,6 +460,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             "total_price": this.total_price + this.total_price*(parseInt(this.application_fee_percent)/100),
             "services": this.servicesPlaceOrder,
             "employee_id": this.employee_Id,
+            "location_id": this.selectedCompanyLocationId,
             "application_fee_price": this.application_fee_price,
             "application_fee_percentage": this.application_fee_percentage,
             "date": this.staff_book_date,
@@ -1189,6 +1190,24 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         )
     }
 
+    checkEmployeeAvailbility()
+    {
+        this._demoService.checkAvailbility(
+            this.selectedCompany_id, 
+            this.staff_book_date,
+            this.selectedCompanyLocationId   
+           )
+            .subscribe(
+            (data: Response) => {
+                console.log("data", data);
+                return true;
+            },
+            error => {
+                console.error("Error in Checking Employee Availbility!");
+            },
+            () => { }
+            );
+    }
 
     clearPlacedOrder() {
         console.log(this.servicesPlaceOrder, this.data, this.payment);
@@ -1207,7 +1226,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
 
     selectedCompanyName;
     selectedServiceName;
-    selectedCompanyLocationId;
+    //selectedCompanyLocationId;
 
     // Get selected location service and its information on radio button selection
 
@@ -1391,6 +1410,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             this.total_price, 
             this.servicesPlaceOrder, 
             this.employee_Id,
+            this.selectedCompanyLocationId,
             this.application_fee_price,
             this.application_fee_percentage,
             this.staff_book_date, 

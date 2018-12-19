@@ -227,6 +227,19 @@ export class DemoService {
 
     }
 
+    checkAvailbility(company_id, date, location_id) {
+        let obj = {
+            "company_id": company_id,
+            "date": date,
+            "location_id": location_id
+        }
+
+        console.log("https://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift-duration/" + company_id);
+        return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift-duration/' + company_id, obj, httpOptions);
+
+    }
+
+    
     
 
     createChargesApi(application_fee, amount, company_id,token_id) {
@@ -241,7 +254,7 @@ export class DemoService {
 
 
     saveOrderInformation(company_id: number, customer_id: number, total_price, servicesPlaceOrder,
-        employee_id,application_fee_price,application_fee_percentage, date: string, time: string, company_timings: string, payment) {
+        employee_id,location_id,application_fee_price,application_fee_percentage, date: string, time: string, company_timings: string, payment) {
         let array_obj = {
             "data": [{
 
@@ -250,6 +263,7 @@ export class DemoService {
                 "total_price": total_price,
                 "services": servicesPlaceOrder,
                 "employee_id": employee_id,
+                "location_id": location_id,
                 "application_fee_price": application_fee_price,
                 "application_fee_percentage": application_fee_percentage,
                 "date": date,
@@ -305,6 +319,8 @@ export class DemoService {
         console.log("Crate Transaction Api Params Data ", createChargeParams);
         return this.http.post('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/strip/create-transaction/'+company_id, createChargeParams, httpOptions)
     }
+
+
 
     // this api will use to get lead section api
 

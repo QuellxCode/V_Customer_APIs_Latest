@@ -1385,6 +1385,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             this.total_price, 
             this.servicesPlaceOrder, 
             this.employee_Id,
+            this.selectedCompanyLocationId,
             this.application_fee_price,
             this.application_fee_percentage,
             this.staff_book_date, 

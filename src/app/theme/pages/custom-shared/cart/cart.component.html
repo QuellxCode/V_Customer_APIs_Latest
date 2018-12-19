@@ -450,7 +450,7 @@
                         <strong>Select Date</strong>
                     </label>
                     <br>
-                    <ngb-datepicker (select)="changeDateFunc2($event);" name="datepickerSchedule" ngModel style="width: 100%;" #dateRefVar
+                    <ngb-datepicker (select)="changeDateFunc2($event); checkEmployeeAvailbility();" name="datepickerSchedule" ngModel style="width: 100%;" #dateRefVar
                                     [minDate]
                                     [maxDate]
                                     [markDisabled]="dateDisabled">

@@ -28,6 +28,15 @@
          </span>
 				</a>
 			</button>
+			
+			<button class="btn btn-link pull-right" (click)="visibleSidebar2 = true">
+				<a href="" class="m-nav__link" >
+					<i class="m-nav__link-icon fa fa-align-right"></i>
+					<span class="m-nav__link-text">
+         Open Card
+         </span>
+				</a>
+			</button>
 			<!-- <button class="btn btn-link pull-right" (click)="changeView()" [hidden]="!formHidden">
                <i class="fa" [ngClass]="{'fa-list' : isListViewHide , 'fa-th' :isGridViewHide  }"></i> {{viewName}} </button> -->
 		</div>
@@ -777,32 +786,41 @@
 							 
 								<div class="card-right col-lg-12">
 										<label class="m-checkbox m-checkbox--solid m-checkbox--single pull-left m-checkbox--brand">
-												<input class="chkboxes" type="radio" name="parentCheck" (click)="approvedBtn($event, i);">
+												<input class="chkboxes" type="radio" name="parentCheck" (click)="approvedBtn($event, i); serviceCheck(requests.services.rand_id);">
 												<span></span>
 												</label> 
-									<h6 class="text-muted pull-left">
-										<span class="m-badge m-badge--accent m-badge--wide">Quoted Prices Of Service</span>
+									<h6 class="text-muted pull-right">
+										<span class="m-badge m-badge--accent m-badge--wide">{{requests.services.service_name}} Quotations</span>
 									</h6>
 									
 									<div class="clearfix"></div>
 									<div class="row services-categories">
 										<div class="col-md-12 category-list">
-											<h6 class="service-heading">{{requests.services.service_name}}</h6>
-											<div class="row service-item" *ngFor="let company of requests.company; let serviceInfoIndex = index">
+											<!-- <div class="row">
+												<div class="col-md-12" style="text-align:center">
+													<h6 class="service-heading">Service : {{requests.services.service_name}}</h6>
+													
+												</div>
+												
+											</div> -->
+											
+											
+										<div class="row service-item" *ngFor="let company of requests.company; let serviceInfoIndex = index">
 												<div class="col-md-2">
 										<span class="custom-width">
 										<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-										<input type="radio" name="companyRadioBtn" value="187"  (click)="servicesInCartRadiosFirstScreen($event, serviceInfoIndex, i);">
+										<input type="radio" name="companyRadioBtn" value="187"  (click)="servicesInCartRadiosFirstScreen($event, serviceInfoIndex, i); companyDataToCart(company.company_id);">
 										<span></span>
 										</label> 
 										</span>
 												</div> &nbsp;
 												<div class="col-md-6 custom_padding_left">
-													{{company.company_location_name}}
+													<p><b><i class="fa fa-industry"></i>&nbsp; {{company.company_name}}</b></p> 
+													<em><i class="fa fa-map-marker"></i>&nbsp; {{company.company_location_name}}</em>
 												</div>
 												<div class="col-md-3 offset-md-1">
 										<span class="m--font-success custom-float-right">
-											{{company.price | currency:'CAD'}}
+													{{company.price | currency:'CAD'}}
 										</span>
 												</div>
 												<div class="col-md-12">
@@ -812,8 +830,8 @@
 											
 										
 										
-											<div class="col-md-12" *ngIf="agreedCartItemIndex == i" style="margin-top: 10px; text-align: right;">
-													<button  type="button" class="btn btn-primary" [disabled]="selectedServiceParentIndex != i || termsAndConditonIndex != i" (click)="showAlert(); visibleSidebar2 = true" >Approve & Add to Cart
+											<div class="col-md-12 m--padding-bottom-15 text-right m--margin-top-10" *ngIf="agreedCartItemIndex == i" style="padding-right: 0px;">
+													<button  type="button" class="btn btn-primary" [disabled]="selectedServiceParentIndex != i || termsAndConditonIndex != i" (click)="showAlert(); visibleSidebar2 = true; approveAndAddtoCart();" >Approve & Add to Cart
 													<!-- getStaffFromLocation(); -->
 											</button>
 											</div>

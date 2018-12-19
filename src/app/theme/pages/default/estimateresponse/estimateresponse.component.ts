@@ -119,6 +119,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     rejected = true;
     bidPricesRequests = false;
     allRequestsTabs = true;
+    customer_id;
 
     mainFilterHide = false;
     isListViewHide = false;
@@ -171,9 +172,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         ];
         this.getCat();
         this.getRequestBidResponse();
-
-        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-
+         this.customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+         alert(this.customer_id);
         this.serverServies_services.getServices().subscribe(data => {
             this.serData = data.data;
             console.log(this.serData);
@@ -655,6 +655,39 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
             () => { }
 
             );
+    }
+
+    //variable declare here
+    service_rand_id;
+    servicesIds = [];
+    serviceCheck(rand_id)
+    {
+
+        this.servicesIds.push(rand_id);
+        //alert(this.servicesIds);
+        
+    }
+
+    company_id_of_quoted_price;
+
+    companyDataToCart(company_id)
+    {
+        this.company_id_of_quoted_price = 8;
+    }
+
+    approveAndAddtoCart() {
+       
+       
+       
+        console.log('Customer =>' + this.customer_id + ' Services ids => ' + this.servicesIds + ' Company=> ' + this.company_id_of_quoted_price);
+        this._demoService.postSevicestoCart(this.customer_id, this.servicesIds, this.company_id_of_quoted_price)
+            .subscribe(
+            (response: any) => {
+                this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
+            },
+            (err) => { console.error(err) },
+            () => { console.log("Status 200 Posted!") }
+            )
     }
 
    
