@@ -1260,7 +1260,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Disable Time that is not in schedule
 
-    ctrl = new FormControl('', (control: FormControl) => {
+    OLDctrl = new FormControl('', (control: FormControl) => {
         const value = control.value;
 
         if (!value) {
@@ -1276,6 +1276,65 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
         return null;
     });
+
+    ctrl = new FormControl('', (control: FormControl) => {
+        const value = control.value;
+        this.isAvailability = false;
+        this.isTimeSelected = false;
+
+        if (!value || !this.selectedLocationSchedulesAndShifts)
+        {
+            return null;
+        }
+
+        let from = this.checkForLeadingZeroNonAvailability(this.selectedLocationSchedulesAndShifts[0].company_schedule.from);
+        let to = this.checkForLeadingZeroNonAvailability(this.selectedLocationSchedulesAndShifts[0].company_schedule.to);
+        let selectedTime = this.checkForLeadingZeroNonAvailability(value)+":00";
+
+
+        if (selectedTime < from) {
+            console.log("Too Early");
+            return { tooEarly: true };
+        }
+
+        if (selectedTime > to) {
+            console.log("Too Late");
+            return { tooLate: true };
+        }
+
+        console.log(this.conflictsTimings);
+
+        let isTimeConflict = false;
+        this.conflictsTimings.forEach(timings=> {
+            if(selectedTime>=timings.order_time && selectedTime<=timings.end_time)
+            {
+                console.log("Enetred If");
+                isTimeConflict = true;
+            }
+        });
+
+        if(isTimeConflict)
+        {
+            return { timeConflict: true };
+        }
+
+
+        this.isAvailability = true;
+        this.isTimeSelected = true;
+
+        return null;
+    });
+
+
+    checkForLeadingZeroNonAvailability(time) {
+        let hours = time.split(":")[0];
+        if (hours.length == 1) {
+            return "0" + time;
+        }
+        return time;
+    }
+
+
 
     changeTimeFunc(event) {
         this.staff_book_time = event.target.value;

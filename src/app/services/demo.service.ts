@@ -235,7 +235,28 @@ export class DemoService {
         }
 
         console.log("https://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift-duration/" + company_id);
-        return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift-duration/' + company_id, obj, httpOptions);
+        return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift-duration/' + company_id, obj, httpOptions).map(
+            (data:any)=>
+            {
+                data.data.forEach(x=> {
+                    let time = x.order_time;
+                    let hours = parseInt(time.split(":")[0]);
+                    let mins = parseInt(time.split(":")[1])+parseInt(x.duration);
+
+                    console.log("hours ",hours);
+                    console.log("mins ",mins);
+
+                    while(mins>=60)
+                    {
+                        mins-=60
+                        hours++;
+                    }
+                    x["end_time"] = hours+":"+mins+":00";
+                });
+                return data;
+            }
+
+        );
 
     }
 
