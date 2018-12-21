@@ -106,6 +106,16 @@ export class DemoService {
         console.log("Posting Service to Cart done is: ", obj);
         return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/cart', obj, httpOptions);
     }
+    postSevicestoCart2(customer_id, services_id, company_id) {
+        let obj = {
+            "customer_id": customer_id,
+            "services_id": services_id,
+            "company_id": company_id
+
+        }
+        console.log("Posting Service to Cart done is: ", obj);
+        return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/request-bid-cart', obj, httpOptions);
+    }
 
     postResolutionCenter(company_id, service_id, description, status) {
         let obj = {
@@ -240,22 +250,26 @@ export class DemoService {
             {
                 data.data.forEach(x=> {
                     let time = x.order_time;
+                    let duration = x.duration;
                     let hours = parseInt(time.split(":")[0]);
                     let mins = parseInt(time.split(":")[1])+parseInt(x.duration);
-
+                   
                     console.log("hours ",hours);
                     console.log("mins ",mins);
 
+                    
+                    
                     while(mins>=60)
                     {
                         mins-=60
                         hours++;
                     }
-                    x["end_time"] = hours+":"+mins+":00";
+                    let hoursStr = (""+hours).length<2 ? ("0"+hours): (""+hours);
+                    let minsStr = (""+mins).length<2 ? ("0"+mins): (""+mins);  
+                    x["end_time"] = hoursStr+":"+minsStr+":00";
                 });
                 return data;
             }
-
         );
 
     }
@@ -322,6 +336,11 @@ export class DemoService {
         return this.http.post('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/request-bid/'+customer_id, bR);
     }
 
+
+    
+    bidRequestApprove(request_bid_rand_id) {
+        return this.http.get('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/accept-requests/'+request_bid_rand_id, httpOptions);
+    }
     
 
     createTransaction(customer_id, transaction_id, order_id, behalf_account, card_id, application_fee, company_id,) {
@@ -366,7 +385,7 @@ export class DemoService {
 
     getBidResponseApi() {
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/requests-response/' + customer_id, httpOptions);
+        return this.http.get('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/requests-response/' + customer_id, httpOptions);
     }
 
     // getIndividualServices() {

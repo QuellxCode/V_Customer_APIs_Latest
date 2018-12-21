@@ -173,7 +173,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         this.getCat();
         this.getRequestBidResponse();
          this.customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-         alert(this.customer_id);
+        // alert(this.customer_id);
         this.serverServies_services.getServices().subscribe(data => {
             this.serData = data.data;
             console.log(this.serData);
@@ -617,7 +617,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         this._demoService.getBidResponseApi().subscribe(
             (data: any) => {
                  this.requestBidResponse = data.data; 
-                 console.log('Bid Response is here  = ', this.requestBidResponse)
+                 console.log('Bid Response is here  = ', this.requestBidResponse);
                  },
             err => console.error(err),
             () => console.log('Done Fetching requestBidResponse')
@@ -659,20 +659,39 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
 
     //variable declare here
     service_rand_id;
+    
     servicesIds = [];
-    serviceCheck(rand_id)
+    serviceCheck(service_id)
     {
 
-        this.servicesIds.push(rand_id);
+        this.servicesIds.push(service_id);
         //alert(this.servicesIds);
         
     }
 
     company_id_of_quoted_price;
-
-    companyDataToCart(company_id)
+    request_bid_rand_id;
+    companyDataToCart(company_id, request_bid_response_rand_id)
     {
-        this.company_id_of_quoted_price = 8;
+        this.company_id_of_quoted_price = company_id;
+        this.request_bid_rand_id = request_bid_response_rand_id;
+        alert("response "+this.request_bid_rand_id);
+        alert("company "+ this.company_id_of_quoted_price);
+        
+    }
+
+    approveRequestBid() {
+    
+        this._demoService.bidRequestApprove(this.request_bid_rand_id)
+            .subscribe(
+            (response: any) => {
+               // this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
+            },
+            (err) => { console.error(err) },
+            () => { console.log("Status 200 Posted!")
+            this.approveAndAddtoCart();
+        }
+            )
     }
 
     approveAndAddtoCart() {
@@ -680,7 +699,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
        
        
         console.log('Customer =>' + this.customer_id + ' Services ids => ' + this.servicesIds + ' Company=> ' + this.company_id_of_quoted_price);
-        this._demoService.postSevicestoCart(this.customer_id, this.servicesIds, this.company_id_of_quoted_price)
+        this._demoService.postSevicestoCart2(this.customer_id, this.servicesIds, this.company_id_of_quoted_price)
             .subscribe(
             (response: any) => {
                 this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
@@ -790,6 +809,48 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     showAlert(){
         alert("Approved");
     }
+
+    isProceedFirstEnabled = false;
+    // This has all the cartItems and its services in it
+    cartServices = [];
+    
+    user_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+    
+    // Permissions array for search by service functionality
+    permissions2 =[];
+
+
+    getServicesToCart() {
+        this.isProceedFirstEnabled = true;
+        this.agreedCartItemIndex = undefined;
+        this._demoService.getServicesToCart(this.user_id).subscribe(
+            (response: any) => {
+                this.cartServices = response.data; console.log("this is cart Items response =>", this.cartServices);
+                
+
+                /*  This Code will push services' rand_id into permissions2 array
+                    and later will be used as a check for disabling services
+                    checkboxes in SEARCH BY SERVICE section
+                */
+                this.permissions2 = [];
+                this.cartServices.forEach(item => {
+                    item.service.forEach(service => {
+                        this.permissions2.push(service.rand_id);
+                    });
+                });
+
+                console.log("permissions2 => ",this.permissions2);
+                
+            },
+            err => {
+                console.error(err);
+            },
+            () => { console.log("Cart Fetching is working") }
+
+        )
+    }
+
+
 
 }
 

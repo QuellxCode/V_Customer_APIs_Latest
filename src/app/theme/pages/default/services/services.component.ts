@@ -500,7 +500,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(this.customer_Id);
 
 
-        this.getServicesToCart();
+       // this.getServicesToCart();
         console.log("cart Items => ", this.cartServices);
 
         this.searchControl = new FormControl();
@@ -1001,7 +1001,17 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
             },
             (err) => { console.error(err) },
-            () => { console.log("Status 200 Posted!") }
+            () => { console.log("Status 200 Posted!") 
+
+            setTimeout(() => {
+                this.showServices = false;
+              }, 1000);
+
+              this.getServicesToCart();
+              this.getUserLocation();  // Return User Location Lat lng
+            
+        
+        }
             )
     }
 
@@ -1048,7 +1058,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.error(err);
                 this.preloaderNoCartItemsFound = false;
             },
-            () => { console.log("Cart Fetching is working") }
+            () => { console.log("Cart Fetching is working")
+            
+        
+        }
 
         )
     }
@@ -1277,64 +1290,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         return null;
     });
 
-    ctrl = new FormControl('', (control: FormControl) => {
-        const value = control.value;
-        this.isAvailability = false;
-        this.isTimeSelected = false;
-
-        if (!value || !this.selectedLocationSchedulesAndShifts)
-        {
-            return null;
-        }
-
-        let from = this.checkForLeadingZeroNonAvailability(this.selectedLocationSchedulesAndShifts[0].company_schedule.from);
-        let to = this.checkForLeadingZeroNonAvailability(this.selectedLocationSchedulesAndShifts[0].company_schedule.to);
-        let selectedTime = this.checkForLeadingZeroNonAvailability(value)+":00";
-
-
-        if (selectedTime < from) {
-            console.log("Too Early");
-            return { tooEarly: true };
-        }
-
-        if (selectedTime > to) {
-            console.log("Too Late");
-            return { tooLate: true };
-        }
-
-        console.log(this.conflictsTimings);
-
-        let isTimeConflict = false;
-        this.conflictsTimings.forEach(timings=> {
-            if(selectedTime>=timings.order_time && selectedTime<=timings.end_time)
-            {
-                console.log("Enetred If");
-                isTimeConflict = true;
-            }
-        });
-
-        if(isTimeConflict)
-        {
-            return { timeConflict: true };
-        }
-
-
-        this.isAvailability = true;
-        this.isTimeSelected = true;
-
-        return null;
-    });
-
-
-    checkForLeadingZeroNonAvailability(time) {
-        let hours = time.split(":")[0];
-        if (hours.length == 1) {
-            return "0" + time;
-        }
-        return time;
-    }
-
-
+   
 
     changeTimeFunc(event) {
         this.staff_book_time = event.target.value;

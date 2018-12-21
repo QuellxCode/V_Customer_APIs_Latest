@@ -214,6 +214,11 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     hideTermsModal = true;
     hideTermsModal1 = true;
 
+
+    // ----------
+    
+    isShowAvailablityMessage = false;
+
     //Right Side Bar variables End
 
     lang: any;
@@ -234,7 +239,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     serData: data;
     requestForms: FormGroup;
     visibleSidebar4: boolean;
-    visibleSidebar2: boolean;
+    visibleSidebar2: false;
     enabledOrderNowbutton: boolean = true;
     checked: boolean = false;
     serviceCounter: number = 0;
@@ -692,7 +697,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log("InCents"+this.application_fee_inCents);
             console.log("total amount bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb => ", this.application_fee_price);
          
-             // ---------------------------------------second api for carge------------------------------------------------------
+             // ---------------------------------------second api for charge------------------------------------------------------
              this._demoService.createChargesApi(
 
                 // "application_fee": application_fee,
@@ -1070,6 +1075,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         )
     }
 
+    selectedLocationSchedulesAndShifts = [];
 
     proceedCartServices(cartServicesInfo, index, serviceInfoIndex) {
         // weekends are disabled
@@ -1117,6 +1123,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     startingScheduleHour: number;
     endingScheduleHour: number;
 
+    timeForAppointment = "13:00";
 
     // Get Schedule for the selected Company
     fetchCompanySchedule() {
@@ -1125,6 +1132,9 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         this._demoService.getCompanySchedule(this.selectedCompany_id, this.selectedCompanyLocationId).subscribe(
             (response: any) => {
                 console.log("Company Schedule is=> ", response.data);
+                
+                this.selectedLocationSchedulesAndShifts = response.data;
+                console.log("hey" , this.selectedLocationSchedulesAndShifts);
                 console.log("Scheduled days is=> ", response.data['0'].company_schedule.day);
                 if (response.data['0'].company_schedule.day.indexOf("Mon") == -1) {
                     this.disabledDaysArray.push(1);
@@ -1167,12 +1177,15 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     isMessageDisplayed = false;
     availableSlotMessage = false;
 
+    conflictsTimings = [];
+
     checkTimeAvailability() {
 
         console.log("Data Passed=> " + 'loc_ID ' + this.selectedCompanyLocationId + 'Comp_ID ' + this.selectedCompany_id + 'Time ' + this.staff_book_time + 'Date ' + this.staff_book_date);
         this._demoService.checkAvailableTime(this.selectedCompanyLocationId, this.selectedCompany_id, this.staff_book_time, this.staff_book_date).subscribe(
             (res: any) => {
                 console.log(" Available Api Response is => ", res)
+                this.conflictsTimings = res.data;
                 if (res.success == '1') {
                     this.enableScheduleProceedBtn = true;
                     this.isMessageDisplayed = true;
@@ -1214,6 +1227,11 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         this.activePaymentTab = false;
         this.isMessageDisplayed = false;
         this.orderNowCheck = false;
+        //-----------
+        this.getServicesToCart();
+        this.selectedServiceParentIndex = true;
+        this.visibleSidebar2 = false;
+        this.isTimeSelected = false;
 
     }
 
@@ -1285,7 +1303,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Disable Time that is not in schedule
 
-    ctrl = new FormControl('', (control: FormControl) => {
+    Oldctrl = new FormControl('', (control: FormControl) => {
         const value = control.value;
 
         if (!value) {
@@ -2052,15 +2070,99 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     scheduleTabShow() {
         this.activeScheduleTab = true;
         this.activeMoreTab = false;
+        this.isTimeSelected = false;
+        
     }
-
+    
     itemTabShow() {
         this.activeScheduleTab = false;
-        this.activeItemTab = true;
+        this.activeItemTab = true; 
         this.isMessageDisplayed = false;
+        // -------------
+        this.getServicesToCart();
+        this.selectedServiceParentIndex = true;
+       
+
     }
     showConfirmationTab() {
         this.confirmation = false;
     }
+
+     
+    isTimeSelected = false;
+
+
+    ctrl = new FormControl('', (control: FormControl) => {
+    
+        const value = control.value;
+        console.log("time value", value);
+        this.isTimeSelected = false;
+
+        if (!value || !this.selectedLocationSchedulesAndShifts)
+        {
+            return null;
+        }
+
+        let from = this.checkForLeadingZeroNonAvailability(this.selectedLocationSchedulesAndShifts[0].company_schedule.from);
+        let to = this.checkForLeadingZeroNonAvailability(this.selectedLocationSchedulesAndShifts[0].company_schedule.to);
+        let selectedTime = this.checkForLeadingZeroNonAvailability(value)+":00";
+
+
+        if (selectedTime < from) {
+            console.log("Too Early");
+            return { tooEarly: true };
+        }
+
+        if (selectedTime > to) {
+            console.log("Too Late");
+            return { tooLate: true };
+        }
+
+        console.log(this.conflictsTimings);
+
+        let isTimeConflict = false;
+        this.conflictsTimings.forEach(timings=> {
+            if(selectedTime>=timings.order_time && selectedTime<=timings.end_time)
+            {
+                console.log("Enetred If");
+                isTimeConflict = true;
+            }
+        });
+
+        if(isTimeConflict)
+        {
+            return { timeConflict: true };
+        }
+
+        this.isTimeSelected = true;
+
+        return null;
+    });
+
+
+    checkForLeadingZeroNonAvailability(time) {
+        let hours = time.split(":")[0];
+        if (hours.length == 1) {
+            return "0" + time;
+        }
+        return time;
+    }
+
+    //get response
+    requestBidResponse;
+    getRequestBidResponse() {
+        this._demoService.getBidResponseApi().subscribe(
+            (data: any) => {
+                 this.requestBidResponse = data.data; 
+                 console.log('Bid Response is here  = ', this.requestBidResponse);
+                 },
+            err => console.error(err),
+            () => console.log('Done Fetching requestBidResponse')
+
+        );
+    }
+
+
+
 
 }

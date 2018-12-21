@@ -76,6 +76,7 @@
                                 {{serviceInfo.company_location_name}}
                             </td>
                             <td scope="row" >{{serviceInfo.name}}</td>
+                            <!-- <td scope="row" >{{serviceInfo.service_name}}</td> -->
                             <td>{{serviceInfo.price | currency:'CAD'}}</td>
                             <td class="text-center custom-pointer">
                                 <a (click)="onDelete(i)">
@@ -473,10 +474,12 @@
                         <div class="form-group m-form__group">
                             <label>
                                 <strong> Select Time Slot <span class="text-success">{{locationSchedule}}</span> </strong>
-                            </label>
-                            <ngb-timepicker [(ngModel)]="timeSlotPicker" [formControl]="ctrl" [hourStep]="hourStep" [minuteStep]="minuteStep"
+                             </label>
+                            <!--<ngb-timepicker [(ngModel)]="timeSlotPicker" [formControl]="ctrl" [hourStep]="hourStep" [minuteStep]="minuteStep"
                                             (change)="changeTimeFunc2($event);" name="timeSlotPicer">
-                            </ngb-timepicker>
+                            </ngb-timepicker> -->
+                            <!-- <input type="time" name="timeSlotPicer" step="900" [formControl]="ctrl"  id=""> -->
+                            <input class="form-control m-input" (change)="isShowAvailablityMessage=false;" [(ngModel)]="timeForAppointment" [formControl]="ctrl" name="timeOfService" type="time"  step="900" min="00:00" max="23:59"  (keydown)="$event.preventDefault();">
                             <b *ngIf="locationSchedule != ''">Choose time between <span class="text-success">{{locationSchedule}}</span></b>
                             <br>
                             <div *ngIf="ctrl.valid" class="small form-text text-success">Great choice</div>
@@ -501,13 +504,13 @@
                             <!--</div>-->
                         </div>
                     </div>
-                    <div class="col-md-12" style="text-align:center;">
+                    <!-- <div class="col-md-12" style="text-align:center;">
                         <hr>
                         <button class="btn btn-link" (click)="checkTimeAvailability();">
                             Check Availability
                         </button>
                         <hr>
-                    </div>
+                    </div> -->
                     <div class="col-md-12" *ngIf="isMessageDisplayed" style="text-align:center;">
                         <h4 class="text-success" *ngIf="availableSlotMessage"> Selected time is available! You may proceed.</h4>
                         <h4 class="text-danger" *ngIf="!availableSlotMessage"> Sorry no employee available, try again later!</h4>
@@ -520,7 +523,7 @@
                            <button  class="btn btn-default custom-float-left"  (click)="itemTabShow(); "><i class="fa fa-chevron-left"></i> Back</button>
                     </div>            
                     <div class="col text-right">
-                        <button *ngIf="proceedCounter > 0 " type="button" class="btn btn-primary" [disabled]="!ctrl.valid || !enableScheduleProceedBtn"
+                        <button *ngIf="proceedCounter > 0;  " type="button" class="btn btn-primary" [disabled]="!isTimeSelected"
                                 (click)="activeTab('more'); getTimeAndDate(); saveStaffSchedule(); orderNowCheck = false;">Proceed S2</button>
                     </div>
             </div>
