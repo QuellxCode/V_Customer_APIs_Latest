@@ -419,6 +419,12 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     // Selected Company Id of service being ordered
     selectedCompany_id;
 
+    //company schedule arrays time checking system...
+    disabledTimes = [];
+    timesToBeDisplayed = [];
+    timeOfService = "";
+    dateSelect = false;
+
     //    Format of ConfirmationStepCardInfo
 
     confirmationStepCardInfo = {
@@ -1136,6 +1142,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedLocationSchedulesAndShifts = response.data;
                 console.log("hey" , this.selectedLocationSchedulesAndShifts);
                 console.log("Scheduled days is=> ", response.data['0'].company_schedule.day);
+                this.timesToBeDisplayed =  response.data['0'].company_schedule.scheduleTimings;
                 if (response.data['0'].company_schedule.day.indexOf("Mon") == -1) {
                     this.disabledDaysArray.push(1);
                 }
@@ -1188,14 +1195,10 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.conflictsTimings = res.data;
                 if (res.success == '1') {
                     this.enableScheduleProceedBtn = true;
-                    this.isMessageDisplayed = true;
-                    this.availableSlotMessage = true;
                     this.hiddenScheduleProcceed = true;
                 }
                 else {
                     this.enableScheduleProceedBtn = false;
-                    this.isMessageDisplayed = true;
-                    this.availableSlotMessage = false;
                 }
             },
             (err) => { console.error(err) },
@@ -1209,10 +1212,12 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedCompany_id, 
             this.staff_book_date,
             this.selectedCompanyLocationId   
-           )
-            .subscribe(
-            (data: Response) => {
+           ).subscribe(
+            (data: any) => {
                 console.log("data", data);
+                this.disabledTimes = data.disabledTimes;
+                this.timeOfService = "";
+              
                 return true;
             },
             error => {
@@ -1326,7 +1331,8 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     getTimeAndDate() {
-        this.staff_book_time = this.timeSlotPicker.hour + ':' + this.timeSlotPicker.minute + ':' + '00';
+        // this.staff_book_time = this.timeSlotPicker.hour + ':' + this.timeSlotPicker.minute + ':' + '00';
+        this.staff_book_time = this.timeOfService;
         console.log('time is', this.staff_book_time);
         console.log('Date is', this.staff_book_date);
     }
@@ -1347,6 +1353,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         selectedDate = event.year + '-' + event.month + '-' + event.day;
         console.log("The date selected is ", selectedDate);
         this.staff_book_date = selectedDate;
+        this.dateSelect=true;
     }
 
 

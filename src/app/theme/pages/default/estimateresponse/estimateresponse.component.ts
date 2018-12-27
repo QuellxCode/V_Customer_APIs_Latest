@@ -612,11 +612,14 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
 
     public imageUrl = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
 
+    companiesQuotedService;
+    serviceApproved_Granted;
 
     getRequestBidResponse() {
         this._demoService.getBidResponseApi().subscribe(
             (data: any) => {
-                 this.requestBidResponse = data.data; 
+                 this.requestBidResponse = data.data;
+
                  console.log('Bid Response is here  = ', this.requestBidResponse);
                  },
             err => console.error(err),
@@ -624,6 +627,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
 
         );
     }
+
+    
 
     
     bidRequest(form_data: NgForm) 

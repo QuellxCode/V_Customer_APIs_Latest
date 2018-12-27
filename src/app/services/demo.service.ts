@@ -180,7 +180,37 @@ export class DemoService {
         let obj = {
             "location_id": locationRandID
         };
-        return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift/' + companyID, obj, httpOptions);
+        return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift/' + companyID, obj, httpOptions).map(
+            (data:any)=>
+            {
+                let disabledTimes = [];
+                console.log("The Scheduled Data ",data);
+               
+                let start = data.data[0].company_schedule.from;
+                let end_time = data.data[0].company_schedule.to;
+
+                let hours = parseInt(start.split(":")[0]);
+                let mins = parseInt(start.split(":")[1]);
+                let hoursStr = (""+hours).length<2 ? ("0"+hours): (""+hours);
+                let minsStr = (""+mins).length<2 ? ("0"+mins): (""+mins);
+                while((hoursStr+":"+minsStr+":00") < end_time)
+                {
+                    disabledTimes.push(hoursStr+":"+minsStr);
+                  
+                    mins+=15;
+                    if(mins==60)
+                    {
+                         mins=0;
+                         hours++;
+                    }
+                    hoursStr = (""+hours).length<2 ? ("0"+hours): (""+hours);
+                    minsStr = (""+mins).length<2 ? ("0"+mins): (""+mins);
+                }
+
+                  data.data[0].company_schedule["scheduleTimings"] = disabledTimes;
+                  return data;
+            }
+        );
     }
 
     checkAvailableTime(location_id, company_id, time, date) {
@@ -248,6 +278,8 @@ export class DemoService {
         return this.http.post('https://sharjeelkhan.ca/vease/vease-app/api/v1/company-shift-duration/' + company_id, obj, httpOptions).map(
             (data:any)=>
             {
+                let disabledTimes = [];
+                console.log("The Data ",data);
                 data.data.forEach(x=> {
                     let time = x.order_time;
                     let duration = x.duration;
@@ -257,20 +289,86 @@ export class DemoService {
                     console.log("hours ",hours);
                     console.log("mins ",mins);
 
-                    
+                   
                     
                     while(mins>=60)
                     {
                         mins-=60
                         hours++;
                     }
+
                     let hoursStr = (""+hours).length<2 ? ("0"+hours): (""+hours);
-                    let minsStr = (""+mins).length<2 ? ("0"+mins): (""+mins);  
+                    let minsStr = (""+mins).length<2 ? ("0"+mins): (""+mins); 
+                    
                     x["end_time"] = hoursStr+":"+minsStr+":00";
+
+                    let end_time = x.end_time;
+                    hours = parseInt(time.split(":")[0]);
+                    mins = parseInt(time.split(":")[1]);
+                    console.log(hours+":"+mins+":00" +" < "+end_time);
+
+                    hoursStr = (""+hours).length<2 ? ("0"+hours): (""+hours);
+                    minsStr = (""+mins).length<2 ? ("0"+mins): (""+mins);
+
+
+                    disabledTimes.push(hoursStr+":"+minsStr);
+                    console.log(disabledTimes);
+                    console.log(hoursStr+":"+minsStr+":00" +"<"+ end_time);
+                    while(hoursStr+":"+minsStr+":00" < end_time)
+                    {
+                        
+                        mins+=5;
+                        if(mins==60)
+                        {
+                            mins=0;
+                            hours++;
+                        }
+
+                        
+                    hoursStr = (""+hours).length<2 ? ("0"+hours): (""+hours);
+                    minsStr = (""+mins).length<2 ? ("0"+mins): (""+mins);
+                    console.log(hoursStr+":"+minsStr);
+
+                    disabledTimes.push(hoursStr+":"+minsStr);
+                    }
+
+
+
                 });
+
+                data["disabledTimes"] = disabledTimes;
+                
+    
                 return data;
             }
         );
+        
+        // .map(
+        //     (data:any)=>
+        //     {
+        //         data.data.forEach(x=> {
+        //             let time = x.order_time;
+        //             let duration = x.duration;
+        //             let hours = parseInt(time.split(":")[0]);
+        //             let mins = parseInt(time.split(":")[1])+parseInt(x.duration);
+                   
+        //             console.log("hours ",hours);
+        //             console.log("mins ",mins);
+
+                    
+                    
+        //             while(mins>=60)
+        //             {
+        //                 mins-=60
+        //                 hours++;
+        //             }
+        //             let hoursStr = (""+hours).length<2 ? ("0"+hours): (""+hours);
+        //             let minsStr = (""+mins).length<2 ? ("0"+mins): (""+mins);  
+        //             x["end_time"] = hoursStr+":"+minsStr+":00";
+        //         });
+        //         return data;
+        //     }
+        // );
 
     }
 
@@ -392,4 +490,5 @@ export class DemoService {
     //   return this.http.get('http://sharjeelkhan.ca/vease/vease-app/api/v1/get-service/', httpOptions)
     // }
 
+    
 }
