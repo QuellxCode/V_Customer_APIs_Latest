@@ -614,13 +614,14 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
 
     companiesQuotedService;
     serviceApproved_Granted;
-
     getRequestBidResponse() {
         this._demoService.getBidResponseApi().subscribe(
             (data: any) => {
                  this.requestBidResponse = data.data;
-
-                 console.log('Bid Response is here  = ', this.requestBidResponse);
+                 this.companiesQuotedService = this.requestBidResponse.filter(y => y.services.status.trim() == "0");
+                 this.serviceApproved_Granted = this.requestBidResponse.filter(y => y.services.status.trim() == "1");
+                 console.log('Bid Response is here &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& = ', this.companiesQuotedService);
+                 console.log('Bid Response is here $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ = ', this.serviceApproved_Granted);
                  },
             err => console.error(err),
             () => console.log('Done Fetching requestBidResponse')
@@ -628,6 +629,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         );
     }
 
+        
     
 
     
@@ -680,8 +682,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     {
         this.company_id_of_quoted_price = company_id;
         this.request_bid_rand_id = request_bid_response_rand_id;
-        alert("response "+this.request_bid_rand_id);
-        alert("company "+ this.company_id_of_quoted_price);
+        //alert("response "+this.request_bid_rand_id);
+        //alert("company "+ this.company_id_of_quoted_price);
         
     }
 
@@ -812,7 +814,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
     }
 
     showAlert(){
-        alert("Approved");
+        //alert("Approved");
     }
 
     isProceedFirstEnabled = false;

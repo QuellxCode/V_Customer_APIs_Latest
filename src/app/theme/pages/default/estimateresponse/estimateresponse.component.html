@@ -107,7 +107,7 @@
 			<div class="m-portlet m-portlet--full-height">
 					
 				<div class="m-portlet__body ">
-						<button class="btn btn-link personMoreDetailsButton custom-padding-zero" style="padding-bottom: 10px;"  *ngIf="bidPricesRequests" (click)="showAllTabs()"><i class="fa fa-chevron-left"></i>Go Back</button>
+						<button class="btn btn-link personMoreDetailsButton custom-padding-zero" style="padding-bottom: 10px;"  *ngIf="bidPricesRequests" (click)="showAllTabs();  getRequestBidResponse();"><i class="fa fa-chevron-left"></i>Go Back</button>
 					
 					<select class="form-control m-input" (change)="showRequestTabs($event.target.value)">
 						<option value="all">
@@ -524,7 +524,13 @@
 			<!-- [hidden]="isGridViewHide"-->
 			<div class="row">
 				<div class="col-md-12" *ngIf="approved">
-					<div class="body organ1 serviceCard">
+						<div *ngIf="!serviceApproved_Granted || serviceApproved_Granted.length === 0">
+								<p style="text-align:center;">No Approved/Granted Service Found!</p>
+							</div>
+						<div *ngFor="let approveService of serviceApproved_Granted">
+								
+						<div *ngFor="let approveCompany of approveService.company">
+							<div class="body organ1 serviceCard">
 						<div class="row custom-margin-zero">
 							<div class="card-left col-lg-3" id="">
 								<!-- <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand">
@@ -532,43 +538,43 @@
                                    <span></span>
                                    </label> -->
 								<div class="row onepersonrow">
-									<div class="col-md-12">
-										<img class="personimage" src="./assets/demo/demo3/media/img/car.png">
-										<p class="personname">Handy Autos</p>
-										<p class="persontype">Car</p>
+									<div class="col-md-12" style="padding: 5px;">
+										<img class="personimage" src="{{imageUrl+approveCompany.image}}">
+										<p class="personname">{{approveCompany.company_name}}</p>
+										<p class="persontype">{{approveCompany.company_location_name}}</p>
 									</div>
 								</div>
 								<p class="personappartmentno">
-									<i class="fa fa-clock-o"></i> 6:00 - 23:00
+									<i class="fa fa-clock-o"></i> {{approveService.services.category_name}}
 								</p>
 								<p class="personbuildingname">
-									<i class="fa fa-money"></i> $60 - $200
+									<i class="fa fa-money"></i> {{approveCompany.price | currency:'CAD'}}
 								</p>
-								<p class="personaddress">
+								<!-- <p class="personaddress">
 									<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada
 								</p>
 								<a href="javascript:;" class="btn btn-default chatServiceButton">
-									<i class="la la-comments"></i> Message</a>
+									<i class="la la-comments"></i> Message</a> -->
 							</div>
 							<div class="card-right col-lg-9">
 								<h6 class="text-muted pull-left">
-									<span class="m-badge  m-badge--success m-badge--wide">Approved/Granted</span>
+									<span class="m-badge  m-badge--success m-badge--wide">Approve/Granted</span>
 								</h6>
 								<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
 								<div class="clearfix"></div>
 								<div class="row services-categories">
 									<div class="col-md-12 category-list">
-										<h6 class="service-heading">Maintenance &amp; Repair</h6>
+										<h6 class="service-heading">{{approveService.services.sub_category_name}}</h6>
 										<div class="row service-item">
 										  
 											<div class="col-md-5 ">
-												Oil &amp; Oil Filter Change
+													{{approveService.services.service_name}}
 											</div>
 											<div class="col-md-3">
 											</div>
 											<div class="col-md-4">
                                     <span class="m--font-success custom-float-right">
-                                    $120.00
+											{{approveService.services.price | currency:'CAD'}}
                                     </span>
 											</div>
 											<div class="col-md-12">
@@ -577,30 +583,7 @@
 										</div>
 										
 										        
-										<div class="row service-item">
-											<!-- <div class="col-md-1">
-														<span class="custom-width">
-														<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
-															height: 12px;">
-														<input type="checkbox" value="true" (change)="showBookButtonMap($event)">
-														<span></span>
-														</label>
-														</span>
-											</div> -->
-											<div class="col-md-5 ">
-											Suspension
-											</div>
-											<div class="col-md-4 offset-md-3">
-														<span class="m--font-success custom-float-right">
-														$200.00
-														</span>
-											</div>
-											<!-- <div class="col-md-12" style="margin-top: 10px; text-align: right;">
-											<a (click)="visibleSidebar2 = true" class="btn btn-sm btn-primary custom-margin-right-book-button"
-												[ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Book</a>
-											</div> -->
-										</div>
-
+								
 										
 										
 									</div>
@@ -608,6 +591,8 @@
 							</div>
 						</div>
 					</div>
+					</div><!-- div -->
+				  </div><!-- div -->
 				</div>
 				
 				<!-- <div class="col-md-12" *ngIf="pending" >
@@ -679,7 +664,7 @@
 					</div>
 				</div>
 				</div> -->
-				<div class="col-md-12" *ngIf="rejected">
+				<!-- <div class="col-md-12" *ngIf="rejected">
 					<div class="body organ1 serviceCard">
 						<div class="row custom-margin-zero">
 							<div class="card-left col-lg-3" id="">
@@ -760,7 +745,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 
@@ -768,11 +753,14 @@
 
 		<div class="col-xl-9 col-lg-8" *ngIf="bidPricesRequests">
 				<!-- [hidden]="isGridViewHide"-->
-				
+				<div *ngIf="!companiesQuotedService || companiesQuotedService.length === 0">
+						<p style="text-align:center;">No Response From Companies Found!</p>
+					</div>
 				<div class="row">
 						
 					<!-- <div *ngFor="let requests of requestBidResponse"> -->
-						<div class="col-md-6" *ngFor="let requests of requestBidResponse; let i = index;">
+							
+						<div class="col-md-6" *ngFor="let requests of companiesQuotedService; let i = index;">
 						<div class="body organ1 serviceCard">
 							<div class="row custom-margin-zero">
 							 
