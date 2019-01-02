@@ -620,8 +620,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
                  this.requestBidResponse = data.data;
                  this.companiesQuotedService = this.requestBidResponse.filter(y => y.services.status.trim() == "0");
                  this.serviceApproved_Granted = this.requestBidResponse.filter(y => y.services.status.trim() == "1");
-                 console.log('Bid Response is here &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& = ', this.companiesQuotedService);
-                 console.log('Bid Response is here $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ = ', this.serviceApproved_Granted);
+                 //console.log('Bid Response is here &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& = ', this.companiesQuotedService);
+                 //console.log('Bid Response is here $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ = ', this.serviceApproved_Granted);
                  },
             err => console.error(err),
             () => console.log('Done Fetching requestBidResponse')
