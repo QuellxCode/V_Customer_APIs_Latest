@@ -4,6 +4,7 @@ import { ScriptLoaderService } from "../../../../_services/script-loader.service
 import { DemoService } from "../../../../services/demo.service";
 import { NgForm } from "@angular/forms";
 import { profileService } from "../../../../services/profile.service";
+import { ToastrService } from "../../../../services/toastrService.service";
 
 @Component({
     selector: "app-profile",
@@ -39,7 +40,8 @@ export class ProfileComponent implements OnInit {
 
     };
 
-    constructor(private _script: ScriptLoaderService, private demoService: DemoService, private profileService: profileService) { }
+    constructor(private _script: ScriptLoaderService, private demoService: DemoService, private profileService: profileService, 
+        private toastrService: ToastrService  ) { }
     ngOnInit() {
         this.profileSectionHidden = false;
         this.securitySectionHidden = true;
@@ -111,12 +113,13 @@ export class ProfileComponent implements OnInit {
             .subscribe(
             (data: Response) => {
                 console.log(data);
+                this.toastrService.showSuccessMessages("Request Successfully Submitted!");
                 this.getProfile();
                 console.log(form_data);
             },
             error => {
                 console.error("Error saving Profile!");
-
+                this.toastrService.showErrorMessages("Error in Submiting Request. Error: " + error.message + "<br> Try Resubmitting The Form");
             }
             );
     }

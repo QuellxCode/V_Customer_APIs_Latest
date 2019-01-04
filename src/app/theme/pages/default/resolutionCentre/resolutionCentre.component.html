@@ -2,7 +2,7 @@
 <div class="m-subheader m--padding-top-10" style="margin-bottom: -26px;">
     <div class="d-flex align-items-center">
         <div class="mr-auto">
-            <h3 class="m-subheader__title">
+            <h3 class="m-subheader__title animated flipInY animation-delay-5">
                 Resolution Centre
 
                 <small class="fa fa-search text-muted stats-icons custom-small-header" (click)="mainFilterHide == true? mainFilterHide=false : mainFilterHide=true">
@@ -19,7 +19,7 @@
 </div>
 
 <div class="m-subheader breadcrumsubheader m--padding-top-15">
-    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline animated flipInY animation-delay-5">
         <li class="m-nav__item m-nav__item--home">
             <a class="m-nav__link m-nav__link--icon" href="/dashboard" ng-reflect-href="#" ng-reflect-router-link="/dashboard" routerlink="/dashboard">
                 <i class="m-nav__link-icon la la-home"></i>
@@ -48,11 +48,11 @@
     <!-- ___________ Start Dispute Table______________ -->
     <div class="row">
         <div class="col-md-5" style="padding-right: 0px;">
-            <h5 class="m-subheader__title titleComplaints titles">
+            <h5 class="m-subheader__title titleComplaints titles animated flipInX animation-delay-5">
                 Dispute Table
             </h5>
             <div class="m-section">
-                <div class="m-section__content">
+                <div class="m-section__content animated fadeInLeft animation-delay-10">
                     <!-- <table class="table table-hover "  cellspacing="0" id="datatable">    >>>> nasir remove id-"datatable" for a reason -->
                     <table class="table table-hover "  cellspacing="0">
                         <thead style="text-align: center;">
@@ -70,7 +70,7 @@
                         <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
                         <!-- this text and preloader hide after successfully order fetch -->
                         <div *ngIf="!order_stage_3 || order_stage_3.length === 0">
-                            <p style="text-align:center;">No Resolution Found!</p>
+                            <p style="text-align:center;"  class="animated shake animation-delay-10">No Resolution Found!</p>
                         </div>
                             <tr *ngFor="let completedOrder of order_stage_3; let i = index">
                                 <td>{{i + 1}}</td>
@@ -92,7 +92,7 @@
         </div>
 
 
-        <div class="col-md-4 titleComplaints" [hidden]="!disputeRightSideActive" style="margin-left: -40px;">
+        <div class="col-md-4 titleComplaints  animated fadeInLeft animation-delay-3" [hidden]="!disputeRightSideActive" style="margin-left: -40px;">
             <!-- _______scroable goes here_______ -->
             <!--Begin::Timeline 2 -->
             <h5 class="m-subheader__title titleComplaints titles m--padding-left-45">
@@ -197,7 +197,7 @@
             <!--End: TimeLine Scrolable-->
             <!--End: TimeLine Scrolable-->
         </div>
-        <div class="col-md-3" [hidden]="!disputeRightSideActive">
+        <div class="col-md-3 animated fadeInLeft animation-delay-5" [hidden]="!disputeRightSideActive">
             <form (ngSubmit)="resolutionCenter(RC)" #RC="ngForm">
             <label class="m--font-danger custom-label-setting">
                 <span>*Choose Below Option Accordingly</span>

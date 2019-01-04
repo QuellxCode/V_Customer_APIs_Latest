@@ -1,8 +1,8 @@
 <!-- END: Header -->
-<div class="m-subheader  m--padding-top-10" style="margin-bottom: -26px;">
-    <div class="d-flex align-items-center">
+<div class="m-subheader  m--padding-top-10 " style="margin-bottom: -26px;">
+    <div class="d-flex align-items-center ">
         <div class="mr-auto">
-            <h3 class="m-subheader__title m-subheader__title--separator">
+            <h3 class="m-subheader__title m-subheader__title--separator animated flipInY animation-delay-5">
                 Order Page
             </h3>
             <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
@@ -15,7 +15,7 @@
 
 <!-- Start: Subheader -->
 <div class="m-subheader breadcrumsubheader" style="padding-top:  0px;">
-    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline animated flipInY animation-delay-5">
         <li class="m-nav__item m-nav__item--home">
             <a class="m-nav__link m-nav__link--icon" href="/dashboard" ng-reflect-href="#" ng-reflect-router-link="/dashboard" routerlink="/dashboard">
                 <i class="m-nav__link-icon la la-home"></i>
@@ -45,7 +45,7 @@
 
 
         <!--List 1 Start-->
-        <div class="col-xl-4">
+        <div class="col-xl-4 animated fadeIn animation-delay-1">
             <!--begin:: Widgets/Authors Profit-->
             <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height">
                 <div class="m-portlet__head">
@@ -131,9 +131,9 @@
                         <!-- this text and preloader hide after successfully order fetch -->
 
                         <div *ngIf="!order_stage_1 || order_stage_1.length === 0">
-                            <p style="text-align:center;">No Pending Order Found!</p>
+                            <p style="text-align:center;"  class="animated shake animation-delay-10">No Pending Order Found!</p>
                         </div>
-                            <div class="m-widget4__item" *ngFor="let pendingOrders of order_stage_1; let i =index">
+                            <div class="m-widget4__item animated fadeInUp animation-delay-3" *ngFor="let pendingOrders of order_stage_1; let i =index">
                                 
                                     <div class="m-widget4__img m-widget4__img--logo">
                                         <img src="{{imageUrl+pendingOrders.company_image}}" alt="" class="custom-image-setting">
@@ -191,7 +191,7 @@
 
 
         <!--List 2 Start-->
-        <div class="col-xl-4">
+        <div class="col-xl-4 animated fadeIn animation-delay-1">
             <!--begin:: Widgets/Authors Profit-->
             <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height">
                 <div class="m-portlet__head">
@@ -271,7 +271,7 @@
                          <div *ngIf="!order_stage_2 || order_stage_2.length === 0">
                             <p style="text-align:center;">No Schedule/Reschedule Order Found!</p>
                         </div>
-                        <div class="m-widget4__item" *ngFor="let scheduleOrders of order_stage_2; let i =index">
+                        <div class="m-widget4__item animated fadeInUp animation-delay-7" *ngFor="let scheduleOrders of order_stage_2; let i =index">
                                 <div class="m-widget4__img m-widget4__img--logo">
                                     <img src="{{imageUrl+scheduleOrders.company_image}}" alt="" class="custom-image-setting">
                                 </div>
@@ -340,7 +340,7 @@
         <!--List 3 Ends-->
 
         <!--List 4 Start-->
-        <div class="col-xl-4">
+        <div class="col-xl-4 animated fadeIn animation-delay-1">
             <!--begin:: Widgets/Authors Profit-->
             <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height">
                 <div class="m-portlet__head">
@@ -425,9 +425,9 @@
                           <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
                           <!-- this text and preloader hide after successfully order fetch -->
                           <div *ngIf="!order_stage_3 || order_stage_3.length === 0">
-                            <p style="text-align:center;">No Completed Order Found!</p>
+                            <p style="text-align:center;" class="animated shake animation-delay-10">No Completed Order Found!</p>
                         </div>
-                        <div class="m-widget4__item" *ngFor="let completedOrder of order_stage_3; let i =index">
+                        <div class="m-widget4__item animated fadeInUp animation-delay-10" *ngFor="let completedOrder of order_stage_3; let i =index">
                             <div class="m-widget4__img m-widget4__img--logo">
                                 <img src="{{imageUrl+completedOrder.company_image}}" alt="" class="custom-image-setting">
                             </div>

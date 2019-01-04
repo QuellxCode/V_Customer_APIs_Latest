@@ -2,7 +2,7 @@
 <div class="m-subheader" appunwraptag="" [ngClass]="{'d-none':isDisplayDetail}">
 	<div class="d-flex align-items-center">
 		<div class="mr-auto">
-			<h3 class="m-subheader__title">
+			<h3 class="m-subheader__title animated flipInY animation-delay-5">
 				Estimated Response
 				<small class="fa fa-search text-muted stats-icons custom-margin-left-zero" (click)="mainFilterHide == true? mainFilterHide=false : mainFilterHide=true">
 					<a class="custom-cursor">
@@ -12,7 +12,7 @@
 			<input type="text" class="custom-main-filter custom-main-filter-focus" *ngIf="mainFilterHide">
 		</div>
 		<div class="custom-padding-right-zero">
-			<button class="btn btn-link pull-right" (click)="formHidden=!formHidden; ">
+			<button class="btn btn-link pull-right animated fadeInRight animation-delay-15" (click)="formHidden=!formHidden; ">
 				<a href="" class="m-nav__link" >
 					<i class="m-nav__link-icon fa fa-plus"></i>
 					<span class="m-nav__link-text">
@@ -20,7 +20,7 @@
          </span>
 				</a>
 			</button>
-			<button class="btn btn-link pull-right" (click)="showQuoted(); getRequestBidResponse();">
+			<button class="btn btn-link pull-right animated fadeInRight animation-delay-10" (click)="showQuoted(); getRequestBidResponse();">
 				<a href="" class="m-nav__link" >
 					<i class="m-nav__link-icon fa fa-align-right"></i>
 					<span class="m-nav__link-text">
@@ -78,7 +78,7 @@
 </div>
 <div class="m-subheader breadcrumb-header m--padding-top-5">
 	<!--*ngIf="!isDisplayDetail" -->
-	<ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+	<ul class="m-subheader__breadcrumbs m-nav m-nav--inline animated flipInY animation-delay-5">
 		<li class="m-nav__item m-nav__item--home">
 			<a class="m-nav__link m-nav__link--icon" routerLink="/index" ng-reflect-href="#">
 				<i class="m-nav__link-icon la la-home"></i>
@@ -99,10 +99,10 @@
 <hr class="customhr" *ngIf="!isDisplayDetail" />
 <!-- END: Subheader -->
 <!-- start Content -->
-<div class="m-content" [hidden]="!formHidden">
+<div class="m-content " [hidden]="!formHidden">
 
 	<div class="row" [hidden]="isDisplayDetail">
-		<div class="col-xl-3 col-lg-4" style="min-height: 400px; max-height: 100%;">
+		<div class="col-xl-3 col-lg-4 animated zoomIn animation-delay-5" style="min-height: 400px; max-height: 100%;">
 				
 			<div class="m-portlet m-portlet--full-height">
 					
@@ -523,11 +523,12 @@
 		<div class="col-xl-9 col-lg-8" *ngIf="allRequestsTabs">
 			<!-- [hidden]="isGridViewHide"-->
 			<div class="row">
-				<div class="col-md-12" *ngIf="approved">
+				<div class="col-md-12 animated flipInX animation-delay-7" *ngIf="approved">
 						<div *ngIf="!serviceApproved_Granted || serviceApproved_Granted.length === 0">
-								<p style="text-align:center;">No Approved/Granted Service Found!</p>
+								<p style="text-align:center;" class="animated shake animation-delay-10">No Approved/Granted Service Found!</p>
 							</div>
-						<div *ngFor="let approveService of serviceApproved_Granted">
+					<div class="row">
+						<div class="col-md-6" *ngFor="let approveService of serviceApproved_Granted">
 								
 						<div *ngFor="let approveCompany of approveService.company">
 							<div class="body organ1 serviceCard">
@@ -544,12 +545,12 @@
 										<p class="persontype">{{approveCompany.company_location_name}}</p>
 									</div>
 								</div>
-								<p class="personappartmentno">
+								<!-- <p class="personappartmentno">
 									<i class="fa fa-clock-o"></i> {{approveService.services.category_name}}
 								</p>
 								<p class="personbuildingname">
 									<i class="fa fa-money"></i> {{approveCompany.price | currency:'CAD'}}
-								</p>
+								</p> -->
 								<!-- <p class="personaddress">
 									<i class="fa fa-map-marker"></i> 1620 Orr Rd, Mississauga, ON L5J 4T2, Canada
 								</p>
@@ -593,6 +594,7 @@
 					</div>
 					</div><!-- div -->
 				  </div><!-- div -->
+				</div> <!--new row-->
 				</div>
 				
 				<!-- <div class="col-md-12" *ngIf="pending" >
@@ -754,7 +756,7 @@
 		<div class="col-xl-9 col-lg-8" *ngIf="bidPricesRequests">
 				<!-- [hidden]="isGridViewHide"-->
 				<div *ngIf="!companiesQuotedService || companiesQuotedService.length === 0">
-						<p style="text-align:center;">No Response From Companies Found!</p>
+						<p style="text-align:center;"  class="animated shake animation-delay-10">No Response From Companies Found!</p>
 					</div>
 				<div class="row">
 						
@@ -1293,12 +1295,12 @@
 </div>
 <!-- More Detail Content End -->
 <!-- Request Service Content start -->
-<div class="m-content m-content-nopadding" style="margin-top: -40px;" [hidden]="formHidden">
+<div class="m-content m-content-nopadding animated fadeInUp animation-delay-5" style="margin-top: -40px;" [hidden]="formHidden">
 	<div class="m-portlet m-portlet--bordered-semi m-portlet--full-height">
 		<div class="m-portlet__head">
 			<div class="m-portlet__head-caption">
 				<div class="m-portlet__head-title">
-					<a class="btn btn-link custom-request-a-setting backbtn-adjust-margin" (click)="formHidden=true">
+					<a class="btn btn-link custom-request-a-setting backbtn-adjust-margin" (click)="formHidden=true;">
 						<i class="fa fa-chevron-left"></i> BACK</a>
 					<h3 class="m-portlet__head-text" style=" float:left;">
 						Request a Service

@@ -3,7 +3,7 @@
     <!--  -->
     <div class="d-flex align-items-center">
         <div class="mr-auto">
-            <h3 class="m-subheader__title">
+            <h3 class="m-subheader__title animated flipInY ">
                 Services
                 <small class="custom-small-header-setting">
                     <a (click)="adjustRadiusMap()" id="adjustRadius" style="cursor:pointer;">
@@ -16,10 +16,10 @@
                    </small> -->
             </h3>
             <!-- <input type="text" class="custom-main-filter custom-main-filter-focus" *ngIf="mainFilterHide">  -->
-            <div class="input-group mb-3" style="max-width: 50%;
+            <div class="input-group mb-3 animated fadeInDown " style="max-width: 50%;
             margin-left: 15%;
             position: absolute;
-            margin-top: -35px;">
+            margin-top: -35px;" >
                 <div class="input-group-prepend">
                     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
                     <div class="dropdown-menu">
@@ -71,7 +71,7 @@
 </div>
 <!-- *ngIf="isDisplayDetail" -->
 <div class="m-subheader breadcrumb-header m--padding-top-5" *ngIf="isBreadCrum">
-    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline animated flipInY ">
         <li class="m-nav__item m-nav__item--home">
             <a class="m-nav__link m-nav__link--icon" routerLink="/index" ng-reflect-href="#">
                 <i class="m-nav__link-icon la la-home"></i>
@@ -135,7 +135,7 @@
 <!-- More Detail Content End -->
 
 <!-- Map Detail Content Start -->
-<div class="m-content">
+<div class="m-content ">
     <!--Begin::Section-->
     <div class="row detailSection" *ngIf="mapView">
         <div class="col-md-12">
@@ -167,8 +167,8 @@
                                     <!-- ------------------ BEGIN Search By Company View BEGIN ------------------------- -->
                                     <div *ngIf="searchByCompanyView">
 
-                                        <form style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
-                                            <div class="input-group mb-3">
+                                        <form class="animated fadeInRight animation-delay-3" style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
+                                            <div class="input-group mb-3 ">
                                                 <input type="text" class="form-control" [(ngModel)]="searchText" name="searchInputFilter" placeholder="Search Company..." style="border-radius: 15px;" >
                                                 <div class="input-group-append custom-pointer">
                                                     <!-- <span class="input-group-text">
@@ -184,7 +184,7 @@
                                         </form>
                                         <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
                                         <div class="col-sm-12 m--margin-top-10 h4" *ngIf="(company_and_locations | searchFilter : searchText).length === 0"> No records found against your search...</div>
-                                        <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies"
+                                        <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies animated fadeInLeft animation-delay-3"
                                              *ngFor="let company of company_and_locations | searchFilter: searchText; let i = index;">
                                             <!-- First Card Start -->
                                             <h5 class="m--font-brand m--font-boldest">
@@ -235,8 +235,8 @@
                                     <!-- ------------------ BEGIN: Search By Service View  ---------------------- -->
                                     <div *ngIf="!searchByCompanyView">
 
-                                        <form style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
-                                            <div class="input-group mb-3">
+                                        <form class="animated fadeInLeft animation-delay-3" style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
+                                            <div class="input-group mb-3  ">
                                                 <input type="text" class="form-control" [(ngModel)]="searchServiceText" name="searchInputServiceFilter" placeholder="Search Service..." style="border-radius: 15px;" >
                                                 <div class="input-group-append custom-pointer">
                                                 </div>
@@ -246,7 +246,7 @@
                                         <!--<div class="m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25" *ngIf="preloader"></div>-->
                                         <div class="col-sm-12 m--margin-top-10 h4" *ngIf="(companyLocationServices | serviceSearchFilter : searchServiceText).length === 0"> No services found against your search...</div>
 
-                                        <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies"
+                                        <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies  animated fadeInRight animation-delay-3"
                                              *ngFor="let company of companyLocationServices | serviceSearchFilter: searchServiceText; let i = index;">
 
                                             <h5 class="m--font-brand m--font-boldest">
@@ -325,7 +325,7 @@
 
                                         <div class="row width-100 pull-right">
                                             <div class="col-md-12 m--margin-top-10 text-right m--padding-right-10">
-                                                <a (click)="addServicesToCart2();" attr.disabled="isDisabled" class="btn btn-sm btn-primary custom-margin-right-book-button"
+                                                <a (click)="addServicesToCart2();" attr.disabled="isDisabled" class="btn btn-sm btn-primary custom-margin-right-book-button animated fadeInUp animation-delay-5"
                                                    [ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Add to Cart</a>
                                             </div>
                                         </div>
