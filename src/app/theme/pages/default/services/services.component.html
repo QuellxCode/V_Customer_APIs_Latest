@@ -15,49 +15,27 @@
                    </a>
                    </small> -->
             </h3>
-            <!-- <input type="text" class="custom-main-filter custom-main-filter-focus" *ngIf="mainFilterHide">  -->
-            <div class="input-group mb-3 animated fadeInDown " style="max-width: 50%;
-            margin-left: 15%;
-            position: absolute;
-            margin-top: -35px;" >
-                <div class="input-group-prepend">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Personal</a>
-                        <a class="dropdown-item" href="" style="    padding-left: 32px;
-                     margin-top: -15px;">Hair</a>
-                        <a class="dropdown-item" href="" style="    padding-left: 32px;
-                     margin-top: -15px;">Health</a>
-                        <hr style="    margin: 0;
-                     border-top: 1px solid;
-                     width: 83%;
-                     margin-left: 15px;">
-                        <a class="dropdown-item" href="#">Autos</a>
-                        <a class="dropdown-item" href="" style="    padding-left: 32px;
-                     margin-top: -15px;">Maintenance & Repair</a>
-                    </div>
-                    <!-- <div class="dropdown" style="margin-left: 5px;">
-                       <a class="btn btn-primary dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 0px;">
-                           Sub-Category
-                       </a>
-
-                       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                           <a class="dropdown-item" href="#">Hair</a>
-                           <a class="dropdown-item" href="#">Maintenance and Repair</a>
-                       </div>
-                       </div> -->
-                </div>
-                <input type="text" class="form-control" aria-label="Text input with dropdown button">
-                <div class="input-group-append">
-                    <button class="btn btn-primary"><i class="fa fa-search"></i></button>
-                </div>
-            </div>
+            
         </div>
         <div style="padding-right:0px;">
             <!--Start: List/Grid View-->
-            <button class="btn-primary" style="padding:10px; border-radius: 20px; font-size: 22px" (click)="visibleSidebar2 = true; getServicesToCart();  services ">
-                <i style="font-size: 26px" class="la la-cart-arrow-down"></i>Open Cart
+            <span class="m-nav__link-badge badge_adjustment">
+                <span class="m-badge m-badge--success" *ngFor="let cartitem of dashboardcustomer">
+                <!-- {{dashboardcustomer.cart_item}} -->
+                {{cartitem.cart_item}}
+                </span>
+            </span>
+            <button class="btn-primary cartBtnStyle"  (click)="visibleSidebar2 = true; getServicesToCart();  services ">
+                
+                <i style="font-size: 26px" class="la la-cart-arrow-down"></i>
+                
             </button>
+           
+
+<!-- ------------------------------------------------ -->
+
+
+
             <!--   <span (click)="isDisplayDetail=false;">
                <button class="btn btn-link pull-right" (click)="changeView()">
                <i class="fa" [ngClass]="{'fa-list' :   isListViewHide, 'fa-th' :isGridViewHide }"></i> {{viewName}} </button>

@@ -14,10 +14,10 @@ declare let mLayout: any;
 export class HeaderNavComponent implements OnInit, AfterViewInit {
 
     public CustomerProfile = {
-        first_name: '',
-        last_name: '',
-        email: '',
-        picture: ''
+        first_name: "",
+        last_name: "",
+        email: "",
+        picture: ""
 
 
     };
@@ -37,7 +37,7 @@ export class HeaderNavComponent implements OnInit, AfterViewInit {
     }
 
     // to get profile image of customer
-    public customerImageUrl = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
+    public customerImageUrl = 'https://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
 
 
 

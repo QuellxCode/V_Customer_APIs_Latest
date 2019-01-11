@@ -43,6 +43,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { DemoService } from "../../../../services/demo.service";
 import { Http } from "@angular/http";
 import { ToastrService } from "../../../../services/toastrService.service";
+import { CartComponent } from "../../custom-shared/cart/cart.component";
 
 // serverServices for posting the data to server
 
@@ -103,6 +104,10 @@ interface data {
 })
 export class EstimateResponseComponent implements OnInit, AfterViewInit {
     @ViewChild(AgmMap) agmMap: AgmMap;
+
+    //cart component view child
+    @ViewChild(CartComponent) cardLoad: CartComponent;
+
     @ViewChild("modalContent") modalContent: TemplateRef<any>;
     fileToUpload: File = null;
 
@@ -610,7 +615,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
         }
     }
 
-    public imageUrl = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
+    public imageUrl = 'https://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
 
     companiesQuotedService;
     serviceApproved_Granted;
@@ -710,6 +715,8 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
             .subscribe(
             (response: any) => {
                 this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
+                this.cardLoad.getCartItem();
+                this.getRequestBidResponse();
             },
             (err) => { console.error(err) },
             () => { console.log("Status 200 Posted!") }

@@ -4,10 +4,7 @@
 		<div class="mr-auto">
 			<h3 class="m-subheader__title animated flipInY animation-delay-5">
 				Estimated Response
-				<small class="fa fa-search text-muted stats-icons custom-margin-left-zero" (click)="mainFilterHide == true? mainFilterHide=false : mainFilterHide=true">
-					<a class="custom-cursor">
-					</a>
-				</small>
+				
 			</h3>
 			<input type="text" class="custom-main-filter custom-main-filter-focus" *ngIf="mainFilterHide">
 		</div>
@@ -531,6 +528,7 @@
 						<div class="col-md-6" *ngFor="let approveService of serviceApproved_Granted">
 								
 						<div *ngFor="let approveCompany of approveService.company">
+							
 							<div class="body organ1 serviceCard">
 						<div class="row custom-margin-zero">
 							<div class="card-left col-lg-3" id="">
@@ -540,6 +538,7 @@
                                    </label> -->
 								<div class="row onepersonrow">
 									<div class="col-md-12" style="padding: 5px;">
+										
 										<img class="personimage" src="{{imageUrl+approveCompany.image}}">
 										<p class="personname">{{approveCompany.company_name}}</p>
 										<p class="persontype">{{approveCompany.company_location_name}}</p>

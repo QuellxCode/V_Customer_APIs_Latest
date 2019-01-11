@@ -168,7 +168,7 @@ export class OrderComponent implements OnInit {
     // lead code
 
     
-    public imageUrl = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
+    public imageUrl = 'https://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
 
     fetchCustomerOrder() {
         this.demo.getCustomerOrders().subscribe(

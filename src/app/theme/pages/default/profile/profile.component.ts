@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
     }
 
     // to get profile image of customer
-    public customerImageUrl = 'http://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
+    public customerImageUrl = 'https://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
 
 
     getProfile() {

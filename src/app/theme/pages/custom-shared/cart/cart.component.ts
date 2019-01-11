@@ -519,7 +519,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
         this.getServicesToCart();
-        console.log("cart Items => ", this.cartServices);
+        console.log("cart ooooooooooooooooooooooooooooooooo Items => ", this.cartServices);
 
         this.searchControl = new FormControl();
         // this.mapsAPILoader.load().then(() => {
@@ -614,6 +614,11 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
+    getCartItem(){
+        this.getServicesToCart();
+        console.log("get get item called")
+    }
+
     ngAfterViewInit() {
         this._script.loadScripts("app-services", [
             "//www.amcharts.com/lib/3/plugins/tools/polarScatter/polarScatter.min.js",
@@ -628,8 +633,11 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         this.card.mount(this.cardInfo.nativeElement);
 
         this.card.addEventListener('change', this.cardHandler);
+       
 
     }
+
+
 
     ngOnDestroy() {
 
@@ -1016,10 +1024,13 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         this._demoService.postSevicestoCart(this.customer_Id, servicesIds, company_id)
             .subscribe(
             (response: any) => {
+                
                 this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
             },
             (err) => { console.error(err) },
-            () => { console.log("Status 200 Posted!") }
+            () => { console.log("Status 200 Posted!")
+            this.getServicesToCart();
+        }
             )
     }
 
@@ -1033,6 +1044,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         this._demoService.postSevicestoCart(this.customer_Id, servicesIds, this.companyIdFromSelectedService)
             .subscribe(
                 (response: any) => {
+                    this.getServicesToCart();
                     this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
                 },
                 (err) => { console.error(err) },
@@ -1041,11 +1053,11 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     getServicesToCart() {
-        this.isProceedFirstEnabled = true;
+       this.isProceedFirstEnabled = true;
         this.agreedCartItemIndex = undefined;
         this._demoService.getServicesToCart(this.user_id).subscribe(
-            (response: any) => {
-                this.cartServices = response.data; console.log("this is cart Items response =>", this.cartServices);
+            (data: any) => {
+                this.cartServices = data.data; console.log("this is cart Items response =>", this.cartServices);
                 console.log(this.total_price);
 
                 /*  This Code will push services' rand_id into permissions2 array
@@ -1109,15 +1121,15 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         // Fetches The company Schedule
         this.fetchCompanySchedule();
 
-        this._demoService.proceedCartServices(this.total_price + this.total_price*(this.application_fee_percent/100), this.selectedCompany_id, customer_id)
-            .subscribe(
-            (response: any) => {
-                this.proceedService = response.data;
-                console.log("Proceed Cart Service: ", this.proceedService);
-            },
-            (err) => { console.error(err) },
-            () => { console.log("Proceed Cart Services have been posted", ) }
-            )
+        // this._demoService.proceedCartServices(this.total_price + this.total_price*(this.application_fee_percent/100), this.selectedCompany_id, customer_id)
+        //     .subscribe(
+        //     (response: any) => {
+        //         this.proceedService = response.data;
+        //         console.log("Proceed Cart Service: ", this.proceedService);
+        //     },
+        //     (err) => { console.error(err) },
+        //     () => { console.log("Proceed Cart Services have been posted", ) }
+        //     )
     }
 
     //Sample Days Array Against which schedule days will be compared
@@ -1432,7 +1444,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.cartPlaceOrderCompanyId, 
             this.customer_Id, 
-            this.total_price, 
+            this.total_price + this.total_price*(parseInt(this.application_fee_percent)/100),
             this.servicesPlaceOrder, 
             this.employee_Id,
             this.selectedCompanyLocationId,

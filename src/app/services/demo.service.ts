@@ -81,7 +81,7 @@ export class DemoService {
     getCompanyServices() {
           let user_id = JSON.parse(localStorage.getItem('currentUser')).data.user_id;
           console.log(user_id);
-          return this._http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/service/'+user_id, httpOptions);
+          return this._http.get('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/service/'+user_id, httpOptions);
       }
     */
 
@@ -484,6 +484,11 @@ export class DemoService {
     getBidResponseApi() {
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         return this.http.get('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/requests-response/' + customer_id, httpOptions);
+    }
+
+    getCustomerStats() {
+        let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
+        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/customer-dashboard/' + customer_id, httpOptions);
     }
 
     // getIndividualServices() {

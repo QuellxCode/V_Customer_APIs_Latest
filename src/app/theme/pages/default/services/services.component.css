@@ -780,6 +780,16 @@ form.checkout button:active {
   background-color: #fefde5 !important;
 }
 
+.cartBtnStyle
+{
+  padding:10px; 
+  border-radius: 50px; 
+  text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.72);
+}
 
-
-
+.badge_adjustment
+{
+  position: absolute;
+  margin-left: 33px;
+  margin-top: -5px;
+}

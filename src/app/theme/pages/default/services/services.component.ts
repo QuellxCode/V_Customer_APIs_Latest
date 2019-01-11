@@ -47,6 +47,7 @@ import { ServerServices_Services } from "../../../../services/serverServices.ser
 import { NgbCalendar, NgbDatepickerConfig, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgbDate } from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-date";
 import { ToastrService } from '../../../../services/toastrService.service';
+import { CartComponent } from '../../custom-shared/cart/cart.component';
 
 // serverServices for posting the data to server
 
@@ -160,6 +161,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     moreDetailShow = false;
     isHeaderShow = false;
     isBreadCrum = true;
+
 
     //view button end
 
@@ -478,12 +480,15 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     cardHandler = this.onChange.bind(this);
     error: string;
 
+    @ViewChild(CartComponent) private cardLoad: CartComponent;
+
 
     /* ------------------ AWS CODE END ---------------------- */
 
     ngOnInit() {
 
         this.getUserLocation();  // Return User Location Lat lng
+        this.getCustomerStats();
         // this.getCompanyServices();
         // this.getCompanies();
         // this.FetchCompanyLocationServicesNew();
@@ -998,6 +1003,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this._demoService.postSevicestoCart(this.customer_Id, servicesIds, company_id)
             .subscribe(
             (response: any) => {
+                this.getCustomerStats();
                 this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
             },
             (err) => { console.error(err) },
@@ -1008,7 +1014,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
               }, 1000);
 
               this.getServicesToCart();
-              this.getUserLocation();  // Return User Location Lat lng
+             
+           // Return User Location Lat lng
             
         
         }
@@ -1025,7 +1032,9 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this._demoService.postSevicestoCart(this.customer_Id, servicesIds, this.companyIdFromSelectedService)
             .subscribe(
                 (response: any) => {
+                    this.getCustomerStats();
                     this.toastrService.showSuccessMessages("Item Added to Cart Successfully !");
+                   
                 },
                 (err) => { console.error(err) },
                 () => { console.log("Status 200 Posted!") }
@@ -1038,12 +1047,17 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this._demoService.getServicesToCart(this.user_id).subscribe(
             (response: any) => {
                 this.cartServices = response.data; console.log("this is cart Items response =>", this.cartServices);
+                
                 console.log(this.total_price);
 
                 /*  This Code will push services' rand_id into permissions2 array
                     and later will be used as a check for disabling services
                     checkboxes in SEARCH BY SERVICE section
                 */
+
+                // //this.cardLoad.nativeElement.getCartItem();
+                // console.log("here is cart load...........",this.cardLoad);
+                this.cardLoad.getCartItem();
                 this.permissions2 = [];
                 this.cartServices.forEach(item => {
                     item.service.forEach(service => {
@@ -1062,6 +1076,23 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             
         
         }
+
+        )
+    }
+    //variable for dashboard stats
+    dashboardstat;
+    dashboardcustomer;
+    getCustomerStats() {
+        this._demoService.getCustomerStats().subscribe(
+            (data: any) => { 
+                this.dashboardstat = data.data; 
+                this.dashboardcustomer = this.dashboardstat.customer;
+
+                // console.log("here is dashboard response --------------",this.dashboardstat)
+                // console.log("here is dashboard response --------------",this.dashboardcustomer)
+             },
+            err => { console.error(err) },
+            () => { console.log("Get staff from location API Is running. Staff for the location is: .", this.locationEmployees) }
 
         )
     }

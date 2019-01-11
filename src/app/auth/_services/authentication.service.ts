@@ -10,7 +10,7 @@ export class AuthenticationService {
     }
 
     // Signup URL for signing up to server
-    requrl = 'http://www.sharjeelkhan.ca/vease/vease-app/api/v1/register';
+    requrl = 'https://www.sharjeelkhan.ca/vease/vease-app/api/v1/register';
 
     // SignIn URL for signing in to server
     loginurl = 'https://www.sharjeelkhan.ca/vease/vease-app/api/v1/login';
