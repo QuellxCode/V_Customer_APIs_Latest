@@ -1088,11 +1088,11 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.dashboardstat = data.data; 
                 this.dashboardcustomer = this.dashboardstat.customer;
 
-                // console.log("here is dashboard response --------------",this.dashboardstat)
+                console.log("here is dashboard response --------------",this.dashboardstat)
                 // console.log("here is dashboard response --------------",this.dashboardcustomer)
              },
             err => { console.error(err) },
-            () => { console.log("Get staff from location API Is running. Staff for the location is: .", this.locationEmployees) }
+            () => {  }
 
         )
     }

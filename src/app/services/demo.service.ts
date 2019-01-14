@@ -488,7 +488,7 @@ export class DemoService {
 
     getCustomerStats() {
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
-        return this.http.get('http://www.sharjeelkhan.ca/vease/vease-app/api/v1/customer-dashboard/' + customer_id, httpOptions);
+        return this.http.get('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/customer-dashboard/' + customer_id, httpOptions);
     }
 
     // getIndividualServices() {

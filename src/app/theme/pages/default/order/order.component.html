@@ -269,7 +269,7 @@
                         <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
                          <!-- this text and preloader hide after successfully order fetch -->
                          <div *ngIf="!order_stage_2 || order_stage_2.length === 0">
-                            <p style="text-align:center;">No Schedule/Reschedule Order Found!</p>
+                            <p style="text-align:center;" class="animated shake animation-delay-10">No Schedule/Reschedule Order Found!</p>
                         </div>
                         <div class="m-widget4__item animated fadeInUp animation-delay-7" *ngFor="let scheduleOrders of order_stage_2; let i =index">
                                 <div class="m-widget4__img m-widget4__img--logo">

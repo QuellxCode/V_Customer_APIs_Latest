@@ -616,7 +616,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
 
     getCartItem(){
         this.getServicesToCart();
-        console.log("get get item called")
+        console.log("get  item called")
     }
 
     ngAfterViewInit() {
