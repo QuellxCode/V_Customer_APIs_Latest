@@ -67,7 +67,7 @@
                             <td>
                                 <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom m--margin-right-10" style="height: 12px;">
 
-                                <input type="radio" name="cartServicesRadioBtn" (click)="servicesInCartRadiosFirstScreen(cartService.company_name, serviceInfo ,$event, serviceInfoIndex, i);">
+                                <input type="radio" name="cartServicesRadioBtn" (click)="servicesInCartRadiosFirstScreen(cartService.company_name, serviceInfo ,$event, serviceInfo.cart_id,serviceInfoIndex, i);">
 
                                     <span></span>
                                 </label>
@@ -79,7 +79,7 @@
                             <!-- <td scope="row" >{{serviceInfo.service_name}}</td> -->
                             <td>{{serviceInfo.price | currency:'CAD'}}</td>
                             <td class="text-center custom-pointer">
-                                <a (click)="onDelete(i)">
+                                <a (click)="DeleteItem(serviceInfo.cart_id);">
                                     <i class="fa fa-trash" style="color: #f5516c;"></i>
                                 </a>
                             </td>
@@ -313,6 +313,11 @@
                         <div class="col">
                             <button class="btn btn-danger custom-float-left" (click)="payment=[]; data =[]; servicesPlaceOrder = []; clearPlacedOrder(); visibleSidebar2 = false; hideTabs($event, i);" style="margin-right: 5px;">Cancel</button>
                         </div>
+                        <div *ngIf="OrderNowPreloader">
+                         <div class="m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25" ></div>
+                         <br>
+                         <p>Placing Order</p>
+                        </div>
                         <div class="col text-right">
                             <!--<button class="btn btn-primary custom-float-right m&#45;&#45;margin-top-10" (click)="activeTab('payment'); showConfirmationTab();">Proceed S3 <i class="fa fa-chevron-right"></i></button>-->
                             <!-- <button class="btn btn-primary custom-float-right" (click)="placeCartOrder2()">Order Now New</button> -->
@@ -405,18 +410,82 @@
                         </tbody>
                     </table>
                     <hr class="custom-hr-style">
-                    <h5 class="text-right m--font-bolder">
-                        <span> Sub Total : </span>
-                        <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price | currency:'CAD'}}</span>
-                    </h5>
-                    <h5 class="text-right m--font-bolder">
-                        <span> Tax &amp; Fee : </span>
-                        <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price*(this.application_fee_percent/100) | currency:'CAD'}}</span>
-                    </h5>
-                    <h4 class="text-right" style="font-weight:bold;">
-                        <span> Total Price : </span>
-                        <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price + total_price*(this.application_fee_percent/100) | currency:'CAD'}}</span>
-                    </h4>
+                    <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-5"></div>
+                                    <div class="col-md-4">
+                                            <h5 class=" m--font-bolder" style="margin-left: 20px;">
+                                                    <span> Currency : </span>
+                                            </h5>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h5 class="text-right m--font-bolder">
+                                             <span class="custom-theme-default" style="margin-right: -5px;"> CA$</span>
+                                        </h5>
+                                    </div>
+                            </div>
+                        </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-5"></div>
+                                <div class="col-md-4">
+                                        <h5 class=" m--font-bolder" style="margin-left: 20px;">
+                                                <span> Sub Total : </span>
+                                        </h5>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5 class="text-right m--font-bolder">
+                                         <span class="custom-theme-default" style="margin-right: -5px;"> {{total_price | currency }}</span>
+                                    </h5>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-5"></div>
+                                <div class="col-md-4">
+                                        <h5 class=" m--font-bolder" style="margin-left: 20px;">
+                                             <span> Tax &amp; Fee : </span>
+                                        </h5>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5 class="text-right m--font-bolder">
+                                            <span class="custom-theme-default" style="margin-right: -5px;"> {{total_price*(this.application_fee_percent/100) | currency }}</span>
+                                    </h5>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="    border-top: 1px solid #ccc;
+                    padding-top: 10px;">
+                        <div class="row">
+                            <div class="col-md-5"></div>
+                                <div class="col-md-4">
+                                        <h4 class=" m--font-bolder" style="margin-left: 20px;">
+                                             <span> Total Price : </span>
+                                        </h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <h4 class="text-right m--font-bolder">
+                                            <span class="custom-theme-default" style="margin-right: -5px;"> {{total_price + total_price*(this.application_fee_percent/100) | currency }}</span>
+                                    </h4>
+                                </div>
+                        </div>
+                    </div>
+
+                        
+                        <!-- <h5 class="text-right m--font-bolder">
+                            <span> Tax &amp; Fee : </span>
+                            <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price*(this.application_fee_percent/100) | currency:'CAD'}}</span>
+                        </h5> -->
+                        <!-- <h4 class="text-right" style="font-weight:bold;">
+                            <span> Total Price : </span>
+                            <span class="custom-theme-default" style="margin-right: 8px;"> {{total_price + total_price*(this.application_fee_percent/100) | currency:'CAD'}}</span>
+                        </h4> -->
+                      
+
+                       
+                    
+                   
                 </div>
                 <p class="text-right" style="margin-top:15px;">Are your sure to confirm &amp; proceed ?</p>
 

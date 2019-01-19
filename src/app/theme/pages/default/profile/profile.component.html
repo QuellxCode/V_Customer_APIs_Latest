@@ -139,10 +139,10 @@
 						</div>
 						<div class="m-card-profile__details">
 							<span class="m-card-profile__name">
-								{{CustomerProfile.first_name+CustomerProfile.last_name}}
+								{{CustomerProfile.first_name+" "+CustomerProfile.last_name}}
 							</span>
 							<a href="" class="m-card-profile__email m-link">
-								{{CustomerProfile.email}}
+								{{userEmail}}
 							</a>
 						</div>
 					</div>
@@ -342,7 +342,7 @@
 										Email
 									</label>
 									<div class="col-7">
-										<input class="form-control m-input" [ngModel]="CustomerProfile.email" name="p_email" type="email" placeholder="Enter Email Address">
+										<input class="form-control m-input" disabled [ngModel]="userEmail" name="p_email" type="email" placeholder="Enter Email Address">
 									</div>
 								</div>
 								<div class="form-group m-form__group row">

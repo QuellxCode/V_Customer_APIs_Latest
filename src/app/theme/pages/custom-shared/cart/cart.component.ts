@@ -9,7 +9,7 @@ import {
     AfterViewInit,
     TemplateRef,
     ElementRef,
-    NgZone, ChangeDetectorRef, OnDestroy
+    NgZone, ChangeDetectorRef, OnDestroy, Output, EventEmitter
 } from "@angular/core";
 
 import { FormControl, FormGroup, NgForm, Validators, ReactiveFormsModule,FormsModule } from "@angular/forms";
@@ -48,6 +48,7 @@ import { ServerServices_Services } from "../../../../services/serverServices.ser
 import { NgbCalendar, NgbDatepickerConfig, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgbDate } from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-date";
 import { ToastrService } from '../../../../services/toastrService.service';
+import { ServicesComponent } from '../../default/services/services.component';
 
 
 
@@ -121,6 +122,9 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(AgmMap) agmMap: AgmMap;
     @ViewChild("modalContent") modalContent: TemplateRef<any>;
     @ViewChild("search") public searchElementRef: ElementRef;
+
+    @Output() onNotify: EventEmitter<any> = new EventEmitter();    
+
     fileToUpload: File = null;
 
     isGridView = false;
@@ -151,6 +155,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     application_fee_price;
     application_fee_percentage;
     total_fee_ammount;
+    cartItem_id;
 
 
     /*  currentService= {
@@ -425,6 +430,8 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     timeOfService = "";
     dateSelect = false;
 
+    OrderNowPreloader = false;
+
     //    Format of ConfirmationStepCardInfo
 
     confirmationStepCardInfo = {
@@ -477,7 +484,8 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             "date": this.staff_book_date,
             "time": this.staff_book_time,
             "company_schedule": "company_timings",
-            "payment": this.payment
+            "payment": this.payment,
+            "cart_id" : this.cartItem_id
         }
     ]
 
@@ -672,6 +680,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     card_id; 
     application_fee;
     async onSubmitPayment(form: NgForm) {
+        this.OrderNowPreloader = true;
         console.log("Cart Hit");
         const { token, error } = await stripe.createToken(this.card, {
             email: this.customer_EmailAddress,
@@ -744,6 +753,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
                 () => {
                     console.log("Status 01 HAS BEEN Posted!");
                     // New Place Order Api Called Here
+                    this.OrderNowPreloader = false;
                     this.orderNowCheck = true;
                     console.log(this.transaction_id_for_Transaction);
                     this.PlaceOrderInformation();
@@ -1052,12 +1062,55 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             )
     }
 
+
+    getCustomerStats() {
+        this._demoService.getCustomerStats().subscribe(
+            (data: any) => { 
+                
+             },
+            err => { console.error(err) },
+            () => {  }
+
+        )
+    }
+
+
+    cartID_item;
+    CartDeleteResponse;
+    DeleteItem(serviceInfo)
+    {
+        this.cartID_item = serviceInfo;
+        this._demoService.deleteCartItem(this.cartID_item).subscribe(
+            (data: any) => {
+                this.CartDeleteResponse = data.data; 
+                console.log("Item Deleted Successfully");
+                this.getServicesToCart();
+                this.sendToParent();
+
+            },
+            err => {
+                console.error(err);
+            },
+            () => { 
+                this.getServicesToCart();
+             }
+
+        )    
+    }
+    
+
+
+
+    cartCount;
     getServicesToCart() {
        this.isProceedFirstEnabled = true;
         this.agreedCartItemIndex = undefined;
         this._demoService.getServicesToCart(this.user_id).subscribe(
             (data: any) => {
                 this.cartServices = data.data; console.log("this is cart Items response =>", this.cartServices);
+                // this.cartCount = data.data.service.length;
+                //alert(this.cartCount);
+                
                 console.log(this.total_price);
 
                 /*  This Code will push services' rand_id into permissions2 array
@@ -1248,7 +1301,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getServicesToCart();
         this.selectedServiceParentIndex = true;
         this.visibleSidebar2 = false;
-        this.isTimeSelected = false;
+        this.timeOfService = '';
 
     }
 
@@ -1261,13 +1314,17 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
 
     selectedCompanyName;
     selectedServiceName;
+ 
     //selectedCompanyLocationId;
 
     // Get selected location service and its information on radio button selection
 
 
-    servicesInCartRadiosFirstScreen(company_name, info, event, index, parentIndex) {
+    servicesInCartRadiosFirstScreen(company_name, info, event, cart_id, index, parentIndex) {
 
+        //
+        this.cartItem_id = cart_id;
+        
         // Check for looking what is selected service parent's index
         this.selectedServiceParentIndex = parentIndex;
 
@@ -1453,7 +1510,8 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             this.staff_book_date, 
             this.staff_book_time, 
             company_timings, 
-            this.payment
+            this.payment,
+            this.cartItem_id
             
             ).subscribe(
             (res: any) => {
@@ -1484,10 +1542,12 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
                         (res: any) => {
                             console.log("here is the transaction api hitted");
             
-                                
+                            this.getServicesToCart();
                         },
                         (err) => { console.error(err); },
-                        () => { console.log(""); }
+                        () => { console.log("");
+                        this.sendToParent();
+                    }
                         )  
             
         }
@@ -1969,6 +2029,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         this.proceedCounter = 0;
         this.activePaymentTab = false;
         this.activeItemTab = true;
+        
         this.activeMoreTab = false;
         this.moreCheck = false;
         this.coupon1check = false;
@@ -2089,7 +2150,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     scheduleTabShow() {
         this.activeScheduleTab = true;
         this.activeMoreTab = false;
-        this.isTimeSelected = false;
+        this.timeOfService = '';
         
     }
     
@@ -2097,6 +2158,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
         this.activeScheduleTab = false;
         this.activeItemTab = true; 
         this.isMessageDisplayed = false;
+        this.timeOfService='';
         // -------------
         this.getServicesToCart();
         this.selectedServiceParentIndex = true;
@@ -2182,6 +2244,8 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
-
+    sendToParent(){
+        this.onNotify.emit(this.getCustomerStats());
+      }
 
 }

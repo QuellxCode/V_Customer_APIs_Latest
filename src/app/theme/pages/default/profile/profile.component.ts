@@ -69,6 +69,8 @@ export class ProfileComponent implements OnInit {
     // to get profile image of customer
     public customerImageUrl = 'https://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
 
+    
+    public userEmail = JSON.parse(localStorage.getItem('currentUser')).success.email;
 
     getProfile() {
         this.profileService.getCutomerProfile().subscribe(

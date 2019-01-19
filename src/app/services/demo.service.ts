@@ -387,7 +387,7 @@ export class DemoService {
 
 
     saveOrderInformation(company_id: number, customer_id: number, total_price, servicesPlaceOrder,
-        employee_id,location_id,application_fee_price,application_fee_percentage, date: string, time: string, company_timings: string, payment) {
+        employee_id,location_id,application_fee_price,application_fee_percentage, date: string, time: string, company_timings: string, payment, cart_id) {
         let array_obj = {
             "data": [{
 
@@ -402,7 +402,8 @@ export class DemoService {
                 "date": date,
                 "time": time,
                 "company_schedule": company_timings,
-                "payment": payment
+                "payment": payment,
+                "cart_id": cart_id
             }]
         }
         console.log("You Passed This =>" + JSON.stringify(array_obj));
@@ -489,6 +490,10 @@ export class DemoService {
     getCustomerStats() {
         let customer_id = JSON.parse(localStorage.getItem('currentUser')).success.user_id;
         return this.http.get('https://www.sharjeelkhan.ca/vease/vease-app/api/v1/customer-dashboard/' + customer_id, httpOptions);
+    }
+
+    deleteCartItem(cart_id) {
+        return this.http.get('https://sharjeelkhan.ca/vease/vease-app/api/v1/cart-items-delete/' + cart_id, httpOptions);
     }
 
     // getIndividualServices() {

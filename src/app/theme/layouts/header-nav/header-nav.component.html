@@ -620,7 +620,7 @@
 				<div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
 					<div class="m-stack__item m-topbar__nav-wrapper">
 						<ul class="m-topbar__nav m-nav m-nav--inline">
-							<li class="m-nav__item m-dropdown m-dropdown--large m-dropdown--arrow m-dropdown--align-center m-dropdown--mobile-full-width m-dropdown--skin-light	m-list-search m-list-search--skin-light"  	data-dropdown-toggle="click" data-dropdown-persistent="true" id="m_quicksearch" data-search-type="dropdown">
+							<!-- <li class="m-nav__item m-dropdown m-dropdown--large m-dropdown--arrow m-dropdown--align-center m-dropdown--mobile-full-width m-dropdown--skin-light	m-list-search m-list-search--skin-light"  	data-dropdown-toggle="click" data-dropdown-persistent="true" id="m_quicksearch" data-search-type="dropdown">
 								<a href="#" class="m-nav__link m-dropdown__toggle">
 									<span class="m-nav__link-icon">
 										<i class="flaticon-search-1"></i>
@@ -648,11 +648,11 @@
 										</div>
 									</div>
 								</div>
-							</li>
+							</li> -->
 							<li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" data-dropdown-toggle="click" data-dropdown-persistent="true">
 								<a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
 									<span class="m-nav__link-badge m-badge m-badge--accent">
-										3
+										8
 									</span>
 									<span class="m-nav__link-icon">
 										<i class="flaticon-alert-2"></i>
@@ -663,7 +663,7 @@
 									<div class="m-dropdown__inner">
 										<div class="m-dropdown__header m--align-center" style="background: url(./assets/app/media/img/misc/notification_bg.jpg); background-size: cover;">
 											<span class="m-dropdown__header-title">
-												9 New
+												8 New
 											</span>
 											<span class="m-dropdown__header-subtitle">
 												User Notifications
@@ -672,12 +672,12 @@
 										<div class="m-dropdown__body">
 											<div class="m-dropdown__content">
 												<ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
-													<li class="nav-item m-tabs__item">
-														<a class="nav-link m-tabs__link active" data-toggle="tab" href="#topbar_notifications_notifications" role="tab">
+													<li class="nav-item m-tabs__item custom-align-center">
+														<a class="nav-link m-tabs__link active " data-toggle="tab" href="#topbar_notifications_notifications" role="tab">
 															Alerts
 														</a>
 													</li>
-													<li class="nav-item m-tabs__item">
+													<!-- <li class="nav-item m-tabs__item">
 														<a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_events" role="tab">
 															Events
 														</a>
@@ -686,7 +686,7 @@
 														<a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_logs" role="tab">
 															Logs
 														</a>
-													</li>
+													</li> -->
 												</ul>
 												<div class="tab-content">
 													<div class="tab-pane active" id="topbar_notifications_notifications" role="tabpanel">
@@ -696,85 +696,93 @@
 																	<div class="m-list-timeline__item">
 																		<span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
 																		<span class="m-list-timeline__text">
-																			12 new users registered
+																			Total New Orders
 																		</span>
-																		<span class="m-list-timeline__time">
-																			Just now
+																		<span class="m-list-timeline__time" *ngFor="let customer of dashboardCustomer">
+																				<span *ngIf="!customer.total_order || customer.total_order.length === 0">0</span>
+																				{{customer.total_order}} Orders
 																		</span>
 																	</div>
 																	<div class="m-list-timeline__item">
 																		<span class="m-list-timeline__badge"></span>
 																		<span class="m-list-timeline__text">
-																			System shutdown
-																			<span class="m-badge m-badge--success m-badge--wide">
+																			 Orders
+																			<span class="m-badge m-badge--primary m-badge--wide">
 																				pending
 																			</span>
 																		</span>
-																		<span class="m-list-timeline__time">
-																			14 mins
+																		<span class="m-list-timeline__time" *ngFor="let customer of dashboardCustomer">
+																				<span *ngIf="!customer.pending_orders || customer.pending_orders.length === 0">0</span>
+																				{{customer.pending_orders}} Orders
 																		</span>
 																	</div>
 																	<div class="m-list-timeline__item">
 																		<span class="m-list-timeline__badge"></span>
 																		<span class="m-list-timeline__text">
-																			New invoice received
-																		</span>
-																		<span class="m-list-timeline__time">
-																			20 mins
-																		</span>
-																	</div>
-																	<div class="m-list-timeline__item">
-																		<span class="m-list-timeline__badge"></span>
-																		<span class="m-list-timeline__text">
-																			DB overloaded 80%
+																			Orders
 																			<span class="m-badge m-badge--info m-badge--wide">
-																				settled
+																					Schedule
+																				</span>
+																		</span>
+																		<span class="m-list-timeline__time" *ngFor="let customer of dashboardCustomer">
+																				<span *ngIf="!customer.scheduled_order || customer.scheduled_order.length === 0">0</span>
+																				{{customer.scheduled_order}} Orders
+																		</span>
+																	</div>
+																	<div class="m-list-timeline__item">
+																		<span class="m-list-timeline__badge"></span>
+																		<span class="m-list-timeline__text">
+																			Orders
+																			<span class="m-badge m-badge--success m-badge--wide">
+																				Completed
 																			</span>
 																		</span>
-																		<span class="m-list-timeline__time">
-																			1 hr
+																		<span class="m-list-timeline__time" *ngFor="let customer of dashboardCustomer">
+																				<span *ngIf="!customer.completed_order || customer.completed_order.length === 0">0</span>
+																				{{customer.completed_order}} Orders
 																		</span>
 																	</div>
 																	<div class="m-list-timeline__item">
 																		<span class="m-list-timeline__badge"></span>
 																		<span class="m-list-timeline__text">
-																			System error -
-																			<a href="#" class="m-link">
-																				Check
-																			</a>
+																			Estimated Requests Response
 																		</span>
-																		<span class="m-list-timeline__time">
-																			2 hrs
+																		<span class="m-list-timeline__time" *ngFor="let customer of dashboardCustomer">
+																				<span *ngIf="!customer.reponses || customer.reponses.length === 0">0</span>
+																				{{customer.reponses}} Responses
 																		</span>
 																	</div>
 																	<div class="m-list-timeline__item m-list-timeline__item--read">
 																		<span class="m-list-timeline__badge"></span>
 																		<span href="" class="m-list-timeline__text">
-																			New order received
+																			Estimated Requests 
 																			<span class="m-badge m-badge--danger m-badge--wide">
-																				urgent
+																					In-Progress
 																			</span>
 																		</span>
-																		<span class="m-list-timeline__time">
-																			7 hrs
+																		<span class="m-list-timeline__time" *ngFor="let customer of dashboardCustomer">
+																				<span *ngIf="!customer.inprogress || customer.inprogress.length === 0">0</span>
+																				{{customer.inprogress}} Request
 																		</span>
 																	</div>
 																	<div class="m-list-timeline__item m-list-timeline__item--read">
 																		<span class="m-list-timeline__badge"></span>
 																		<span class="m-list-timeline__text">
-																			Production server down
+																			Companies Registered
 																		</span>
-																		<span class="m-list-timeline__time">
-																			3 hrs
+																		<span class="m-list-timeline__time" >
+																				<span *ngIf="!dashboardCompany.companies || dashboardCompany.companies.length === 0">0</span>
+																			{{dashboardCompany.companies}} Total.
 																		</span>
 																	</div>
 																	<div class="m-list-timeline__item">
 																		<span class="m-list-timeline__badge"></span>
-																		<span class="m-list-timeline__text">
-																			Production server up
+																		<span class="m-list-timeline__text" >
+																			Services Available
 																		</span>
 																		<span class="m-list-timeline__time">
-																			5 hrs
+																				<span *ngIf="!dashboardCompany.services || dashboardCompany.services.length === 0">0</span>
+																				{{dashboardCompany.services}} Total.
 																		</span>
 																	</div>
 																</div>
@@ -883,30 +891,30 @@
 												<div class="m-scrollable" data-scrollable="false" data-max-height="380" data-mobile-max-height="200">
 													<div class="m-nav-grid m-nav-grid--skin-light">
 														<div class="m-nav-grid__row">
-															<a href="#" class="m-nav-grid__item">
-																<i class="m-nav-grid__icon flaticon-file"></i>
+															<a routerLink="/services" class="m-nav-grid__item">
+																<i class="m-nav-grid__icon flaticon-settings"></i>
 																<span class="m-nav-grid__text">
-																	Generate Report
+																	Services
 																</span>
 															</a>
-															<a href="#" class="m-nav-grid__item">
-																<i class="m-nav-grid__icon flaticon-time"></i>
+															<a routerLink="/order" class="m-nav-grid__item">
+																<i class="m-nav-grid__icon flaticon-open-box"></i>
 																<span class="m-nav-grid__text">
-																	Add New Event
+																	Orders
 																</span>
 															</a>
 														</div>
 														<div class="m-nav-grid__row">
-															<a href="#" class="m-nav-grid__item">
-																<i class="m-nav-grid__icon flaticon-folder"></i>
+															<a routerLink="/estimatedresponse" class="m-nav-grid__item">
+																<i class="m-nav-grid__icon flaticon-share"></i>
 																<span class="m-nav-grid__text">
-																	Create New Task
+																	Estimated Response
 																</span>
 															</a>
-															<a href="#" class="m-nav-grid__item">
-																<i class="m-nav-grid__icon flaticon-clipboard"></i>
+															<a routerLink="/resolutionCentre" class="m-nav-grid__item">
+																<i class="m-nav-grid__icon flaticon-chat-1"></i>
 																<span class="m-nav-grid__text">
-																	Completed Tasks
+																	Resolution Center
 																</span>
 															</a>
 														</div>
@@ -938,7 +946,7 @@
 														{{CustomerProfile.first_name+CustomerProfile.last_name}}
 													</span>
 													<a href="" class="m-card-user__email m--font-weight-300 m-link">
-														{{CustomerProfile.email}}
+														{{userEmail}}
 													</a>
 												</div>
 											</div>
@@ -960,15 +968,15 @@
 																		My Profile
 																	</span>
 																	<span class="m-nav__link-badge">
-																		<span class="m-badge m-badge--success">
-																			2
+																		<span class="m-badge m-badge--success m-badge--wide">
+																			Online
 																		</span>
 																	</span>
 																</span>
 															</span>
 														</a>
 													</li>
-													<li class="m-nav__item">
+													<!-- <li class="m-nav__item">
 														<a routerLink="/profile" class="m-nav__link">
 															<i class="m-nav__link-icon flaticon-share"></i>
 															<span class="m-nav__link-text">
@@ -1000,26 +1008,33 @@
 																Support
 															</span>
 														</a>
-													</li>
+													</li> -->
 													<li class="m-nav__separator m-nav__separator--fit"></li>
-													<li class="m-nav__item">
+													<!-- <li class="m-nav__item">
 														<a routerLink="/snippets/pages/user/login-1" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder" routerLink="/logout">
 															Logout
 														</a>
-													</li>
+													</li> -->
 												</ul>
 											</div>
 										</div>
 									</div>
 								</div>
 							</li>
-							<li id="m_quick_sidebar_toggle" class="m-nav__item">
+							<li class="m-nav__item">
+									<a routerLink="/logout" class="m-nav__link m-dropdown__toggle">
+										<span class="m-nav__link-icon">
+											<i class="flaticon-logout"></i>
+										</span>
+									</a>
+								</li>
+							<!-- <li id="m_quick_sidebar_toggle" class="m-nav__item">
 								<a href="#" class="m-nav__link m-dropdown__toggle">
 									<span class="m-nav__link-icon">
 										<i class="flaticon-menu-button"></i>
 									</span>
 								</a>
-							</li>
+							</li> -->
 						</ul>
 					</div>
 				</div>

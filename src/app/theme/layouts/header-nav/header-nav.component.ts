@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation, AfterViewInit, NgZone } from '@an
 import { Helpers } from '../../../helpers';
 import { profileService } from '../../../services/profile.service';
 import { RouterEvent, Router, ActivatedRoute } from '@angular/router';
+import { DemoService } from '../../../services/demo.service';
 
 declare let mLayout: any;
 @Component({
@@ -13,22 +14,29 @@ declare let mLayout: any;
 })
 export class HeaderNavComponent implements OnInit, AfterViewInit {
 
+
+    src="1546606077.jpg";
+
     public CustomerProfile = {
         first_name: "",
         last_name: "",
-        email: "",
         picture: ""
-
-
     };
 
+    dashboardCompany = {
+        companies : "",
+        locations : "",
+        services : ""
+    }
 
-    constructor(private customerProfileData: profileService, private zone: NgZone, private _router: Router) {
+    constructor(private customerProfileData: profileService, private zone: NgZone, private _router: Router, private _demoService:DemoService) {
 
     }
+    
 
     ngOnInit() {
         this.getProfile();
+        this.getCustomerStats();
     }
     ngAfterViewInit() {
 
@@ -40,12 +48,18 @@ export class HeaderNavComponent implements OnInit, AfterViewInit {
     public customerImageUrl = 'https://www.sharjeelkhan.ca/vease/vease-app/application-file/img/';
 
 
+    
+    public userEmail = JSON.parse(localStorage.getItem('currentUser')).success.email;
 
     getProfile() {
         this.customerProfileData.getCutomerProfile().subscribe(
             (data: any) => {
                 this.CustomerProfile = data.data;
                 console.log(data);
+                if(this.CustomerProfile.picture==null)
+                {
+                    this.customerImageUrl+this.src;
+                }
 
             },
             err => {
@@ -62,6 +76,24 @@ export class HeaderNavComponent implements OnInit, AfterViewInit {
 
         );
     }
+
+      //variable for dashboard stats
+      dashboardStat;
+      dashboardCustomer;
+      getCustomerStats() {
+          this._demoService.getCustomerStats().subscribe(
+              (data: any) => { 
+                  this.dashboardStat = data.data; 
+                  this.dashboardCompany = this.dashboardStat.companies;
+                  this.dashboardCustomer = this.dashboardStat.customer;
+                
+ 
+               },
+              err => { console.error(err) },
+              () => { }
+  
+          )
+      }
 
 
 }

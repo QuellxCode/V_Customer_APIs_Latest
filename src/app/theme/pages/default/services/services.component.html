@@ -346,7 +346,7 @@
                                 </div>
                                 <!-- Map End Here -->
                                 <!-- side Services info popup start -->
-                                <div style="z-index: 2; position: absolute;	margin-left: 27%; background-color: white;width: 35%;height: 98%;margin-top: 5px;" *ngIf="showServices">
+                                <div style="z-index: 2; position: absolute;	margin-left: 27%; background-color: white;width: 35%;overflow-y: auto; height: 100vh; overflow-x: hidden; margin-top: 5px;" *ngIf="showServices">
                                     <div class="container" style="padding: 10px">
                                         <h4> <i class="fa fa-map-marker custom-marker-style"></i>
                                             {{current_company_location.location[selectedIndex].name | uppercase}}
@@ -386,10 +386,12 @@
                                         <h5 style="font-weight: 600;
                               font-size: 15px;">
                                             Services
+                                            <span style="position: absolute; right: 15px;">CA$</span>
                                         </h5>
                                         <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloaderServices"></div>
-                                        <div class="custom-width-scroll" *ngIf=" services.length > 0;">
-                                            <p class="custom-margin-bottom-zero"  *ngFor="let service of services; let i = index;">
+                                        <div class="custom-width-scroll" style="max-height: 60vh; min-height: 20vh;
+                                        overflow-y: auto; overflow-x: hidden;" *ngIf=" services.length > 0;">
+                                            <p style="margin-bottom:5px;"  *ngFor="let service of services; let i = index;">
                                                  <span class="custom-width">
                                                      <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
                                                         height: 12px;">
@@ -402,8 +404,8 @@
                                                      {{service.service_name}}
                                                      </span>
                                                  </span>
-                                                 <span class="custom-float-right m--font-success">
-                                                     {{ service.price | currency:'CAD'}}
+                                                 <span class="custom-float-right  m--font-success" style="margin-right:5px;">
+                                                     {{ service.price | currency }}
                                                  </span>
                                             </p>
                                         </div>
@@ -436,7 +438,7 @@
 <!-- Map Detail content End -->
 <!-- Right side bar Modal  Start-->
 <p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="10000" >
-    <app-cart></app-cart>
+    <app-cart (onNotify)="recieveDataFromChild($event)"></app-cart>
 </p-sidebar>
 <!-- Right side bar Modal  End-->
 <!-- Terms and Condition Modal Start -->

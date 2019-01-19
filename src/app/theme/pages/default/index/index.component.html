@@ -7,7 +7,7 @@
 			</h3>
 		</div>
 
-		<div>
+		<!-- <div>
 			<span class="m-subheader__daterange" id="m_dashboard_daterangepicker">
 				<span class="m-subheader__daterange-label">
 					<span class="m-subheader__daterange-title"></span>
@@ -17,7 +17,7 @@
 					<i class="la la-angle-down"></i>
 				</a>
 			</span>
-		</div>
+		</div> -->
 	</div>
 </div>
 
@@ -27,13 +27,13 @@
 <div class="m-content m--padding-top-15">
 	<!--Begin::Section-->
 
-	<div class="m-portlet animated flipInX animation-delay-5" >
+	<div class="m-portlet " >
 		<div class="m-portlet__body  m-portlet__body--no-padding">
 			<div class="row m-row--no-padding m-row--col-separator-xl">
 				<div class="col-md-12 col-lg-6 col-xl-3">
 
 					<div class="m-widget24">
-						<div class="m-widget24__item">
+						<div class="m-widget24__item animated fadeIn animation-delay-5">
 							<h4 class="m-widget24__title">
 								Total Orders
 							</h4>
@@ -41,18 +41,18 @@
 							<span class="m-widget24__desc" *ngFor="let customer of dashboardCustomer">
 								Total Orders of {{customer.name}}
 							</span>
-							<span class="m-widget24__stats m--font-brand">
-								7
+							<span class="m-widget24__stats m--font-brand" *ngFor="let customer of dashboardCustomer">
+								{{customer.total_order}}
 							</span>
 							<div class="m--space-10"></div>
 							<div class="progress m-progress--sm">
-								<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" class="progress-bar m--bg-brand" role="progressbar" style="width: 78%;"></div>
+								<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" class="progress-bar m--bg-brand" role="progressbar" style="width: 100%;"></div>
 							</div>
 							<span class="m-widget24__change">
-								Change
+								Total Percentage
 							</span>
 							<span class="m-widget24__number">
-								78%
+								100%
 							</span>
 						</div>
 					</div>
@@ -61,7 +61,7 @@
 				<div class="col-md-12 col-lg-6 col-xl-3">
 
 					<div class="m-widget24">
-						<div class="m-widget24__item">
+						<div class="m-widget24__item animated fadeIn animation-delay-5">
 							<h4 class="m-widget24__title">
 								Pending Orders
 							</h4>
@@ -75,13 +75,13 @@
 							</span>
 							<div class="m--space-10"></div>
 							<div class="progress m-progress--sm" *ngFor="let customer of dashboardCustomer"> 
-								<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" class="progress-bar m--bg-info" role="progressbar" style="width: 84%;"></div>
+								<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" class="progress-bar m--bg-info" role="progressbar" [ngStyle]="{'width': totalPendingOrdersWidthInPercent}"></div>
 							</div>
 							<span class="m-widget24__change">
-								Change
+									Percentage
 							</span>
 							<span class="m-widget24__number">
-								84%
+								{{this.totalPendingOrdersWidthInPercent}}
 							</span>
 						</div>
 					</div>
@@ -90,13 +90,13 @@
 				<div class="col-md-12 col-lg-6 col-xl-3">
 
 					<div class="m-widget24">
-						<div class="m-widget24__item">
+						<div class="m-widget24__item animated fadeIn animation-delay-5">
 							<h4 class="m-widget24__title">
 								Schedule Orders
 							</h4>
 							<br>
 							<span class="m-widget24__desc" *ngFor="let customer of dashboardCustomer">
-									Total Pending Orders of {{customer.name}}
+									Total Schedule Orders of {{customer.name}}
 								</span>
 							<span class="m-widget24__stats m--font-info"  *ngFor="let customer of dashboardCustomer">
 									<span *ngIf="!customer.scheduled_order || customer.scheduled_order.length === 0">0</span>
@@ -104,13 +104,13 @@
 							</span>
 							<div class="m--space-10"></div>
 							<div class="progress m-progress--sm">
-								<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" class="progress-bar m--bg-danger" role="progressbar" style="width: 69%;"></div>
+								<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" class="progress-bar m--bg-danger" role="progressbar" [ngStyle]="{'width': totalScheduleOrdersWidthInPercent}"></div>
 							</div>
 							<span class="m-widget24__change">
-								Change
+									Percentage
 							</span>
 							<span class="m-widget24__number">
-								69%
+								{{this.totalScheduleOrdersWidthInPercent}}
 							</span>
 						</div>
 					</div>
@@ -119,13 +119,13 @@
 				<div class="col-md-12 col-lg-6 col-xl-3">
 
 					<div class="m-widget24">
-						<div class="m-widget24__item">
+						<div class="m-widget24__item animated fadeIn animation-delay-5">
 							<h4 class="m-widget24__title">
 								Completed Orders
 							</h4>
 							<br>
 							<span class="m-widget24__desc" *ngFor="let customer of dashboardCustomer">
-									Total Pending Orders of {{customer.name}}
+									Total Compleleted Orders of {{customer.name}}
 								</span>
 							<span class="m-widget24__stats m--font-info"  *ngFor="let customer of dashboardCustomer">
 									<span *ngIf="!customer.completed_order || customer.completed_order.length === 0">0</span>
@@ -133,13 +133,13 @@
 							</span>
 							<div class="m--space-10"></div>
 							<div class="progress m-progress--sm">
-								<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" class="progress-bar m--bg-success" role="progressbar" style="width: 90%;"></div>
+								<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" class="progress-bar m--bg-success" role="progressbar" [ngStyle]="{'width': totalCompletedOrdersWidthInPercent}"></div>
 							</div>
 							<span class="m-widget24__change">
-								Change
+									Percentage
 							</span>
 							<span class="m-widget24__number">
-								90%
+								{{this.totalCompletedOrdersWidthInPercent}}
 							</span>
 						</div>
 					</div>
@@ -151,7 +151,7 @@
 
 
 <!-- 
-	<div class="m-portlet  animated flipInX animation-delay-5">
+	<div class="m-portlet  animated fadeIn animation-delay-5">
 		<div class="m-portlet__body m-portlet__body--no-padding">
 			<div class="row m-row--no-padding m-row--col-separator-xl">
 				<div class="col-md-12 col-lg-12 col-xl-4">
@@ -331,7 +331,7 @@
  -->
 <!-- 
 	<div class="row" >
-		<div class="col-xl-6 animated flipInX animation-delay-5">
+		<div class="col-xl-6 animated fadeIn animation-delay-5">
 
 			<div class="m-portlet m-portlet--full-height">
 				<div class="m-portlet__head">
@@ -801,7 +801,7 @@
 			</div>
 
 		</div>
-		<div class="col-xl-6  animated flipInX animation-delay-5">
+		<div class="col-xl-6  animated fadeIn animation-delay-5">
 
 			<div class="m-portlet m-portlet--full-height">
 				<div class="m-portlet__head">
@@ -953,7 +953,7 @@
 
 <!-- 
 	<div class="row">
-		<div class="col-xl-8 animated flipInX animation-delay-5">
+		<div class="col-xl-8 animated fadeIn animation-delay-5">
 
 			<div class="m-portlet m-portlet--full-height">
 				<div class="m-portlet__head">
@@ -1419,7 +1419,7 @@
 			</div>
 
 		</div>
-		<div class="col-xl-4 animated flipInX animation-delay-5">
+		<div class="col-xl-4 animated fadeIn animation-delay-5">
 
 			<div class="m-portlet m-portlet--bordered-semi m-portlet--full-height">
 				<div class="m-portlet__head">
@@ -1602,7 +1602,7 @@
 
 
 	<div class="row">
-		<div class="col-xl-4 animated flipInX animation-delay-5">
+		<div class="col-xl-4 animated fadeIn animation-delay-5">
 			<!--begin:: Widgets/Top Products-->
 			<div class="m-portlet m-portlet--bordered-semi m-portlet--full-height">
 				<div class="m-portlet__head">
@@ -1614,7 +1614,7 @@
 						</div>
 					</div>
 					<div class="m-portlet__head-tools">
-						<ul class="m-portlet__nav">
+						<!-- <ul class="m-portlet__nav">
 							<li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"
 							 data-dropdown-toggle="hover" aria-expanded="true">
 								<a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill btn-secondary m-btn m-btn--label-brand">
@@ -1664,7 +1664,7 @@
 									</div>
 								</div>
 							</li>
-						</ul>
+						</ul> -->
 					</div>
 				</div>
 				<div class="m-portlet__body">
@@ -1739,7 +1739,7 @@
 			</div>
 			<!--end:: Widgets/Top Products-->
 		</div>
-		<div class="col-xl-4 animated flipInX animation-delay-5">
+		<div class="col-xl-4 animated fadeIn animation-delay-5">
 			<!--begin:: Widgets/Activity-->
 			<div class="m-portlet m-portlet--bordered-semi m-portlet--widget-fit m-portlet--full-height m-portlet--skin-light  m-portlet--rounded-force">
 				<div class="m-portlet__head">
@@ -1751,7 +1751,7 @@
 						</div>
 					</div>
 					<div class="m-portlet__head-tools">
-						<ul class="m-portlet__nav">
+						<!-- <ul class="m-portlet__nav">
 							<li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"
 							 data-dropdown-toggle="hover">
 								<a href="#" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl">
@@ -1812,7 +1812,7 @@
 									</div>
 								</div>
 							</li>
-						</ul>
+						</ul> -->
 					</div>
 				</div>
 				<div class="m-portlet__body">
@@ -1880,7 +1880,7 @@
 			</div>
 			<!--end:: Widgets/Activity-->
 		</div>
-		<div class="col-xl-4 animated flipInX animation-delay-5">
+		<div class="col-xl-4 animated fadeIn animation-delay-5">
 
 				<div class="m-portlet m-portlet--bordered-semi m-portlet--full-height">
 					<div class="m-portlet__head">
@@ -1892,7 +1892,7 @@
 							</div>
 						</div>
 						<div class="m-portlet__head-tools">
-							<ul class="m-portlet__nav">
+							<!-- <ul class="m-portlet__nav">
 								<li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"
 								 m-dropdown-toggle="hover">
 									<a class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill btn-secondary m-btn m-btn--label-brand"
@@ -1954,7 +1954,7 @@
 										</div>
 									</div>
 								</li>
-							</ul>
+							</ul> -->
 						</div>
 					</div>
 					<div class="m-portlet__body">
@@ -2010,7 +2010,51 @@
 			</div>
 	</div>
 	<!--End::Section-->
+
+	<!--Begin::Section-->
+	<div class="row">
+			<div class="col-xl-12 animated fadeIn animation-delay-5">
+				<!--begin::Portlet-->
+				<div class="m-portlet" id="m_portlet">
+					<div class="m-portlet__head">
+						<div class="m-portlet__head-caption">
+							<div class="m-portlet__head-title">
+								<span class="m-portlet__head-icon">
+									<i class="flaticon-calendar"></i>
+								</span>
+								<h3 class="m-portlet__head-text">
+									Customer Calendar
+								</h3>
+							</div>
+						</div>
+						<!-- <div class="m-portlet__head-tools">
+							<ul class="m-portlet__nav">
+								<li class="m-portlet__nav-item">
+									<a href="#" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+										<span>
+											<i class="la la-plus"></i>
+											<span>
+												Add Event
+											</span>
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div> -->
+					</div>
+					<div class="m-portlet__body">
+						<div id="m_calendar"></div>
+					</div>
+				</div>
+				<!--end::Portlet-->
+			</div>
+	</div>
+		<!--End::Section-->
+
 	<!-- ---------------------------remaining section removed-------------------- -->
+
+
+
 </div>
 
 

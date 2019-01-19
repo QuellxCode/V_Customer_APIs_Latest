@@ -26,14 +26,14 @@
 				</a>
 			</button>
 			
-			<button class="btn btn-link pull-right" (click)="visibleSidebar2 = true; getServicesToCart();">
+			<!-- <button class="btn btn-link pull-right" (click)="visibleSidebar2 = true; getServicesToCart();">
 				<a href="" class="m-nav__link" >
 					<i class="m-nav__link-icon fa fa-shopping-cart"></i>
 					<span class="m-nav__link-text">
          Open Cart
          </span>
 				</a>
-			</button>
+			</button> -->
 			<!-- <button class="btn btn-link pull-right" (click)="changeView()" [hidden]="!formHidden">
                <i class="fa" [ngClass]="{'fa-list' : isListViewHide , 'fa-th' :isGridViewHide  }"></i> {{viewName}} </button> -->
 		</div>
@@ -99,7 +99,7 @@
 <div class="m-content " [hidden]="!formHidden">
 
 	<div class="row" [hidden]="isDisplayDetail">
-		<div class="col-xl-3 col-lg-4 animated zoomIn animation-delay-5" style="min-height: 400px; max-height: 100%;">
+		<!-- <div class="col-xl-3 col-lg-4 animated zoomIn animation-delay-5" style="min-height: 400px; max-height: 100%;">
 				
 			<div class="m-portlet m-portlet--full-height">
 					
@@ -145,7 +145,7 @@
 				
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!--	<div class="col-xl-9 col-lg-8" [hidden]="isListViewHide">
            <div class="m-portlet m-portlet--full-height">
 
@@ -517,7 +517,7 @@
 		<!--			</div>
            </div>
            </div> -->
-		<div class="col-xl-9 col-lg-8" *ngIf="allRequestsTabs">
+		<div class="col-xl-12 col-lg-12" *ngIf="allRequestsTabs">
 			<!-- [hidden]="isGridViewHide"-->
 			<div class="row">
 				<div class="col-md-12 animated flipInX animation-delay-7" *ngIf="approved">
@@ -525,7 +525,7 @@
 								<p style="text-align:center;" class="animated shake animation-delay-10">No Approved/Granted Service Found!</p>
 							</div>
 					<div class="row">
-						<div class="col-md-6" *ngFor="let approveService of serviceApproved_Granted">
+						<div class="col-md-4" *ngFor="let approveService of serviceApproved_Granted">
 								
 						<div *ngFor="let approveCompany of approveService.company">
 							
@@ -560,7 +560,7 @@
 								<h6 class="text-muted pull-left">
 									<span class="m-badge  m-badge--success m-badge--wide">Approve/Granted</span>
 								</h6>
-								<button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button>
+								<!-- <button class="btn btn-link personMoreDetailsButton pull-right custom-padding-zero" (click)="isDisplayDetail=true;">More Details</button> -->
 								<div class="clearfix"></div>
 								<div class="row services-categories">
 									<div class="col-md-12 category-list">
@@ -752,7 +752,7 @@
 
 		<!------------------ quoted prices tab by company  ------------------>
 
-		<div class="col-xl-9 col-lg-8" *ngIf="bidPricesRequests">
+		<div class="col-xl-12 col-lg-12" *ngIf="bidPricesRequests">
 				<!-- [hidden]="isGridViewHide"-->
 				<div *ngIf="!companiesQuotedService || companiesQuotedService.length === 0">
 						<p style="text-align:center;"  class="animated shake animation-delay-10">No Response From Companies Found!</p>
@@ -761,7 +761,7 @@
 						
 					<!-- <div *ngFor="let requests of requestBidResponse"> -->
 							
-						<div class="col-md-6" *ngFor="let requests of companiesQuotedService; let i = index;">
+						<div class="col-md-4" *ngFor="let requests of companiesQuotedService; let i = index;">
 						<div class="body organ1 serviceCard">
 							<div class="row custom-margin-zero">
 							 

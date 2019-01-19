@@ -480,12 +480,15 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     cardHandler = this.onChange.bind(this);
     error: string;
 
-    @ViewChild(CartComponent) private cardLoad: CartComponent;
+   @ViewChild(CartComponent) private cardLoad: CartComponent;
+   //public getCartItemInputVar : any;
 
 
     /* ------------------ AWS CODE END ---------------------- */
 
     ngOnInit() {
+
+        this.runOnChildNotify(Event);
 
         this.getUserLocation();  // Return User Location Lat lng
         this.getCustomerStats();
@@ -569,6 +572,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         `
                 );
         });
+
+       
 
         this.reqBeautyCategories = [
             "Facial Care",
@@ -991,6 +996,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
      //
      // }
 
+     getCartCountOnBtn(){
+        this.getServicesToCart();
+    }
+
     addServicesToCart() {
         let company_id = this.current_company_location.company_name.id;
 
@@ -1058,6 +1067,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 // //this.cardLoad.nativeElement.getCartItem();
                 // console.log("here is cart load...........",this.cardLoad);
                 this.cardLoad.getCartItem();
+               // this.getCartItemInputVar = this.getServicesToCart();
                 this.permissions2 = [];
                 this.cartServices.forEach(item => {
                     item.service.forEach(service => {
@@ -1079,6 +1089,14 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
         )
     }
+
+    public getCountOnButton;
+
+    recieveDataFromChild(Event)
+    {
+        this.getCountOnButton = this.getCustomerStats();
+    }
+
     //variable for dashboard stats
     dashboardstat;
     dashboardcustomer;
@@ -1246,12 +1264,14 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedCompanyName;
     selectedServiceName;
     selectedCompanyLocationId;
+    cartItem_id;
 
     // Get selected location service and its information on radio button selection
 
+    servicesInCartRadiosFirstScreen(company_name, info, event, cart_id, index, parentIndex) {
 
-    servicesInCartRadiosFirstScreen(company_name, info, event, index, parentIndex) {
-
+        //
+        this.cartItem_id = cart_id;
         // Check for looking what is selected service parent's index
         this.selectedServiceParentIndex = parentIndex;
 
@@ -1437,7 +1457,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             this.staff_book_date, 
             this.staff_book_time, 
             company_timings, 
-            this.payment
+            this.payment,
+            this.cartItem_id
             
             ).subscribe(
             (res: any) => {
@@ -2084,4 +2105,9 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confirmation = false;
     }
 
+    runOnChildNotify(event: any) {    
+        this.getCustomerStats();
+      }
+
+      
 }
