@@ -43,7 +43,7 @@
                     <br class="add-line-break">
                     <span class="custom-float-right custom-top--four custom-pointer"><a data-target="#m_modal_terms" data-toggle="modal" style="font-size:small;">Terms and Conditions</a></span>
                     <label class="m-checkbox custom-float-right m-checkbox--air m-checkbox--state-brand custom-margin-right--10"  title="CheckBox For Company Terms And Conditions" >
-                        <input type="radio" name="cartItemTermsCheckbox" (click)="showProceedButton1($event, i);">
+                        <input type="radio" name="cartItemTermsCheckbox" data-target="#m_modal_terms" data-toggle="modal"  (click)="showProceedButton1($event, i);">
                         <span class="custom-check-box-setting " data-target="#m_modal_terms" data-toggle ="modal" [hidden]="!hideTermsModal"></span>
                         <span class="custom-check-box-setting " [hidden]="hideTermsModal"></span>
                     </label>
@@ -515,7 +515,7 @@
                 <!--</div>-->
 
                 <div class="form-group m-form__group">
-                    <h5> <strong>NOTE:</strong> Choose preferred date &amp; time for availing service</h5>
+                    <h5> Choose preferred date &amp; time for availing service</h5>
                     <label>
                         <strong>Select Date</strong>
                     </label>
@@ -558,7 +558,11 @@
                                 <div *ngIf="ctrl.errors['tooEarly']">It's a bit too early</div>
                             </div>
 
-                            <pre>Selected time: {{timeSlotPicker | json}}</pre>
+                            <div>
+                                <h5>
+                                <strong style="color: red;">NOTE:</strong> We will alot you the closest date and time available
+                                </h5>
+                            </div>
 
                             <!-- OLD CODE TIME PICKER -->
                             <!--<div>-->

@@ -161,7 +161,7 @@
                                             </div>
                                         </form>
                                         <div class="m-loader m-loader--brand m-loader--lg m--margin-top-25" *ngIf="preloader"></div>
-                                        <div class="col-sm-12 m--margin-top-10 h4" *ngIf="(company_and_locations | searchFilter : searchText).length === 0"> No records found against your search...</div>
+                                        <div class="col-sm-12 m--margin-top-10 h4" *ngIf="(company_and_locations | searchFilter : searchText).length === 0"> No records found! Make sure that you have allow your location & Refresh your page...</div>
                                         <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies animated fadeInLeft animation-delay-3"
                                              *ngFor="let company of company_and_locations | searchFilter: searchText; let i = index;">
                                             <!-- First Card Start -->
