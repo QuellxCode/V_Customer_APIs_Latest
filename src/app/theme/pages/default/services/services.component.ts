@@ -362,8 +362,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedServices;
 
     // List of Markers for companies' locations
-    markers: Array<{ latitude: number, longitude: number, name: string }> = [
-        { 'latitude': 33.6844, 'longitude': 73.0479, 'name': 'Pre-Filled' },
+    markers: Array<{ latitude: number, longitude: number, name: string, loc_id: string }> = [
+        { 'latitude': 33.6844, 'longitude': 73.0479, 'name': 'Pre-Filled', 'loc_id':'' },
     ];
 
     // Temporary Array to store selected services' ids that are to be added in cart
@@ -828,7 +828,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.company_and_locations.forEach(x => {
                     x["locations"] = rawData.filter(y => {
                         if (y["user_id"] == x["id"]) {
-                            this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng), 'name': y.name })
+                            this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng), 'name': y.name, 'loc_id': y.rand_id })
                              //console.log("Location names are => ",y.name);
                             // console.log(y);
                             return x;
@@ -884,7 +884,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 // For Pushing Markers in markers Array
                 this.company_and_locations.forEach(x => {
                     x.location.forEach(y => {
-                        this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng), 'name': y.name })
+                        this.markers.push({ 'latitude': parseFloat(y.lat), 'longitude': parseFloat(y.lng), 'name': y.name, 'loc_id': y.rand_id })
                     })
 
                 });
@@ -1170,7 +1170,9 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     locationSchedule: string;
     startingScheduleHour: number;
+    startingScheduleMin: number;
     endingScheduleHour: number;
+    endingScheduleMin: number;
 
 
     // Get Schedule for the selected Company
@@ -1206,8 +1208,12 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.log("Disabled days are=> ", this.disabledDaysArray);
                 this.locationSchedule = response.data['0'].company_schedule.from + ' - ' + response.data['0'].company_schedule.to;
                 this.startingScheduleHour = parseInt(response.data['0'].company_schedule.from.split(':')['0']);
+                this.startingScheduleMin = parseInt(response.data['0'].company_schedule.from.split(':')['1']);
                 this.endingScheduleHour = parseInt(response.data['0'].company_schedule.to.split(':')['0']);
-                console.log(this.locationSchedule);
+                this.endingScheduleMin = parseInt(response.data['0'].company_schedule.to.split(':')['1']);
+                console.log(this.startingScheduleMin + ' & ' + this.endingScheduleMin);
+                alert(this.locationSchedule);
+
                 //----------- THIS LINE DISABLES THE DAYS THAT ARE NOT RETURNED IN LOCATION SCHEDULE! ----------
                 this.dateDisabled = (date: NgbDate, current: { month: number }) => this.disabledDaysArray.indexOf(this.calendar.getWeekday(date)) != -1;
 
@@ -1331,10 +1337,10 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             return null;
         }
 
-        if (value.hour < this.startingScheduleHour) {
+        if ((value.hour < this.startingScheduleHour && value.minute < this.startingScheduleMin) || value.hour < this.startingScheduleHour) {
             return { tooEarly: true };
         }
-        if (value.hour > this.endingScheduleHour) {
+        if ((value.hour > this.endingScheduleHour && value.minute > this.endingScheduleMin ) || value.hour > this.endingScheduleHour ) {
             return { tooLate: true };
         }
 
