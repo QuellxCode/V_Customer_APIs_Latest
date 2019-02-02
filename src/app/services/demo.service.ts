@@ -387,7 +387,7 @@ export class DemoService {
 
 
     saveOrderInformation(company_id: number, customer_id: number, total_price, servicesPlaceOrder,
-        employee_id,location_id,application_fee_price,application_fee_percentage, date: string, time: string, company_timings: string, payment, cart_id) {
+        employee_id,location_id,application_fee_price,application_fee_percentage, date: string, time: string, company_timings: string, payment, cart_id, charge_id) {
         let array_obj = {
             "data": [{
 
@@ -403,7 +403,8 @@ export class DemoService {
                 "time": time,
                 "company_schedule": company_timings,
                 "payment": payment,
-                "cart_id": cart_id
+                "cart_id": cart_id,
+                "charge_id": charge_id
             }]
         }
         console.log("You Passed This =>" + JSON.stringify(array_obj));

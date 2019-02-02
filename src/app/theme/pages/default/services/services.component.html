@@ -251,9 +251,12 @@
                                                         <!--Services <i class="fa fa-chevron-right"></i>-->
                                                     <!--</button>-->
                                                 <!--</div>-->
+                                                
                                                 <hr>
+                                                <span style="position: absolute; right: 30px; font-weight: bold">CA$</span>
                                                 <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 width-100 row"
                                                      style="padding-bottom: 0px; margin: 0 7px; min-height: 50px; max-height: 100px; overflow-y: auto;">
+                                                     
 
                                                     <!--<p class="m&#45;&#45;font-brand m&#45;&#45;font-bold" style="width: 100%;"-->
                                                        <!--*ngFor="let service of loc.services; let indexLocServices = index;">-->
@@ -263,7 +266,8 @@
                                                     <!--</p>-->
 
                                                     <!--<div class="custom-width-scroll" *ngIf=" services.length > 0;">-->
-                                                        <p class="custom-margin-bottom-zero width-100"  *ngFor="let service of loc.services; let indexLocService = index;">
+                                                        
+                                                        <p class="custom-margin-bottom-zero width-100 m--margin-bottom-5"  *ngFor="let service of loc.services; let indexLocService = index;">
                                                              <span class="custom-width">
                                                                  <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom" style="margin-right: -10px;
                                                                     height: 12px;">
@@ -274,13 +278,14 @@
                                                                      <span></span>
                                                                  </label>
                                                              </span>
+                                                             
                                                             <span class="custom-hover-change-color custom-pointer">
                                                                  <span data-toggle="modal" data-target="#infoModal" (click)="selectService(indexLocService)">
                                                                      {{service.service_name}}
                                                                  </span>
                                                              </span>
                                                             <span class="custom-float-right m--font-success">
-                                                                 {{ service.price | currency:'CAD'}}
+                                                                 {{ service.price | currency}}
                                                              </span>
                                                         </p>
                                                     <!--</div>-->
@@ -316,9 +321,9 @@
                                 <!-- All Services End Here -->
                                 <!-- Map Start Here -->
                                 <div class="col-sm-9" style="padding-right: 0px">
-                                    <div class="radius_filter_div">
+                                    <!-- <div class="radius_filter_div">
                                         <input type="number" [(ngModel)]="radiusInMeters" (input)="updateMarkers($event)" />
-                                    </div>
+                                    </div> -->
                                     <!--<p> {{radiusInMeters}} </p>-->
                                     <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="10" [scrollwheel]="null">
                                         <agm-marker [latitude]="latitude" [longitude]="longitude" [iconUrl]="icon">
@@ -339,9 +344,9 @@
                                                 <strong> {{marker.name | uppercase}} </strong>
                                             </agm-info-window>
                                         </agm-marker>
-                                        <agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="radiusInMeters" [fillColor]="'blue'"
+                                        <!-- <agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="radiusInMeters" [fillColor]="'blue'"
                                                     [circleDraggable]="false" [editable]="true">
-                                        </agm-circle>
+                                        </agm-circle> -->
                                     </agm-map>
                                 </div>
                                 <!-- Map End Here -->

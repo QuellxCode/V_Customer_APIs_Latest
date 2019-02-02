@@ -725,3 +725,16 @@ textarea.ng-invalid.ng-touched {
   width: 55%;
 }
 /**/
+
+.hrDashed
+{
+  border-top: 1px dashed rgba(0, 0, 0, 0.1); 
+  letter-spacing: 4px;
+  width: 80%;
+  margin: 15px auto !important;
+}
+
+.c--margin-left-0
+{
+  margin-left: 0px;
+}

@@ -10,7 +10,10 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "postinstall": "npm run tsformat",
-        "tsformat": "tsfmt -r"
+        "tsformat": "tsfmt -r",
+        "deploy-s3": "aws --profile veaseUser s3 sync ./dist/ s3://veasecustomer.tk --region us-east-1",
+        "clear-cache": "aws --profile veaseUser cloudfront create-invalidation --distribution-id E1N57VT2I9DWXV --paths /*",
+        "gen-dist": "ng build --prod --base-href=''"
     },
     "private": true,
     "dependencies": {

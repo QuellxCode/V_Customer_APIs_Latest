@@ -285,7 +285,10 @@
                                     <span class="m-widget4__title">
                                         {{scheduleOrders.company_name}}
                                     </span>
-    
+                                    <br>
+                                    <span class="m-widget3__time personappartmentno">
+                                            <i class="fa fa-cog"></i> {{scheduleOrders.services[0].name}}
+                                    </span>
                                     <br>
                                     <span class="m-widget3__time personappartmentno">
                                         <i class="fa fa-clock-o"></i> {{scheduleOrders.time}}
@@ -443,6 +446,10 @@
                             <div class="m-widget4__info">
                                 <span class="m-widget4__title">
                                     {{completedOrder.company_name}}
+                                </span>
+                                <br>
+                                <span class="m-widget3__time personappartmentno">
+                                        <i class="fa fa-cog"></i> {{completedOrder.services[0].name}}
                                 </span>
                                 <br>
                                 <span class="m-widget3__time personappartmentno">

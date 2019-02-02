@@ -71,12 +71,13 @@ export class ProfileComponent implements OnInit {
 
     
     public userEmail = JSON.parse(localStorage.getItem('currentUser')).success.email;
-
+    customerPic;
     getProfile() {
         this.profileService.getCutomerProfile().subscribe(
             (data: any) => {
                 this.CustomerProfile = data.data;
-                console.log(data);
+                console.log("here is customer profile fetched",data);
+                this.customerPic = data.picture;
 
             },
             err => console.error(err),

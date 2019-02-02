@@ -657,7 +657,7 @@ export class EstimateResponseComponent implements OnInit, AfterViewInit {
                 this.toastrService.showSuccessMessages("Request Successfully Submitted!");
               
                 form_data.resetForm();
-
+                this.getRequestBidResponse();
                 return true;
             },
             error => {

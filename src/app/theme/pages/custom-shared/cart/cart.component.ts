@@ -1086,7 +1086,8 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.log("Item Deleted Successfully");
                 this.getServicesToCart();
                 this.sendToParent();
-
+                this.cartServices = [];
+                this.preloaderFetchingCartItems = true;
             },
             err => {
                 console.error(err);
@@ -1118,12 +1119,16 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
                     checkboxes in SEARCH BY SERVICE section
                 */
                 this.permissions2 = [];
+                
+               
+                
                 this.cartServices.forEach(item => {
                     item.service.forEach(service => {
                         this.permissions2.push(service.rand_id);
                     });
                 });
 
+               
                 console.log("permissions2 => ",this.permissions2);
                 this.preloaderFetchingCartItems = false;
             },
@@ -1511,7 +1516,8 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             this.staff_book_time, 
             company_timings, 
             this.payment,
-            this.cartItem_id
+            this.cartItem_id,
+            this.transaction_id_for_Transaction //this is also know as charge id
             
             ).subscribe(
             (res: any) => {
@@ -1547,6 +1553,8 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
                         (err) => { console.error(err); },
                         () => { console.log("");
                         this.sendToParent();
+                        this.cartServices = [];
+                        this.preloaderFetchingCartItems = true;
                     }
                         )  
             

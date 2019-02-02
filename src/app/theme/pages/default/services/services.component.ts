@@ -1458,8 +1458,8 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
             this.staff_book_time, 
             company_timings, 
             this.payment,
-            this.cartItem_id
-            
+            this.cartItem_id,
+            this.transaction_id_for_Transaction
             ).subscribe(
             (res: any) => {
                 console.log("this will be posted as order => ", res);

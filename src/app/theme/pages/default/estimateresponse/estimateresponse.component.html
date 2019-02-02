@@ -754,6 +754,7 @@
 
 		<div class="col-xl-12 col-lg-12" *ngIf="bidPricesRequests">
 				<!-- [hidden]="isGridViewHide"-->
+				<button class="btn btn-link personMoreDetailsButton custom-padding-zero" style="padding-bottom: 10px;"  *ngIf="bidPricesRequests" (click)="showAllTabs();  getRequestBidResponse();"><i class="fa fa-chevron-left"></i>Go Back</button>
 				<div *ngIf="!companiesQuotedService || companiesQuotedService.length === 0">
 						<p style="text-align:center;"  class="animated shake animation-delay-10">No Response From Companies Found!</p>
 					</div>
@@ -766,17 +767,41 @@
 							<div class="row custom-margin-zero">
 							 
 								<div class="card-right col-lg-12">
-										<label class="m-checkbox m-checkbox--solid m-checkbox--single pull-left m-checkbox--brand">
-												<input class="chkboxes" type="radio" name="parentCheck" (click)="approvedBtn($event, i); serviceCheck(requests.services.service_id, requests.services.request_bid_id);">
+										<label style="display:none;" class="m-checkbox m-checkbox--solid m-checkbox--single pull-left m-checkbox--brand">
+												<input class="chkboxes" type="radio" name="parentCheck" (click)="approvedBtn($event, i); serviceCheck(requests.services.service_id, requests.services.request_bid_id);" #parentCheckbox>
 												<span></span>
-												</label> 
-									<h6 class="text-muted pull-right">
-										<span class="m-badge m-badge--accent m-badge--wide">{{requests.services.service_name}} Quotations</span>
-									</h6>
+										</label> 
+
+										<div class="row">
+											<div class="col-md-12">
+													<b>Service Name : </b>
+													<span class="text-muted" >
+															<b style="color:cornflowerblue; font-size: 15px;">{{requests.services.service_name}}
+															</b>
+													</span>
+
+												</div>
+											<!-- <div class="col-md-4">
+													<b>Servicec Name : </b>
+											</div>
+											<div class="col-md-8">
+													<h6 class="text-muted" >
+															<span class="m-badge m-badge--accent m-badge--wide">{{requests.services.service_name}} Quotations</span>
+														</h6>
+														
+											</div> -->
+										</div>
+
+												
 									
-									<div class="clearfix"></div>
+									<!-- <div class="clearfix"></div>. -->
 									<div class="row services-categories">
-										<div class="col-md-12 category-list">
+										<div class="col-md-12">
+
+											<span><b>Category: </b>{{requests.services.category_name}} </span><br>
+											<span><b>Sub-Category: </b>{{requests.services.sub_category_name}} </span><br>
+											<span><b>Price: </b>{{requests.services.price}} </span>
+
 											<!-- <div class="row">
 												<div class="col-md-12" style="text-align:center">
 													<h6 class="service-heading">Service : {{requests.services.service_name}}</h6>
@@ -785,34 +810,44 @@
 												
 											</div> -->
 											
-											
-										<div class="row service-item" *ngFor="let company of requests.company; let serviceInfoIndex = index">
-												<div class="col-md-2">
-										<span class="custom-width">
-										<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
-										<input type="radio" name="companyRadioBtn" value="187"  (click)="servicesInCartRadiosFirstScreen($event, serviceInfoIndex, i); companyDataToCart(company.company_id, company.request_bid_response_rand_id);">
-										<span></span>
-										</label> 
-										</span>
-												</div> &nbsp;
-												<div class="col-md-6 custom_padding_left">
-													<p><b><i class="fa fa-industry"></i>&nbsp; {{company.company_name}}</b></p> 
-													<em><i class="fa fa-map-marker"></i>&nbsp; {{company.company_location_name}}</em>
-												</div>
-												<div class="col-md-3 offset-md-1">
-										<span class="m--font-success custom-float-right">
-													{{company.price | currency:'CAD'}}
-										</span>
-												</div>
-												<div class="col-md-12">
+											<div class="col-md-12">
 													<hr>
+												</div>
+												<h5 class="m--margin-bottom-15">Price Quotations</h5>
+												
+												<p style="text-align: center" *ngIf="!requests.company || requests.company.length === 0"> No quoted price from any company!</p>
+										<div class="row service-item c--margin-left-0" *ngFor="let company of requests.company; let serviceInfoIndex = index">
+												
+												<div class="col-md-6">
+													<span><b><i class="fa fa-industry"></i>&nbsp; {{company.company_name}}</b></span><br> 
+													<span style="margin-left:20px;"><i class="fa fa-map-marker"></i>&nbsp; {{company.company_location_name}}</span>
+												</div>
+												<div class="col-md-6">
+														
+												<span class="custom-float-right" >
+													<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand custom_margin_bottom">
+														<input type="radio" name="companyRadioBtn" value="187"  (click)="
+														parentCheckbox.click(); servicesInCartRadiosFirstScreen($event, serviceInfoIndex, i); companyDataToCart(company.company_id, company.request_bid_response_rand_id);">
+														<span></span>
+													</label> 
+												</span>
+														
+										<span class="m--font-success custom-float-right" style="margin-right: 10px;">
+													{{company.price | currency:'CAD'}}
+										</span>	
+										
+												</div>
+												
+												 
+												<div class="col-md-12">
+													<hr class="hrDashed">
 												</div>
 											</div>
 											
 										
 										
 											<div class="col-md-12 m--padding-bottom-15 text-right m--margin-top-10" *ngIf="agreedCartItemIndex == i" style="padding-right: 0px;">
-													<button  type="button" class="btn btn-primary" [disabled]="selectedServiceParentIndex != i || termsAndConditonIndex != i" (click)="showAlert(); visibleSidebar2 = true; approveRequestBid();" >Approve & Add to Cart
+													<button  type="button" class="btn btn-primary m--margin-right-10" [disabled]="selectedServiceParentIndex != i || termsAndConditonIndex != i" (click)="showAlert(); visibleSidebar2 = true; approveRequestBid();" >Approve & Add to Cart
 													<!-- getStaffFromLocation(); -->
 											</button>
 											</div>
