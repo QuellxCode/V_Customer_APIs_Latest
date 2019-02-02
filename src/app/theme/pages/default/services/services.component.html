@@ -213,6 +213,8 @@
                                     <!-- ------------------ BEGIN: Search By Service View  ---------------------- -->
                                     <div *ngIf="!searchByCompanyView">
 
+                                        
+
                                         <form class="animated fadeInLeft animation-delay-3" style="padding: 13px 15px 1px 15px; background-color: #dbdbdb;">
                                             <div class="input-group mb-3  ">
                                                 <input type="text" class="form-control" [(ngModel)]="searchServiceText" name="searchInputServiceFilter" placeholder="Search Service..." style="border-radius: 15px;" >
@@ -221,8 +223,20 @@
                                             </div>
                                         </form>
 
+                                        
+                                        <div class="row width-100 pull-right" style="position:sticky; top:0; z-index: 9;;" >
+                                                <div class="col-md-12 m--margin-top-10 text-right m--padding-right-10">
+                                                    <a (click)="addServicesToCart2();"  attr.disabled="isDisabled" class="btn btn-sm btn-primary custom-margin-right-book-button animated fadeInUp animation-delay-5"
+                                                       [ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Add to Cart</a>
+                                                </div>
+                                            </div>
+
+                                            <br>
+                                            <br>
+
                                         <!--<div class="m-loader m-loader&#45;&#45;brand m-loader&#45;&#45;lg m&#45;&#45;margin-top-25" *ngIf="preloader"></div>-->
                                         <div class="col-sm-12 m--margin-top-10 h4" *ngIf="(companyLocationServices | serviceSearchFilter : searchServiceText).length === 0"> No services found against your search...</div>
+                                        
 
                                         <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 m--margin-top-15 box-shadow_for_companies  animated fadeInRight animation-delay-3"
                                              *ngFor="let company of companyLocationServices | serviceSearchFilter: searchServiceText; let i = index;">
@@ -236,8 +250,11 @@
                                             <div class="m--padding-top-10 m--padding-right-10 m--padding-left-10 row" style="padding-bottom: 0px !important;;"
                                                  *ngFor="let loc of company.locations; let indexLocation = index;">
                                                 <!-- [style.backgroundColor]="(selectedIndex === indexLocation && selectedParentIndex == i) ? '#eee' : 'transparent'" -->
+
+                                               
+
                                                 <div class="col-md-12">
-                                                    <h6 class="m--font-bolder"> <i class="fa fa-map-marker" style="color: red;"> </i>  {{loc.location.name | uppercase}}</h6>
+                                                    <h6 style="width: 200px;" class="m--font-bolder"> <i class="fa fa-map-marker" style="color: red; "> </i>  {{loc.location.name | uppercase}}</h6>
                                                 </div>
                                                 <!--<div class="col-md-8">-->
                                                     <!--<p class="custom-margin-bottom-zero">-->
@@ -306,13 +323,7 @@
 
                                         </div>
 
-                                        <div class="row width-100 pull-right">
-                                            <div class="col-md-12 m--margin-top-10 text-right m--padding-right-10">
-                                                <a (click)="addServicesToCart2();" attr.disabled="isDisabled" class="btn btn-sm btn-primary custom-margin-right-book-button animated fadeInUp animation-delay-5"
-                                                   [ngClass]="{'active': activeBookMap, 'disabled': disabledBookMap}">Add to Cart</a>
-                                            </div>
-                                        </div>
-
+                                 
                                     </div>
 
                                     <!-- ------------------ END: Search By Service View END ---------------------- -->
