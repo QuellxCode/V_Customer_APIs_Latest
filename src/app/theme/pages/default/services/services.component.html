@@ -526,9 +526,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h4>{{currentService.name}}</h4>
-                <h6>{{currentService.details}} <span class="custom-float-right m--font-success">{{priceInfoTitle}}</span></h6>
-                <p>{{currentService.price}}</p>
+                <h6><span style="color: blue;">    Service Name : </span> {{currentService.service_name}}</h6>
+                <h6><span style="color: blue;">Service Category : </span> {{currentService.category_name}}</h6>
+                <h6><span style="color: blue;">Service Subcategory : </span> {{currentService.subcategory_name}}</h6>
+                <h6><span style="color: blue;">Service Currency : </span> {{currentService.currency}}</h6>
+                <h6><span style="color: blue;">Service Price :</span> {{currentService.price}}</h6>
+                <h6><span style="color: blue;">Service Detail : </span> {{currentService.details}}</h6>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>

@@ -134,12 +134,24 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     /**/
     companies: any = [];
     cityName = '';
-    currentService = {
-        name: "",
-        price: "",
-        details: "",
 
-    };
+    currentService = []
+    //-----------ye chzain me ne try ki thein, lykn ye initially es ko null ya empty ly he ni rha
+    // service_name: "",
+    // category_name: "",
+    // subcategory_name: "",
+    // currency: "",
+    // price: "",
+    // details: ""
+    
+    // service_name = "";
+    // category_name= "";
+    // subcategory_name= "";
+    // currency= "";
+    // price= "";
+    // details= "";
+
+    
 
     confirmation = false;
 
@@ -908,7 +920,7 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
         this._demoService.getCompanyAndLocationsAndServicesWithLatLng(this.latitude,this.longitude, this.radiusInKm).subscribe(
             (response:any) => {
                 this.companyLocationServices = response.data;
-                console.log("All Companies, Locations & Services are => ", this.companyLocationServices);
+                console.log("All Companies, Locations & Services are ///////////////////////// => ", this.companyLocationServices);
 
                 // this.permissions2 = [];
                 // this.services.forEach(x => {
