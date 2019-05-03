@@ -144,7 +144,7 @@
                                         </span>
                                         <br>
                                         <span class="m-widget3__time personappartmentno">
-                                            <i class="fa fa-cog"></i> {{pendingOrders.services[0].name}}
+                                            <i class="fa fa-cog"></i> {{pendingOrders.services[0] ? pendingOrders.services[0].name : "" }}
                                         </span>
                                         <br>
                                         <span class="m-widget3__time personappartmentno">
@@ -287,7 +287,7 @@
                                     </span>
                                     <br>
                                     <span class="m-widget3__time personappartmentno">
-                                            <i class="fa fa-cog"></i> {{scheduleOrders.services[0].name}}
+                                            <i class="fa fa-cog"></i> {{scheduleOrders.services[0] ? scheduleOrders.services[0].name : ""}}
                                     </span>
                                     <br>
                                     <span class="m-widget3__time personappartmentno">
@@ -449,7 +449,7 @@
                                 </span>
                                 <br>
                                 <span class="m-widget3__time personappartmentno">
-                                        <i class="fa fa-cog"></i> {{completedOrder.services[0].name}}
+                                        <i class="fa fa-cog"></i> {{completedOrder.services[0] ? completedOrder.services[0].name : ""}}
                                 </span>
                                 <br>
                                 <span class="m-widget3__time personappartmentno">

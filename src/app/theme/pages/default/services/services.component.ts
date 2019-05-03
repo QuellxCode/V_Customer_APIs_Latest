@@ -135,7 +135,14 @@ export class ServicesComponent implements OnInit, AfterViewInit, OnDestroy {
     companies: any = [];
     cityName = '';
 
-    currentService = []
+    currentService = {
+        service_name: "",
+    category_name: "",
+    subcategory_name: "",
+    currency: "",
+    price: "",
+    details: ""
+    }
     //-----------ye chzain me ne try ki thein, lykn ye initially es ko null ya empty ly he ni rha
     // service_name: "",
     // category_name: "",
